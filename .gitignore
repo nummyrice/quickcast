@@ -1,3 +1,7 @@
+# App-Academy required additions
+build
+.DS_Store
+
 # Logs
 logs
 *.log
