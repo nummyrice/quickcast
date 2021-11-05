@@ -5,7 +5,10 @@ const usersRouter = require('./users.js');
 router.use('/session', sessionRouter);
 router.use('/users', usersRouter);
 
-
+// TEST
+router.post('/test', (req, res) => {
+    res.json({message: "you ar da bom"});
+});
 
 
 module.exports = router;
@@ -35,9 +38,6 @@ module.exports = router;
         //     return res.json({ user });
         // }));
 
-        // router.post('/test', (req, res) => {
-        //     res.json({message: "you ar da bom"});
-        // });
 
         // // GET /api/restore-user
         // const { restoreUser } = require('../../utils/auth.js');
