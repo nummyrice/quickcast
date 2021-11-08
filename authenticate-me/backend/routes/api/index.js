@@ -5,10 +5,10 @@ const usersRouter = require('./users.js');
 router.use('/session', sessionRouter);
 router.use('/users', usersRouter);
 
-// TEST
-router.post('/test', (req, res) => {
-    res.json({message: "you ar da bom"});
-});
+// // TEST
+// router.post('/test', (req, res) => {
+//     res.json({message: "you ar da bom"});
+// });
 
 
 module.exports = router;

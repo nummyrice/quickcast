@@ -1,4 +1,6 @@
 import React from 'react';
+import { restoreCSRF, csrfFetch } from './store/csrf';
+import * as sessionActions from './store/session';
 
 // STYLING
 import './index.css';
@@ -17,8 +19,13 @@ import configureStore from './store';
 // do not expose store to the window in production
 const store = configureStore();
 
+// this gives your browser access to the various functions we've created.
+// this is for testing purposes only so should not be set during production
 if (process.env.NODE_ENV !== 'production') {
+  restoreCSRF();
+  window.csrfFetch = csrfFetch;
   window.store = store;
+  window.sessionActions = sessionActions;
 }
 
 function Root() {
