@@ -32,6 +32,7 @@ Object.keys(db).forEach(modelName => {
 });
 
 db.sequelize = sequelize;
-db.Sequelize = Sequelize;
+// why was this here?
+// db.Sequelize = Sequelize;
 
 module.exports = db;
