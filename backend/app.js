@@ -15,6 +15,8 @@ const routes = require('./routes');
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+
 
 
 // Security Middleware

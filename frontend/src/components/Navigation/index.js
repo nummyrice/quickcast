@@ -8,6 +8,8 @@ import './Navigation.css';
 function Navigation({ isLoaded }){
   const sessionUser = useSelector(state => state.session.user);
 
+
+
   let sessionLinks;
   if (sessionUser) {
     sessionLinks = (
@@ -33,3 +35,8 @@ function Navigation({ isLoaded }){
 }
 
 export default Navigation;
+
+        // <form action='api/test'>
+        //   <input type='file' name='fileUpload'></input>
+        //   <input type='submit'></input>
+        // </form>

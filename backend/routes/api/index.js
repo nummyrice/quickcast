@@ -7,6 +7,8 @@ router.use('/users', usersRouter);
 
 // // TEST
 // router.post('/test', (req, res) => {
+//     const photo = req.body.files;
+//     console.log(photo);
 //     res.json({message: "you ar da bom"});
 // });
 
