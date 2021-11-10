@@ -1,9 +1,12 @@
 const router = require('express').Router();
 const sessionRouter = require('./session.js');
 const usersRouter = require('./users.js');
+const companyRouter = require('./company.js');
 
 router.use('/session', sessionRouter);
 router.use('/users', usersRouter);
+router.use('/company', companyRouter);
+
 
 // // TEST
 // router.post('/test', (req, res) => {
