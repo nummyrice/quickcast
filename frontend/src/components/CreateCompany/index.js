@@ -31,7 +31,7 @@ function CreateCompany() {
                 if (data && data.errors) setErrors(data.errors);
             });
     };
-    // IN PROGRES: redirect to company page
+    // IN PROGRESS: redirect to company page
     if (sessionUser.Company) {
         history.push('/company');
     }

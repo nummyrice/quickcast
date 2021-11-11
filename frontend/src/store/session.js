@@ -77,7 +77,7 @@ export const restoreUser = (user) => async dispatch => {
   const response = await csrfFetch('/api/session');
   const data = await response.json();
   dispatch(setUser(data.user));
-  console.log('DEBUGGER IN RESTORE THUNK FOR USER DATA INCLUDING COMPANY',data.user)
+  // console.log('DEBUGGER IN RESTORE THUNK FOR USER DATA INCLUDING COMPANY',data.user)
   return response;
 };
 

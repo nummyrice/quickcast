@@ -15,6 +15,8 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 
 import configureStore from './store';
+// CONTEXT FOR MODALS
+import { ModalProvider } from "./context/Modal";
 
 // do not expose store to the window in production
 const store = configureStore();
@@ -31,9 +33,11 @@ if (process.env.NODE_ENV !== 'production') {
 function Root() {
   return (
     <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <ModalProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ModalProvider>
     </Provider>
   );
 }

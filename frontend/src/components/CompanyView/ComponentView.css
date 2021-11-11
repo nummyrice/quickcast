@@ -1,0 +1,50 @@
+.company_photo {
+    object-fit: cover;
+    width: 60px;
+    height: 60px;
+    border-radius: 10px 100px / 120px;
+    border: 2px ridge crimson;
+    filter: drop-shadow(0 0 0.40rem crimson);
+    margin-right: 10px;
+}
+
+.company_card {
+    border: 2px ridge rgba(0, 0, 0, .6);
+    padding: 2%;
+    border-radius: 13px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+.company_biography {
+    border: 2px solid rgba(0, 0, 0, 0.226);
+    padding: 1%;
+
+};
+
+.company_title {
+    /* margin-left: 20px; */
+    /* font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    font-size:larger; */
+
+}
+
+.title_photo_section {
+    display: flex;
+
+}
+
+.company_card button {
+    background-color: rgba(220, 20, 60, 0.60);
+    border: 2px solid rgba(0, 0, 0, 0.226);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    color: white;
+    border-radius: 13px;
+    margin: 5px;
+    padding: 3px 6px 3px 6px;
+
+}
