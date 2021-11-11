@@ -21,10 +21,7 @@ const validateLogin = [
 ];
 
 // Restore session user
-router.get(
-'/',
-restoreUser,
-(req, res) => {
+router.get('/', restoreUser, (req, res) => {
   const { user } = req;
   if (user) {
     return res.json({
@@ -49,7 +46,6 @@ router.post('/', validateLogin, asyncHandler(async (req, res, next) => {
       }
 
       await setTokenCookie(res, user);
-
       return res.json({
         user,
       });

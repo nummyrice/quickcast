@@ -55,11 +55,11 @@ module.exports = (sequelize, DataTypes) => {
       hooks: true,
     });
   };
-
+  //IN PROGRESS: must add other associations here as they are built
   // returns object with only the User instance information that is safe to save to a JWT
   User.prototype.toSafeObject = function() { // remember, this cannot be an arrow function
-    const { id, username, email } = this; // context will be the User instance
-    return { id, username, email };
+    const { id, username, email, Company } = this; // context will be the User instance
+    return { id, username, email, Company };
   };
 
   // checks if recieved password matches the User instance hashed password
@@ -82,10 +82,10 @@ module.exports = (sequelize, DataTypes) => {
           username: credential,
           email: credential,
         },
-      },
+      }
     });
     if (user && user.validatePassword(password)) {
-      return await User.scope('currentUser').findByPk(user.id);
+      return await User.scope('currentUser').findOne({where: {id: user.id}, include: {all: true}});
     }
   };
 

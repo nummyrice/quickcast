@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import * as sessionActions from "../../store/session";
-import * as companyActions from "../../store/company";
+// import * as companyActions from "../../store/company";
 
 function CreateCompany() {
     const dispatch = useDispatch();
     const sessionUser = useSelector((state) => state.session.user);
-    const currentCompany = useSelector((state) => state.company);
     const [companyName, setCompanyName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [details, setDetails] = useState('');
     const [image, setImage] = useState();
     const [website, setWebsite] = useState('');
     const [errors, setErrors] = useState([]);
+    const history = useHistory();
 
     const onChangeImageFile = (e) => {
         const file = e.target.files[0];
@@ -24,16 +24,17 @@ function CreateCompany() {
     const handleSubmit = (e) => {
         e.preventDefault();
         setErrors([]);
-        return dispatch(companyActions
-            .createAndSetCompany({ companyName, phoneNumber, details, image, website}))
+        return dispatch(sessionActions
+            .createAndSetCompany({ companyName, phoneNumber, details, image, website }))
             .catch(async (res) => {
-                console.log('this is the component', res)
                 const data = await res.json();
                 if (data && data.errors) setErrors(data.errors);
             });
     };
-    // REPLACE: redirect to company page
-    // if (currentCompany) return <Redirect to="/"/>;
+    // IN PROGRES: redirect to company page
+    if (sessionUser.Company) {
+        history.push('/company');
+    }
     // console.log('Hello from CreateCompany Component', currentCompany);
     return(
         <form onSubmit={handleSubmit}>
