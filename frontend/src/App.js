@@ -7,6 +7,7 @@ import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import CreateCompany from "./components/CreateCompany";
 import CompanyView from "./components/CompanyView";
+import CompaniesView from "./components/CompaniesView";
 
 function App() {
   const dispatch = useDispatch();
@@ -28,6 +29,9 @@ function App() {
           </Route>
           <Route path="/company">
             <CompanyView/>
+          </Route>
+          <Route path="/companies">
+            <CompaniesView/>
           </Route>
         </Switch>
       )}

@@ -15,18 +15,26 @@ const router = express.Router();
 
 // validateCompany must be used AFTER multer and requireAuth
 const validateCompany = [
-    check('companyName')
-      .exists({checkFalsey: true})
-      .withMessage('Please provide a company name.'),
-    check('phoneNumber')
-      .exists({checkFalsey: true})
-      // .isNumeric()
-      // .isLength({min: 0, max: 40})
-      .withMessage('Please provide a valid phone number.'),
-    check('details')
-      .exists({checkFalsey: true}),
-      handleValidationErrors,
+  check('companyName')
+  .exists({checkFalsey: true})
+  .withMessage('Please provide a company name.'),
+  check('phoneNumber')
+  .exists({checkFalsey: true})
+  // .isNumeric()
+  // .isLength({min: 0, max: 40})
+  .withMessage('Please provide a valid phone number.'),
+  check('details')
+  .exists({checkFalsey: true}),
+  handleValidationErrors,
 ];
+//TODO check if this /all route needs to be before the other routes. Can we add regex to make it more specific
+// GET all companies
+router.get('/all', requireAuth, asyncHandler(async (req, res) => {
+  // TODO should be ordered by the most when gigs under this company
+  // were updated ASC
+  const companies = await Company.findAll();
+  res.json(companies);
+}));
 
   // Create Company Portfolio
 router.post('/', requireAuth, upload.single('companyImage'), validateCompany, asyncHandler(async (req, res) => {
@@ -75,4 +83,6 @@ router.delete('/', requireAuth, asyncHandler(async (req, res) => {
     return res.json({successfullyDeleted: true});
   }
 }));
-   module.exports = router;
+
+
+module.exports = router;

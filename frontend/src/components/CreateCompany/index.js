@@ -64,11 +64,10 @@ function CreateCompany() {
                 ></input>
             </label>
             <label>Company Bio
-                <input
-                type='text'
+                <textarea
                 value={details}
                 onChange={(e) => setDetails(e.target.value)}
-                ></input>
+                ></textarea>
             </label>
             <label>Image or Logo
                 <input

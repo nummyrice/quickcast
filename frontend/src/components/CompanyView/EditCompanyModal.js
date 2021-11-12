@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as sessionActions from "../../store/session";
 import { Redirect } from "react-router-dom";
 import  { useHistory } from 'react-router-dom';
+import './CompanyView.css';
 
 
 
@@ -71,11 +72,10 @@ function EditCompanyModal({ onComplete }) {
                 ></input>
             </label>
             <label>Company Bio
-                <input
-                type='text'
+                <textarea
                 value={details}
                 onChange={(e) => setDetails(e.target.value)}
-                ></input>
+                ></textarea>
             </label>
             <label>Image or Logo
                 <input

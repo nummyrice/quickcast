@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, Redirect } from 'react-router-dom';
-import './ComponentView.css';
+import './CompanyView.css';
 import { Modal } from '../../context/Modal';
 import EditCompanyModal from './EditCompanyModal.js';
 
