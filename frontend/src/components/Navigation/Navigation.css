@@ -1,8 +1,8 @@
 .navigation_bar {
     display: flex;
-    background: lemonchiffon;
+    background: rgb(245, 245, 141);
     position:sticky;
-}
+    filter: drop-shadow(0 0 0.75rem rgb(255, 255, 255));}
 
 .navigation_bar > div {
     margin: auto;

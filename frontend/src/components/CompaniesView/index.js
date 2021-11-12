@@ -15,10 +15,12 @@ function CompaniesView() {
         dispatch(companiesActions.getAndSetAllCompanies());
     }, [dispatch]);
 
+        //TODO: should this page be restricted to logged in users? currently userAuth error
     return (
         <>
         {companies && (companies.map((company) => {
             return(
+                //TODO: need to create company view for each company or adjust current one
                 <div onClick={() => {history.push(`/company/${company.id}`)}} key={company.id} className="company_card">
                     <div className="title_photo_section">
                         <div>

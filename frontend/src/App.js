@@ -8,6 +8,7 @@ import Navigation from "./components/Navigation";
 import CreateCompany from "./components/CreateCompany";
 import CompanyView from "./components/CompanyView";
 import CompaniesView from "./components/CompaniesView";
+import Splash from "./components/Splash";
 
 function App() {
   const dispatch = useDispatch();
@@ -21,6 +22,9 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
+          <Route exact path='/'>
+            <Splash/>
+          </Route>
           <Route path="/signup">
             <SignupFormPage />
           </Route>
