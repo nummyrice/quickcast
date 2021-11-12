@@ -19,11 +19,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     image:{
       type: DataTypes.STRING,
-      allowNull: false,
     },
     website: {
       type: DataTypes.STRING,
-      allowNull: false,
     }
   }, {});
   Company.associate = function(models) {

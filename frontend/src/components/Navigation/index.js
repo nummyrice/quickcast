@@ -1,13 +1,17 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import ProfileButton from './ProfileButton';
+import LoginFormModal from '../LoginFormModal';
 import './Navigation.css';
+import { login } from '../../store/session';
 
 
 function Navigation({ isLoaded }){
+  const dispatch = useDispatch();
   const sessionUser = useSelector(state => state.session.user);
-
+  const password = 'password';
+  const credential = 'demo@user.io';
 
 
   let sessionLinks;
@@ -18,19 +22,26 @@ function Navigation({ isLoaded }){
   } else {
     sessionLinks = (
       <>
-        <NavLink to="/login">Log In</NavLink>
-        <NavLink to="/signup">Sign Up</NavLink>
+        <div>
+          <LoginFormModal/>
+        </div>
+        <div>
+          <button onClick={() => {dispatch(login({password, credential}))}}> Demo User</button>
+        </div>
+        <div>
+          <NavLink className="button signup" to="/signup">Sign Up</NavLink>
+        </div>
       </>
     );
   }
 
   return (
-    <ul>
-      <li>
-        <NavLink exact to="/">Home</NavLink>
+    <div className="navigation_bar">
+      <div>
+        <NavLink className="button home" exact to="/">quickCast</NavLink>
+      </div>
         {isLoaded && sessionLinks}
-      </li>
-    </ul>
+    </div>
   );
 }
 

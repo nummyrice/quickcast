@@ -1,35 +1,47 @@
 import { csrfFetch } from './csrf';
 
-const SET_COMPANY = 'company/add';
-const REMOVE_COMPANY = 'company/remove';
+const SET_COMPANIES = 'companies/add';
+const REMOVE_COMPANIES = 'companies/remove';
 
-const setCompany = (company) => {
+const setCompanies = (companies) => {
     return {
-        type: SET_COMPANY,
-        payload: company,
+        type: SET_COMPANIES,
+        payload: companies,
     };
 };
 
-const removeCompany = () => {
+const removeCompanies = () => {
     return {
-        type: REMOVE_COMPANY,
+        type: REMOVE_COMPANIES,
     };
+};
+
+//THUNK for retrieving all companies
+export const getAndSetAllCompanies = () => async (dispatch) => {
+
+    const response = await csrfFetch('api/company/all');
+    const companiesArray = await response.json();
+
+    dispatch(setCompanies(companiesArray));
+    return response;
 };
 
 
 
-const initialState = { currentCompany: null };
+const initialState = null;
 
 const companyReducer = (state = initialState, action) => {
     let newState;
     switch (action.type) {
-        case SET_COMPANY:
+        case SET_COMPANIES:
+            //TODO: is this copy deep enough?
             newState = Object.assign({}, state);
-            newState.currentCompany = action.payload.company;
+            newState = action.payload;
+            console.log('REDUCER LOG FOR COMPANIES: ', newState);
             return newState;
-        case REMOVE_COMPANY:
+        case REMOVE_COMPANIES:
             newState = Object.assign({}, state);
-            newState.currentCompany = null;
+            newState = null;
             return newState;
         default:
             return state;
