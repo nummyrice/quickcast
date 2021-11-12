@@ -31,26 +31,48 @@ const validateCompany = [
   // Create Company Portfolio
 router.post('/', requireAuth, upload.single('companyImage'), validateCompany, asyncHandler(async (req, res) => {
     const userId = req.user.id;
-    // const companyCheck = await Company.findAll({where: {userId: userId}});
-
-    //IN PROGRESS: change redirect when company page is made
-    // if (companyCheck.length) {
-    //   console.log('CREATE COMPANY HANDLER', 'redirecting')
-    //   return res.redirect('/');
-    // }
-
     const {companyName, phoneNumber, details, website } = req.body;
-    const image = await uploadToCloudinary(req.file.buffer);
+    const isImage = req.file && req.file.buffer;
+    let image;
+    if (isImage) {
+      image = await uploadToCloudinary(isImage)
+      image = image.url;
+    };
 
     const company = await Company.create({
       userId,
       name: companyName,
       phoneNumber,
       details,
-      image: image.url,
+      image,
       website,
     });
     return res.json({company});
 }));
 
+// Update Company Portfolio
+router.put('/', requireAuth, upload.single('companyImage'), validateCompany, asyncHandler(async (req, res) => {
+    const userId = req.user.id;
+    const {companyName, phoneNumber, details, website } = req.body;
+    const isImage = req.file && req.file.buffer;
+    let image;
+    if (isImage) image = await uploadToCloudinary(isImage);
+    const companyToUpdate = await Company.findOne({where: {userId: userId}});
+    const updatedCompany = await companyToUpdate.update({name: companyName, phoneNumber, details, website})
+    if (isImage) updatedCompany = await companyToUpdate.update({ image: image.url });
+    return res.json({updatedCompany});
+}))
+
+// Delete Company Portfolio
+router.delete('/', requireAuth, asyncHandler(async (req, res) => {
+  const companyId = req.body.id;
+  const userId = req.user.id;
+  const companyToDelete = await Company.findByPk(companyId);
+  const companyDeleteResult = await companyToDelete.destroy();
+  if (companyDeleteResult.length) {
+    return res.json({successfullyDeleted: false});
+  } else {
+    return res.json({successfullyDeleted: true});
+  }
+}));
    module.exports = router;
