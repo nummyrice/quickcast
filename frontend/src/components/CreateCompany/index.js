@@ -18,7 +18,6 @@ function CreateCompany() {
     const onChangeImageFile = (e) => {
         const file = e.target.files[0];
         setImage(file);
-        // console.log('/////////////', file);
     };
 
     const handleSubmit = (e) => {
@@ -33,16 +32,13 @@ function CreateCompany() {
     };
     // IN PROGRESS: redirect to company page
     if (!sessionUser) {
-        console.log('REDIRECTING FROM CREATECOMPANY', sessionUser);
         // history.push('/')
         return (<Redirect to='/'/>)
     };
 
-    console.log('SESSIONUSER COMPANY FOR REDIRECT', sessionUser.Company)
     if (sessionUser.Company) {
         return (<Redirect to='/company'/>);
     }
-    // console.log('Hello from CreateCompany Component', currentCompany);
     return(
         <form onSubmit={handleSubmit}>
             <ul>

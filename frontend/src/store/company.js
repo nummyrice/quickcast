@@ -37,7 +37,6 @@ const companyReducer = (state = initialState, action) => {
             //TODO: is this copy deep enough?
             newState = Object.assign({}, state);
             newState = action.payload;
-            console.log('REDUCER LOG FOR COMPANIES: ', newState);
             return newState;
         case REMOVE_COMPANIES:
             newState = Object.assign({}, state);

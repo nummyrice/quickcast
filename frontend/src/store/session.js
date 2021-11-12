@@ -126,7 +126,6 @@ export const updateAndSetCompany = (company) => async (dispatch) => {
   };
   //await response data
   const updatedCompany = await response.json()
-  console.log('THUNK FOR UPDATING COMPANY', updatedCompany);
   // dispatch updatedCompany data to the store
   dispatch(updateUsersCompany(updatedCompany));
   // return the response in case there were errors
@@ -157,7 +156,6 @@ export const restoreUser = (user) => async dispatch => {
   const response = await csrfFetch('/api/session');
   const data = await response.json();
   dispatch(setUser(data.user));
-  // console.log('DEBUGGER IN RESTORE THUNK FOR USER DATA INCLUDING COMPANY',data.user)
   return response;
 };
 
@@ -198,7 +196,6 @@ const sessionReducer = (state = initialState, action) => {
       newState.user = null;
       return newState;
     case SET_USERS_COMPANY:
-      console.log('SESSION REDUCER LOG FOR COMPANY PAYLOAD', action.payload);
       newState = { user: {...state.user, Company: {...action.payload.company}}}
       return newState;
     case UPDATE_USERS_COMPANY:
