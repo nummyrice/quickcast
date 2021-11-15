@@ -4,8 +4,7 @@ import { useHistory, Redirect } from 'react-router-dom';
 import './CompanyView.css';
 import { Modal } from '../../context/Modal';
 import EditCompanyModal from './EditCompanyModal.js';
-
-
+import ProductionView from "./ProductionView";
 
 
 function CompanyView() {
@@ -22,6 +21,7 @@ function CompanyView() {
         return (<Redirect to='/'/>)
     };
     return(
+        <>
         <div className="company_card">
             <div className="title_photo_section">
                 <div>
@@ -53,6 +53,12 @@ function CompanyView() {
                 </div>
             </div>
         </div>
+        {sessionUser.ActingGigs.map((gig) => {
+            return(
+                <ProductionView key={gig.id} userId={gig.userId} id={gig.id} title={gig.title} description={gig.description} rehearsalProductionDates={gig.rehearsalProductionDates} compensationDetails={gig.compensationDetails} location={gig.location} gigType={gig.gigType}/>
+            );
+        })}
+        </>
     );
 };
 

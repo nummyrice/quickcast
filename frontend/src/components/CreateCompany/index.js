@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect, useHistory } from "react-router-dom";
 import * as sessionActions from "../../store/session";
 // import * as companyActions from "../../store/company";
+import '../CompanyView/CompanyView.css'
 
 function CreateCompany() {
     const dispatch = useDispatch();
@@ -40,10 +41,11 @@ function CreateCompany() {
         return (<Redirect to='/company'/>);
     }
     return(
-        <form onSubmit={handleSubmit}>
+        <form className='company_card'onSubmit={handleSubmit}>
             <ul>
                 {errors.map((error, idx) => <li key={idx}>{error}</li>)}
             </ul>
+            <div>
             <label>Company Name
                 <input
                 type='text'
@@ -51,6 +53,8 @@ function CreateCompany() {
                 onChange={(e) => setCompanyName(e.target.value)}
                 ></input>
             </label>
+            </div>
+            <div>
             <label>Phone Number
                 <input
                 type='tel'
@@ -59,12 +63,16 @@ function CreateCompany() {
                 onChange={(e) => setPhoneNumber(e.target.value)}
                 ></input>
             </label>
+            </div>
+            <div>
             <label>Company Bio
                 <textarea
                 value={details}
                 onChange={(e) => setDetails(e.target.value)}
                 ></textarea>
             </label>
+            </div>
+            <div>
             <label>Image or Logo
                 <input
                 type='file'
@@ -72,6 +80,8 @@ function CreateCompany() {
                 onChange={onChangeImageFile}
                 ></input>
             </label>
+            </div>
+            <div>
             <label>Website
                 <input
                 type="url"
@@ -80,7 +90,10 @@ function CreateCompany() {
                 onChange={(e) => setWebsite(e.target.value)}
                 ></input>
             </label>
+            </div>
+            <div>
             <button type="submit">submit</button>
+            </div>
         </form>
     )
 };

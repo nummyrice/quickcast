@@ -21,7 +21,8 @@ function CompaniesView() {
         {companies && (companies.map((company) => {
             return(
                 //TODO: need to create company view for each company or adjust current one
-                <div onClick={() => {history.push(`/company/${company.id}`)}} key={company.id} className="company_card">
+                // onClick={() => {history.push(`/company/${company.id}`)}}
+                <div  key={company.id} className="company_card">
                     <div className="title_photo_section">
                         <div>
                             <img className="company_photo" src={company.image || 'https://res.cloudinary.com/quickcast/image/upload/v1636597050/photo-1579546929518-9e396f3cc809_evnlww.jpg'} alt='company image'/>
@@ -41,8 +42,8 @@ function CompaniesView() {
                         <div>
                             {!displayContact && (company.phoneNumber && (<button className='company_buttons' onClick={() => setDisplayContact(!displayContact)}>contact</button>))}
                         </div>
-                        <span>click to view details
-                        </span>
+                        {/* <span>click to view details
+                        </span> */}
                     </div>
                 </div>
             );

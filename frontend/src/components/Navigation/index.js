@@ -17,7 +17,19 @@ function Navigation({ isLoaded }){
   let sessionLinks;
   if (sessionUser) {
     sessionLinks = (
-      <ProfileButton user={sessionUser} />
+      <>
+        {sessionUser.Company && (
+        <>
+          <div className='splash_description'>
+              <NavLink to='company'>View My Company</NavLink>
+           </div>
+          <div>
+            <NavLink className="button" to='/create-production'>Post a Production</NavLink>
+          </div>
+        </>
+          )}
+        <ProfileButton user={sessionUser} />
+      </>
     );
   } else {
     sessionLinks = (

@@ -12,6 +12,7 @@ module.exports = {
    return queryInterface.bulkInsert('ActingGigs', [{
      userId: Math.ceil(Math.random() * 4),
      companyId: Math.ceil(Math.random() * 6),
+     title: faker.name.title(),
      description: faker.lorem.text(Math.ceil(Math.random * 500)),
      rehearsalProductionDates: [faker.date.soon()],
      compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -21,83 +22,353 @@ module.exports = {
    },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
+    title: faker.name.title(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
     location: faker.address.zipCode(),
     gigType: gigType[Math.ceil(Math.random() * 7)],
+
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
+    title: faker.name.title(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
     location: faker.address.zipCode(),
     gigType: gigType[Math.ceil(Math.random() * 7)],
+
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
+    title: faker.name.title(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
     location: faker.address.zipCode(),
     gigType: gigType[Math.ceil(Math.random() * 7)],
+
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
+    title: faker.name.title(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
     location: faker.address.zipCode(),
     gigType: gigType[Math.ceil(Math.random() * 7)],
+
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
+    title: faker.name.title(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
     location: faker.address.zipCode(),
     gigType: gigType[Math.ceil(Math.random() * 7)],
+
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
+    title: faker.name.title(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
     location: faker.address.zipCode(),
     gigType: gigType[Math.ceil(Math.random() * 7)],
+
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
+    title: faker.name.title(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
     location: faker.address.zipCode(),
     gigType: gigType[Math.ceil(Math.random() * 7)],
+
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
+    title: faker.name.title(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
     location: faker.address.zipCode(),
     gigType: gigType[Math.ceil(Math.random() * 7)],
+
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
+    title: faker.name.title(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
     location: faker.address.zipCode(),
     gigType: gigType[Math.ceil(Math.random() * 7)],
+
+  },{
+     userId: Math.ceil(Math.random() * 4),
+     companyId: Math.ceil(Math.random() * 6),
+     title: faker.name.title(),
+     description: faker.lorem.text(Math.ceil(Math.random * 500)),
+     rehearsalProductionDates: [faker.date.soon()],
+     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
+     location: faker.address.zipCode(),
+     gigType: gigType[Math.ceil(Math.random() * 7)],
+
+   },{
+     userId: Math.ceil(Math.random() * 4),
+     companyId: Math.ceil(Math.random() * 6),
+     title: faker.name.title(),
+     description: faker.lorem.text(Math.ceil(Math.random * 500)),
+     rehearsalProductionDates: [faker.date.soon()],
+     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
+     location: faker.address.zipCode(),
+     gigType: gigType[Math.ceil(Math.random() * 7)],
+
+   },{
+     userId: Math.ceil(Math.random() * 4),
+     companyId: Math.ceil(Math.random() * 6),
+     title: faker.name.title(),
+     description: faker.lorem.text(Math.ceil(Math.random * 500)),
+     rehearsalProductionDates: [faker.date.soon()],
+     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
+     location: faker.address.zipCode(),
+     gigType: gigType[Math.ceil(Math.random() * 7)],
+
+   },{
+     userId: Math.ceil(Math.random() * 4),
+     companyId: Math.ceil(Math.random() * 6),
+     title: faker.name.title(),
+     description: faker.lorem.text(Math.ceil(Math.random * 500)),
+     rehearsalProductionDates: [faker.date.soon()],
+     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
+     location: faker.address.zipCode(),
+     gigType: gigType[Math.ceil(Math.random() * 7)],
+
+   },{
+     userId: Math.ceil(Math.random() * 4),
+     companyId: Math.ceil(Math.random() * 6),
+     title: faker.name.title(),
+     description: faker.lorem.text(Math.ceil(Math.random * 500)),
+     rehearsalProductionDates: [faker.date.soon()],
+     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
+     location: faker.address.zipCode(),
+     gigType: gigType[Math.ceil(Math.random() * 7)],
+
+   },{
+     userId: Math.ceil(Math.random() * 4),
+     companyId: Math.ceil(Math.random() * 6),
+     title: faker.name.title(),
+     description: faker.lorem.text(Math.ceil(Math.random * 500)),
+     rehearsalProductionDates: [faker.date.soon()],
+     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
+     location: faker.address.zipCode(),
+     gigType: gigType[Math.ceil(Math.random() * 7)],
+
+   },{
+    userId: Math.ceil(Math.random() * 4),
+    companyId: Math.ceil(Math.random() * 6),
+    title: faker.name.title(),
+    description: faker.lorem.text(Math.ceil(Math.random * 500)),
+    rehearsalProductionDates: [faker.date.soon()],
+    compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
+    location: faker.address.zipCode(),
+    gigType: gigType[Math.ceil(Math.random() * 7)],
+
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
+    title: faker.name.title(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
     location: faker.address.zipCode(),
     gigType: gigType[Math.ceil(Math.random() * 7)],
+
+  },{
+    userId: Math.ceil(Math.random() * 4),
+    companyId: Math.ceil(Math.random() * 6),
+    title: faker.name.title(),
+    description: faker.lorem.text(Math.ceil(Math.random * 500)),
+    rehearsalProductionDates: [faker.date.soon()],
+    compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
+    location: faker.address.zipCode(),
+    gigType: gigType[Math.ceil(Math.random() * 7)],
+
+  },{
+     userId: Math.ceil(Math.random() * 4),
+     companyId: Math.ceil(Math.random() * 6),
+     title: faker.name.title(),
+     description: faker.lorem.text(Math.ceil(Math.random * 500)),
+     rehearsalProductionDates: [faker.date.soon()],
+     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
+     location: faker.address.zipCode(),
+     gigType: gigType[Math.ceil(Math.random() * 7)],
+
+   },{
+    userId: Math.ceil(Math.random() * 4),
+    companyId: Math.ceil(Math.random() * 6),
+    title: faker.name.title(),
+    description: faker.lorem.text(Math.ceil(Math.random * 500)),
+    rehearsalProductionDates: [faker.date.soon()],
+    compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
+    location: faker.address.zipCode(),
+    gigType: gigType[Math.ceil(Math.random() * 7)],
+
+  },{
+    userId: Math.ceil(Math.random() * 4),
+    companyId: Math.ceil(Math.random() * 6),
+    title: faker.name.title(),
+    description: faker.lorem.text(Math.ceil(Math.random * 500)),
+    rehearsalProductionDates: [faker.date.soon()],
+    compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
+    location: faker.address.zipCode(),
+    gigType: gigType[Math.ceil(Math.random() * 7)],
+
+  },{
+    userId: Math.ceil(Math.random() * 4),
+    companyId: Math.ceil(Math.random() * 6),
+    title: faker.name.title(),
+    description: faker.lorem.text(Math.ceil(Math.random * 500)),
+    rehearsalProductionDates: [faker.date.soon()],
+    compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
+    location: faker.address.zipCode(),
+    gigType: gigType[Math.ceil(Math.random() * 7)],
+
+  },{
+    userId: Math.ceil(Math.random() * 4),
+    companyId: Math.ceil(Math.random() * 6),
+    title: faker.name.title(),
+    description: faker.lorem.text(Math.ceil(Math.random * 500)),
+    rehearsalProductionDates: [faker.date.soon()],
+    compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
+    location: faker.address.zipCode(),
+    gigType: gigType[Math.ceil(Math.random() * 7)],
+
+  },{
+    userId: Math.ceil(Math.random() * 4),
+    companyId: Math.ceil(Math.random() * 6),
+    title: faker.name.title(),
+    description: faker.lorem.text(Math.ceil(Math.random * 500)),
+    rehearsalProductionDates: [faker.date.soon()],
+    compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
+    location: faker.address.zipCode(),
+    gigType: gigType[Math.ceil(Math.random() * 7)],
+
+  },{
+     userId: Math.ceil(Math.random() * 4),
+     companyId: Math.ceil(Math.random() * 6),
+     title: faker.name.title(),
+     description: faker.lorem.text(Math.ceil(Math.random * 500)),
+     rehearsalProductionDates: [faker.date.soon()],
+     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
+     location: faker.address.zipCode(),
+     gigType: gigType[Math.ceil(Math.random() * 7)],
+
+   },{
+    userId: Math.ceil(Math.random() * 4),
+    companyId: Math.ceil(Math.random() * 6),
+    title: faker.name.title(),
+    description: faker.lorem.text(Math.ceil(Math.random * 500)),
+    rehearsalProductionDates: [faker.date.soon()],
+    compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
+    location: faker.address.zipCode(),
+    gigType: gigType[Math.ceil(Math.random() * 7)],
+
+  },{
+    userId: Math.ceil(Math.random() * 4),
+    companyId: Math.ceil(Math.random() * 6),
+    title: faker.name.title(),
+    description: faker.lorem.text(Math.ceil(Math.random * 500)),
+    rehearsalProductionDates: [faker.date.soon()],
+    compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
+    location: faker.address.zipCode(),
+    gigType: gigType[Math.ceil(Math.random() * 7)],
+
+  },{
+    userId: Math.ceil(Math.random() * 4),
+    companyId: Math.ceil(Math.random() * 6),
+    title: faker.name.title(),
+    description: faker.lorem.text(Math.ceil(Math.random * 500)),
+    rehearsalProductionDates: [faker.date.soon()],
+    compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
+    location: faker.address.zipCode(),
+    gigType: gigType[Math.ceil(Math.random() * 7)],
+
+  },{
+    userId: Math.ceil(Math.random() * 4),
+    companyId: Math.ceil(Math.random() * 6),
+    title: faker.name.title(),
+    description: faker.lorem.text(Math.ceil(Math.random * 500)),
+    rehearsalProductionDates: [faker.date.soon()],
+    compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
+    location: faker.address.zipCode(),
+    gigType: gigType[Math.ceil(Math.random() * 7)],
+
+  },{
+    userId: Math.ceil(Math.random() * 4),
+    companyId: Math.ceil(Math.random() * 6),
+    title: faker.name.title(),
+    description: faker.lorem.text(Math.ceil(Math.random * 500)),
+    rehearsalProductionDates: [faker.date.soon()],
+    compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
+    location: faker.address.zipCode(),
+    gigType: gigType[Math.ceil(Math.random() * 7)],
+
+  },{
+    userId: Math.ceil(Math.random() * 4),
+    companyId: Math.ceil(Math.random() * 6),
+    title: faker.name.title(),
+    description: faker.lorem.text(Math.ceil(Math.random * 500)),
+    rehearsalProductionDates: [faker.date.soon()],
+    compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
+    location: faker.address.zipCode(),
+    gigType: gigType[Math.ceil(Math.random() * 7)],
+
+  },{
+    userId: Math.ceil(Math.random() * 4),
+    companyId: Math.ceil(Math.random() * 6),
+    title: faker.name.title(),
+    description: faker.lorem.text(Math.ceil(Math.random * 500)),
+    rehearsalProductionDates: [faker.date.soon()],
+    compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
+    location: faker.address.zipCode(),
+    gigType: gigType[Math.ceil(Math.random() * 7)],
+
+  },{
+    userId: Math.ceil(Math.random() * 4),
+    companyId: Math.ceil(Math.random() * 6),
+    title: faker.name.title(),
+    description: faker.lorem.text(Math.ceil(Math.random * 500)),
+    rehearsalProductionDates: [faker.date.soon()],
+    compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
+    location: faker.address.zipCode(),
+    gigType: gigType[Math.ceil(Math.random() * 7)],
+
+  },{
+    userId: Math.ceil(Math.random() * 4),
+    companyId: Math.ceil(Math.random() * 6),
+    title: faker.name.title(),
+    description: faker.lorem.text(Math.ceil(Math.random * 500)),
+    rehearsalProductionDates: [faker.date.soon()],
+    compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
+    location: faker.address.zipCode(),
+    gigType: gigType[Math.ceil(Math.random() * 7)],
+
+  },{
+    userId: Math.ceil(Math.random() * 4),
+    companyId: Math.ceil(Math.random() * 6),
+    title: faker.name.title(),
+    description: faker.lorem.text(Math.ceil(Math.random * 500)),
+    rehearsalProductionDates: [faker.date.soon()],
+    compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
+    location: faker.address.zipCode(),
+    gigType: gigType[Math.ceil(Math.random() * 7)],
+
   },], {});
   },
 

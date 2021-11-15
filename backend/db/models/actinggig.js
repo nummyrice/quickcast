@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    title: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     description: {
       type: DataTypes.TEXT,
       allowNull: false,
@@ -29,11 +33,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     gigType: {
-      type: DataTypes.STRING,
+      type: DataTypes.ENUM(DataTypes.TEXT),
       allowNull: false,
     },
     tagIds: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.ARRAY(DataTypes.INTEGER),
       allowNull: false,
     },
   }, {});
@@ -46,6 +50,9 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'gigId',
       onDelete: 'cascade',
       hooks: true,
+    });
+    ActingGig.belongsTo(models.User, {
+      foreignKey: 'userId',
     });
   };
   return ActingGig;

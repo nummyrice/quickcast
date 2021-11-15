@@ -27,7 +27,6 @@ export const getAndSetAllCompanies = () => async (dispatch) => {
 };
 
 
-
 const initialState = null;
 
 const companyReducer = (state = initialState, action) => {

@@ -1,7 +1,7 @@
 const express = require('express');
 const asyncHandler = require('express-async-handler');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { Company } = require('../../db/models');
+const { Company, Tag, ActingGig } = require('../../db/models');
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -27,6 +27,17 @@ const validateCompany = [
   .exists({checkFalsey: true}),
   handleValidationErrors,
 ];
+
+const getTagId = async (tag) => {
+  const trimmedLowerCaseTag = tag.trim().toLowerCase();
+  const tagExists = await Tag.findAll({where: {name: trimmedLowerCaseTag}});
+  if (tagExists.length) {
+    return tagExists[0].id;
+  } else {
+    const newTag = await Tag.create({name:trimmedLowerCaseTag});
+    return newTag.id;
+  }
+};
 //TODO check if this /all route needs to be before the other routes. Can we add regex to make it more specific
 // GET all companies
 router.get('/all', requireAuth, asyncHandler(async (req, res) => {
@@ -84,5 +95,60 @@ router.delete('/', requireAuth, asyncHandler(async (req, res) => {
   }
 }));
 
+// Create company production
+router.post('/gig/create', requireAuth, asyncHandler(async (req, res) => {
+  const gigData = req.body;
+
+
+  if (gigData.tags) {
+    const tagsArray = gigData.tags.split(',');
+    tagsArray.forEach((tag) => {
+      tag.trim();
+      tag.toLowerCase();
+    });
+    const results = await Promise.all(
+      tagsArray.map(tag => {
+        return getTagId(tag)
+      }));
+    delete gigData.tags;
+    gigData.tagIds = results;
+  }  else {
+    delete gigData.tags;
+    gigData.tagIds = [];
+  };
+  await ActingGig.create(gigData);
+  const allGigs = await ActingGig.findAll({where: {userId: gigData.userId}});
+
+  res.json(allGigs);
+
+}))
+
+// Update company production
+router.put('/gig/update', requireAuth, asyncHandler(async (req, res) => {
+  const gigData = req.body;
+  if (gigData.tags) {
+    const tagsArray = gigData.tags.split(',');
+    tagsArray.forEach((tag) => {
+      tag.trim();
+      tag.toLowerCase();
+    });
+    const results = await Promise.all(
+      tagsArray.map(tag => {
+        return getTagId(tag)
+      }));
+    delete gigData.tags;
+    gigData.tagIds = results;
+  }  else {
+    delete gigData.tags;
+    gigData.tagIds = [];
+  };
+  const gigToUpdate = await ActingGig.findByPK(gigData.id);
+  delete gigData.id;
+  await gigToUpdate.update(gigData);
+  const allGigs = await ActingGig.findAll({where: {userId: gigData.userId}});
+
+  res.json(allGigs);
+
+}))
 
 module.exports = router;

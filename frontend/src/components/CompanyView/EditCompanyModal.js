@@ -52,10 +52,13 @@ function EditCompanyModal({ onComplete }) {
         return (<Redirect to='/'/>)
     };
     return(
-        <form onSubmit={handleSubmit}>
+        <form className='company_card' onSubmit={handleSubmit}>
+            <div>
             <ul>
                 {errors.map((error, idx) => <li key={idx}>{error}</li>)}
             </ul>
+            </div>
+            <div>
             <label>Company Name
                 <input
                 type='text'
@@ -63,6 +66,8 @@ function EditCompanyModal({ onComplete }) {
                 onChange={(e) => setCompanyName(e.target.value)}
                 ></input>
             </label>
+            </div>
+            <div>
             <label>Phone Number
                 <input
                 type='tel'
@@ -71,12 +76,16 @@ function EditCompanyModal({ onComplete }) {
                 onChange={(e) => setPhoneNumber(e.target.value)}
                 ></input>
             </label>
+            </div>
+            <div>
             <label>Company Bio
                 <textarea
                 value={details}
                 onChange={(e) => setDetails(e.target.value)}
                 ></textarea>
             </label>
+            </div>
+            <div>
             <label>Image or Logo
                 <input
                 type='file'
@@ -84,6 +93,8 @@ function EditCompanyModal({ onComplete }) {
                 onChange={onChangeImageFile}
                 ></input>
             </label>
+            </div>
+            <div>
             <label>Website
                 <input
                 type="url"
@@ -92,6 +103,8 @@ function EditCompanyModal({ onComplete }) {
                 onChange={(e) => setWebsite(e.target.value)}
                 ></input>
             </label>
+            </div>
+            <div>
             <button type="submit">submit</button>
             {!deleteWarning && (
                 <div>
@@ -100,6 +113,7 @@ function EditCompanyModal({ onComplete }) {
                 </div>
             )}
             {deleteWarning &&(<button onClick={() => setDeleteWarning(false)}>delete company</button>)}
+            </div>
         </form>
     )
 }

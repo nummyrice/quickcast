@@ -24,12 +24,16 @@ module.exports = {
         },
         allowNull: false,
       },
+      title: {
+        type: Sequelize.STRING(255),
+        allowNull: false,
+      },
       description: {
         type: Sequelize.TEXT(2000),
         allowNull: false,
       },
       rehearsalProductionDates: {
-        type: Sequelize.ARRAY(Sequelize.STRING),
+        type: Sequelize.STRING(255),
         allowNull: false,
       },
       compensationDetails: {
