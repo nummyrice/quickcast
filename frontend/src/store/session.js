@@ -9,9 +9,7 @@ const REMOVE_USER = 'session/removeUser';
 const SET_USERS_COMPANY = 'session/setCompany';
 const DELETE_USERS_COMPANY = 'session/removeCompany';
 const UPDATE_USERS_COMPANY = 'session/updateCompany';
-//TODO
-// edit company
-// remove company
+const SET_USERS_GIGS = 'companies/gigs/add';
 
 const setUser = (user) => {
   return {
@@ -45,7 +43,14 @@ const deleteUsersCompany = () => {
   return {
     type:DELETE_USERS_COMPANY,
   }
-}
+};
+
+const setUsersGigs = (companyGigs) => {
+  return {
+      type: SET_USERS_GIGS,
+      payload: companyGigs,
+  };
+};
 
 // THUNK for Login
 export const login = (user) => async (dispatch) => {
@@ -151,6 +156,38 @@ export const deleteCompany = (company) => async (dispatch) => {
   }
 };
 
+//TODO:
+//THUNK for retrieving all gigs
+
+
+//THUNK for submitting new gig
+export const submitGigSetGigs = (newGig) => async (dispatch) => {
+  // await csrf fetch to server
+  const response = await csrfFetch('api/company/gig/create', {
+      method: 'POST',
+      body: JSON.stringify(newGig),
+  });
+  // await json() gigs for this company
+  const allGigs = await response.json();
+  //TODO: might not need newGig sent back from the server
+  // const {allGigs} = gigsAndNewGig;
+  // dispatch update gigs for this company
+  dispatch(setUsersGigs(allGigs));
+  // return response
+  return response;
+};
+
+//THUNK for updating a gig
+export const updateGigSetGigs = (gigToUpdate) => async (dispatch) => {
+  const response = await csrfFetch('api/company/gig/update', {
+    method: 'PUT',
+    body: JSON.stringify(gigToUpdate),
+  });
+  const allGigs = await response.json();
+  dispatch(setUsersGigs(allGigs));
+  return response;
+};
+
 // THUNK for restoring session after page refreshes
 export const restoreUser = (user) => async dispatch => {
   const response = await csrfFetch('/api/session');
@@ -203,6 +240,10 @@ const sessionReducer = (state = initialState, action) => {
       return newState;
     case DELETE_USERS_COMPANY:
       newState = { user: {...state.user, Company: null}};
+      return newState;
+    case SET_USERS_GIGS:
+      newState = Object.assign({}, state);
+      newState.ActingGigs = action.payload;
       return newState;
     default:
       return state;

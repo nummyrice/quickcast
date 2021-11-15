@@ -9,6 +9,7 @@ import CreateCompany from "./components/CreateCompany";
 import CompanyView from "./components/CompanyView";
 import CompaniesView from "./components/CompaniesView";
 import Splash from "./components/Splash";
+import CreateProduction from "./components/CreateProduction";
 
 function App() {
   const dispatch = useDispatch();
@@ -36,6 +37,9 @@ function App() {
           </Route>
           <Route path="/companies">
             <CompaniesView/>
+          </Route>
+          <Route>
+            <CreateProduction path="/create-production"/>
           </Route>
         </Switch>
       )}

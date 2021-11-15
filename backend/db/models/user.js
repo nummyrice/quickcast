@@ -54,12 +54,17 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'cascade',
       hooks: true,
     });
+    User.hasMany(models.ActingGig, {
+      foreignKey: 'userId',
+      onDelete: 'cascade',
+      hooks: true,
+    })
   };
   //IN PROGRESS: must add other associations here as they are built
   // returns object with only the User instance information that is safe to save to a JWT
   User.prototype.toSafeObject = function() { // remember, this cannot be an arrow function
-    const { id, username, email, Company } = this; // context will be the User instance
-    return { id, username, email, Company };
+    const { id, username, email, Company, ActingGigs } = this; // context will be the User instance
+    return { id, username, email, Company, ActingGigs};
   };
 
   // checks if recieved password matches the User instance hashed password
