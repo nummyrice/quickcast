@@ -13,8 +13,18 @@ const app = express();
 const routes = require('./routes');
 
 app.use(morgan('dev'));
-app.use(cookieParser());
 app.use(express.json());
+// Set the _csrf token and create req.csrfToken method
+// app.use(cookieParser());
+// app.use(
+//     csurf({
+//         cookie: {
+//             secure: isProduction,
+//             sameSite: isProduction && "Lax",
+//             httpOnly: true,
+//         },
+//     })
+//     );
 app.use(express.urlencoded({extended: true}));
 
 
@@ -29,16 +39,6 @@ app.use(helmet({
     contentSecurityPolicy: false
 }));
 
-// Set the _csrf token and create req.csrfToken method
-app.use(
-    csurf({
-        cookie: {
-            secure: isProduction,
-            sameSite: isProduction && "Lax",
-            httpOnly: true,
-        },
-    })
-    );
 
 // ROUTE INDEX
 app.use(routes);

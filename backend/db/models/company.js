@@ -15,7 +15,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     details: {
       type: DataTypes.TEXT,
-      allowNull: false,
     },
     image:{
       type: DataTypes.STRING,
@@ -35,5 +34,14 @@ module.exports = (sequelize, DataTypes) => {
       hooks: true,
     });
   };
+
+  Company.prototype.updateDetails = async function (name, phoneNumber, details, website, imageUrl) {
+    if (name) this.name = name;
+    if (phoneNumber) this.phoneNumber = phoneNumber;
+    if (details) this.details = details;
+    if (website) this.website = website;
+    if (imageUrl) this.image = imageUrl;
+    return await this.save();
+  }
   return Company;
 };

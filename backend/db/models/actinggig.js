@@ -38,7 +38,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     tagIds: {
       type: DataTypes.ARRAY(DataTypes.INTEGER),
-      allowNull: false,
     },
   }, {});
   ActingGig.associate = function(models) {
