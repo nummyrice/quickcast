@@ -3,6 +3,7 @@ const sessionRouter = require('./session.js');
 const usersRouter = require('./users.js');
 const companyRouter = require('./company.js');
 const actingGig = require('./actingGig.js');
+const gigrole = require('./gigrole.js');
 const asyncHandler = require('express-async-handler');
 const { setTokenCookie } = require('../../utils/auth.js');
 const { User } = require('../../db/models');
@@ -10,7 +11,8 @@ const { User } = require('../../db/models');
 router.use('/session', sessionRouter);
 router.use('/users', usersRouter);
 router.use('/company', companyRouter);
-router.use('/actingGig', actingGig)
+router.use('/actingGig', actingGig);
+router.use('/gigrole', gigrole);
 
 
 // TEST

@@ -1,4 +1,5 @@
 'use strict';
+
 module.exports = (sequelize, DataTypes) => {
   const GigRole = sequelize.define('GigRole', {
     gigId: {
@@ -10,11 +11,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     gender: {
-      type: DataTypes.STRING,
+      type: DataTypes.ENUM('Male', 'Female', 'Male or Female'),
       allowNull: false,
     },
     ageRange: {
-      type: DataTypes.STRING,
+      type: DataTypes.ARRAY(DataTypes.INTEGER),
       allowNull: false,
     },
     description: {
@@ -28,5 +29,15 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'gigId'
     });
   };
+
+  GigRole.prototype.updateDetails = async function (gigId, title, description, gender, ageRange) {
+    if (gigId) this.gigId = gigId;
+    if (title) this.title = title;
+    if (description) this.description = description;
+    if (gender) this.gender = gender;
+    if (ageRange) this.ageRange = ageRange;
+    return await this.save();
+  }
+
   return GigRole;
 };

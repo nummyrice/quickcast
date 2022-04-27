@@ -146,58 +146,32 @@ const getTagId = async (tag) => {
 
 
 // Create company production
-router.post('/gig/create', requireAuth, asyncHandler(async (req, res) => {
-  const gigData = req.body;
+// router.post('/gig/create', requireAuth, asyncHandler(async (req, res) => {
+//   const gigData = req.body;
 
 
-  if (gigData.tags) {
-    const tagsArray = gigData.tags.split(',');
-    tagsArray.forEach((tag) => {
-      tag.trim();
-      tag.toLowerCase();
-    });
-    const results = await Promise.all(
-      tagsArray.map(tag => {
-        return getTagId(tag)
-      }));
-    delete gigData.tags;
-    gigData.tagIds = results;
-  }  else {
-    delete gigData.tags;
-    gigData.tagIds = [];
-  };
-  await ActingGig.create(gigData);
-  const allGigs = await ActingGig.findAll({where: {userId: gigData.userId}});
+//   if (gigData.tags) {
+//     const tagsArray = gigData.tags.split(',');
+//     tagsArray.forEach((tag) => {
+//       tag.trim();
+//       tag.toLowerCase();
+//     });
+//     const results = await Promise.all(
+//       tagsArray.map(tag => {
+//         return getTagId(tag)
+//       }));
+//     delete gigData.tags;
+//     gigData.tagIds = results;
+//   }  else {
+//     delete gigData.tags;
+//     gigData.tagIds = [];
+//   };
+//   await ActingGig.create(gigData);
+//   const allGigs = await ActingGig.findAll({where: {userId: gigData.userId}});
 
-  res.json(allGigs);
-}))
+//   res.json(allGigs);
+// }))
 
-// Update company production
-router.put('/gig/update', requireAuth, asyncHandler(async (req, res) => {
-  const gigData = req.body;
-  if (gigData.tags) {
-    const tagsArray = gigData.tags.split(',');
-    tagsArray.forEach((tag) => {
-      tag.trim();
-      tag.toLowerCase();
-    });
-    const results = await Promise.all(
-      tagsArray.map(tag => {
-        return getTagId(tag)
-      }));
-    delete gigData.tags;
-    gigData.tagIds = results;
-  }  else {
-    delete gigData.tags;
-    gigData.tagIds = [];
-  };
-  const gigToUpdate = await ActingGig.findByPK(gigData.id);
-  delete gigData.id;
-  await gigToUpdate.update(gigData);
-  const allGigs = await ActingGig.findAll({where: {userId: gigData.userId}});
 
-  res.json(allGigs);
-
-}))
 
 module.exports = router;

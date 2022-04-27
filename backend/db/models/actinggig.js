@@ -57,5 +57,17 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "actingGigId"
     })
   };
+
+  ActingGig.prototype.updateDetails = async function (userId, companyId, title, description, rehearsalProductionDates, compensationDetails, location, gigType) {
+    if (userId) this.userId = userId;
+    if (companyId) this.companyId = companyId;
+    if (title) this.title = title;
+    if (description) this.description = description;
+    if (rehearsalProductionDates) this.rehearsalProductionDates = rehearsalProductionDates;
+    if (compensationDetails) this.compensationDetails = compensationDetails;
+    if (location) this.location = location;
+    if (gigType) this.gigType = gigType
+    return await this.save();
+  }
   return ActingGig;
 };
