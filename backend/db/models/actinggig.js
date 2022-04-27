@@ -33,12 +33,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     gigType: {
-      type: DataTypes.ENUM(DataTypes.TEXT),
+      type: DataTypes.ENUM('Commercials', 'Theatre', 'Performing Arts', 'TV & Video', 'Voiceover', 'Stunts', 'Other'),
       allowNull: false,
-    },
-    tagIds: {
-      type: DataTypes.ARRAY(DataTypes.INTEGER),
-      allowNull: false,
+      defaultValue: 'TV & Video'
     },
   }, {});
   ActingGig.associate = function(models) {
@@ -54,6 +51,23 @@ module.exports = (sequelize, DataTypes) => {
     ActingGig.belongsTo(models.User, {
       foreignKey: 'userId',
     });
+    ActingGig.belongsToMany(models.Tag, {
+      through: "ActingGigTag",
+      as: 'tags',
+      foreignKey: "actingGigId"
+    })
   };
+
+  ActingGig.prototype.updateDetails = async function (userId, companyId, title, description, rehearsalProductionDates, compensationDetails, location, gigType) {
+    if (userId) this.userId = userId;
+    if (companyId) this.companyId = companyId;
+    if (title) this.title = title;
+    if (description) this.description = description;
+    if (rehearsalProductionDates) this.rehearsalProductionDates = rehearsalProductionDates;
+    if (compensationDetails) this.compensationDetails = compensationDetails;
+    if (location) this.location = location;
+    if (gigType) this.gigType = gigType
+    return await this.save();
+  }
   return ActingGig;
 };
