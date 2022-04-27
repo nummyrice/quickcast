@@ -33,11 +33,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     gigType: {
-      type: DataTypes.ENUM(DataTypes.TEXT),
+      type: DataTypes.ENUM('Commercials', 'Theatre', 'Performing Arts', 'TV & Video', 'Voiceover', 'Stunts', 'Other'),
       allowNull: false,
-    },
-    tagIds: {
-      type: DataTypes.ARRAY(DataTypes.INTEGER),
+      defaultValue: 'TV & Video'
     },
   }, {});
   ActingGig.associate = function(models) {
@@ -53,6 +51,11 @@ module.exports = (sequelize, DataTypes) => {
     ActingGig.belongsTo(models.User, {
       foreignKey: 'userId',
     });
+    ActingGig.belongsToMany(models.Tag, {
+      through: "ActingGigTag",
+      as: 'tags',
+      foreignKey: "actingGigId"
+    })
   };
   return ActingGig;
 };

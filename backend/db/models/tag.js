@@ -5,6 +5,15 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Tag.associate = function(models) {
     // associations can be defined here
+    Tag.belongsToMany(models.ActingGig, {
+      through: "ActingGigTag",
+      as: "actingGigs",
+      foreignKey: "tagId"
+    })
   };
+
+  // Tag.tagExists = async function () => {
+  //   const tagExists = await Tag.query()
+  // }
   return Tag;
 };
