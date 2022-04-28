@@ -14,8 +14,10 @@ const validateRole = [
         .withMessage('Gig ID required.')
         .bail()
         .custom(async value => {
-            return await ActingGig.findByPk(value);
-          }).withMessage('Gig does not exists.')
+            const gigExists = await ActingGig.findByPk(value);
+            if (!gigExists) return Promise.reject('Gig does not exist.')
+            return true;
+          })
     ,
     check('title')
         .exists()
@@ -42,13 +44,17 @@ const validateUpdate = [
         .withMessage('Role ID required.')
         .bail()
         .custom(async value => {
-            return await GigRole.findByPk(value);
-        }).withMessage('Role does not exists.')
+            const roleExists = await GigRole.findByPk(value);
+            if (!roleExists) return Promise.reject('Role does not exists.')
+            return true;
+        })
         ,
     check('gigId')
         .custom(async value => {
-            return await ActingGig.findByPk(value);
-        }).withMessage('Gig does not exists.')
+            const gigExists = await ActingGig.findByPk(value);
+            if (!gigExists) return Promise.reject('Gig does not exist.')
+            return true;
+        })
         .optional()
     ,
     check('title')
@@ -65,6 +71,18 @@ const validateUpdate = [
     ,
     handleValidationErrors
 ]
+
+// Get all roles
+router.get('/all', asyncHandler(async (req, res) => {
+    const offset = req.body.offset
+    const roles = await GigRole.findAndCountAll({
+        // where: {...},
+        // order: [...],
+        limit: 5,
+        offset: offset,
+    })
+    return res.json(roles)
+}))
 
   // Create  Role
 // TODO: add requireAuth to middleware

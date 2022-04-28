@@ -59,6 +59,16 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'cascade',
       hooks: true,
     })
+    User.hasMany(models.PortfolioGallery, {
+      foreignKey: 'userId',
+      onDelete: 'cascade',
+      hooks: true
+    })
+    User.hasOne(models.ActorPortfolio, {
+      foreignKey: 'userId',
+      onDelete: 'cascade',
+      hooks: true
+    })
   };
   //IN PROGRESS: must add other associations here as they are built
   // returns object with only the User instance information that is safe to save to a JWT

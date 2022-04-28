@@ -5,13 +5,32 @@ const csurf = require('csurf');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const { ValidationError } = require('sequelize');
+const multer = require('multer')
+const multerS3 = require('multer-s3')
 
-const { environment } = require('./config');
+const { environment, awsConfig } = require('./config');
 const isProduction = environment === 'production';
 
 const app = express();
 const routes = require('./routes');
-
+const s3 = new aws.S3({
+  accessKeyId:awsConfig.secretKeyId,
+  secretAccessKey:awsConfig.secretAccessKey
+ })
+// exports.upload = multer({storage})
+const uploadS3 = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: 'quickcast-app',
+    acl: 'public-read',
+    metadata: function (req, file, cb) {
+      cb(null, {fieldName: file.fieldname});
+    },
+    key: function (req, file, cb) {
+      cb(null, Date.now().toString())
+    }
+  })
+})
 app.use(morgan('dev'));
 app.use(express.json());
 // Set the _csrf token and create req.csrfToken method

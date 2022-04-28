@@ -29,7 +29,7 @@ module.exports = {
         allowNull: false,
       },
       description: {
-        type: Sequelize.TEXT(2000),
+        type: Sequelize.TEXT,
         allowNull: false,
       },
       rehearsalProductionDates: {
@@ -37,7 +37,7 @@ module.exports = {
         allowNull: false,
       },
       compensationDetails: {
-        type: Sequelize.TEXT(500),
+        type: Sequelize.TEXT,
         allowNull: false,
       },
       location: {
@@ -45,11 +45,8 @@ module.exports = {
         allowNull: false,
       },
       gigType: {
-        type: Sequelize.ENUM('Film', 'Theatre', 'TV & Video', 'Commercials', 'Modeling', 'Performing Arts', 'Voiceover', 'Other'),
+        type: Sequelize.ENUM('Film', 'Theatre', 'TV & Video', 'Commercials', 'Modeling', 'Performing Arts', 'Voiceover', 'Stungs', 'Other'),
         allowNull: false,
-      },
-      tagIds: {
-        type: Sequelize.ARRAY(Sequelize.INTEGER),
       },
       createdAt: {
         allowNull: false,
