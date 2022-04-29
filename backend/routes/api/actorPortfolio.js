@@ -3,6 +3,8 @@ const asyncHandler = require('express-async-handler');
 const { check, matchedData } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { User, ActingGig, Tag, ActorPortfolio} = require('../../db/models');
+const { uploadS3, s3 } = require('../../utils/aws.js')
+const singleUpload = uploadS3.single("image")
 
 const router = express.Router();
 
@@ -108,9 +110,18 @@ router.get('/all', asyncHandler(async (req, res) => {
 }))
 
 // Create Portfolio
-router.post('/', validatePortfolio, asyncHandler(async (req, res) => {
+router.post('/', singleUpload, validatePortfolio, asyncHandler(async (req, res) => {
     const requiredData = matchedData(req, { includeOptionals: false});
     const {userId, firstName, lastName, phoneNumber, dateOfBirth, biography, profilePhoto, website, location} = requiredData;
+    // let uploadedUrl;
+    // singleUpload(req, res, function (err) {
+    //     if (err) {
+    //       return next(new Error('Unable to succesffully upload image.'))
+    //       }
+    //     uploadedUrl = { profilePicture: req.file.location };
+    // })
+    const uploadedUrl = { profilePicture: undefined};
+    if (req.file && req.file.location) uploadedUrl.profilePicture = req.file.location
     const portfolio = await ActorPortfolio.create({
         userId,
         firstName,
@@ -118,7 +129,7 @@ router.post('/', validatePortfolio, asyncHandler(async (req, res) => {
         phoneNumber,
         dateOfBirth,
         biography,
-        profilePhoto,
+        profilePhoto: uploadedUrl.profilePhoto ? uploadedUrl.profilePhoto : profilePhoto,
         website,
         location
     })
@@ -126,10 +137,18 @@ router.post('/', validatePortfolio, asyncHandler(async (req, res) => {
 }))
 
 // Update Portfolio
-router.put('/', validateUpdate, asyncHandler(async (req, res) => {
+router.put('/', singleUpload, validateUpdate, asyncHandler(async (req, res) => {
+    const uploadedUrl = { profilePicture: undefined};
+    if (req.file && req.file.location) uploadedUrl.profilePicture = req.file.location
     const requiredData = matchedData(req, { includeOptionals: false});
     const portfolioToUpdate = await ActorPortfolio.findByPk(requiredData.id)
-    const updatedPortfolio = await portfolioToUpdate.updateDetails(requiredData)
+    const prevPortfolioUrl = portfolioToUpdate.profilePhoto.split('/')
+    const prevPortfolioKey = prevPortfolioUrl[prevPortfolioUrl.length - 1]
+    s3.deleteObject({Bucket:'quickcast-app', Key: prevPortfolioKey}, function(err, data) {
+        if (err) console.log(err, err.stack);
+        else console.log("successfully deleted")
+    })
+    const updatedPortfolio = await portfolioToUpdate.updateDetails(requiredData, uploadedUrl)
     return res.json(updatedPortfolio)
 }))
 
@@ -138,8 +157,38 @@ router.delete('/', asyncHandler(async (req, res) => {
     const portfolioId = req.body.portfolioId;
     const portfolioToDelete = await ActorPortfolio.findByPk(portfolioId)
     if (!portfolioToDelete) return next(new Error('Portfolio does not exist.'))
+    const prevPortfolioUrl = portfolioToDelete.profilePhoto.split('/')
+    const prevPortfolioKey = prevPortfolioUrl[prevPortfolioUrl.length - 1]
+    s3.deleteObject({Bucket:'quickcast-app', Key: prevPortfolioKey}, function(err, data) {
+        if (err) console.log(err, err.stack);
+        else console.log("successfully deleted from s3 bucket")
+    })
     await portfolioToDelete.destroy()
     return res.json({message: 'Successfully deleted'})
 }))
+
+
+router.post("/:id/add-profile-picture", function (req, res) {
+    const uid = req.params.id;
+
+    singleUpload(req, res, function (err) {
+      if (err) {
+        return res.json({
+          success: false,
+          errors: {
+            title: "Image Upload Error",
+            detail: err.message,
+            error: err,
+          },
+        });
+      }
+
+      let update = { profilePicture: req.file.location };
+
+      User.findByIdAndUpdate(uid, update, { new: true })
+        .then((user) => res.status(200).json({ success: true, user: user }))
+        .catch((err) => res.status(400).json({ success: false, error: err }));
+    });
+  });
 
 module.exports = router;

@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
     })
   };
 
-  ActorPortfolio.prototype.updateDetails = async function (data) {
+  ActorPortfolio.prototype.updateDetails = async function (data, newPhoto) {
     if (data.userId) this.userId = data.userId;
     if (data.firstName) this.firstName = data.firstName;
     if (data.lastName) this.lastName = data.lastName;
@@ -46,6 +46,7 @@ module.exports = (sequelize, DataTypes) => {
     if (data.dateOfBirth) this.dateOfBirth = data.dateOfBirth;
     if (data.biography) this.biography = data.biography;
     if (data.profilePhoto) this.profilePhoto = data.profilePhoto;
+    if (newPhoto.profilePhoto) this.profilePhoto = newPhoto.profilePhoto;
     if (data.website) this.website = data.website;
     if (data.location) this.location = data.location
     await this.save()

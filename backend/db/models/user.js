@@ -37,10 +37,22 @@ module.exports = (sequelize, DataTypes) => {
       attributes: {
         exclude: ['hashedPassword', 'email', 'createdAt', 'updatedAt'],
       },
+      include: [
+        {model: sequelize.models.ActorPortfolio,
+          attributes: {include: ['id', 'firstName', 'lastName', 'phoneNumber', 'dateOfBirth', 'biography', 'profilePhoto', 'website', 'location']}},
+        {model: sequelize.models.Company,
+          attributes: {include: ['id', 'name', 'phoneNumber', 'details', 'image', 'details', 'website']}
+        }]
     },
     scopes: {
       currentUser: {
         attributes: { exclude: ['hashedPassword'] },
+        include: [
+          {model: sequelize.models.ActorPortfolio,
+            attributes: {include: ['id', 'firstName', 'lastName', 'phoneNumber', 'dateOfBirth', 'biography', 'profilePhoto', 'website', 'location']}},
+          {model: sequelize.models.Company,
+            attributes: {include: ['id', 'name', 'phoneNumber', 'details', 'image', 'details', 'website']}
+          }]
       },
       loginUser: {
         attributes: {},
@@ -73,8 +85,8 @@ module.exports = (sequelize, DataTypes) => {
   //IN PROGRESS: must add other associations here as they are built
   // returns object with only the User instance information that is safe to save to a JWT
   User.prototype.toSafeObject = function() { // remember, this cannot be an arrow function
-    const { id, username, email, Company, ActingGigs } = this; // context will be the User instance
-    return { id, username, email, Company, ActingGigs};
+    const { id, username, email, company, actorPortfolio } = this; // context will be the User instance
+    return { id, username, email, company, actorPortfolio };
   };
 
   // checks if recieved password matches the User instance hashed password
