@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Route, Switch } from "react-router-dom";
-import LoginFormPage from "./components/LoginFormPage";
-import SignupFormPage from "./components/SignupFormPage";
+// import LoginFormPage from "./components/LoginFormPage";
+// import SignupFormPage from "./components/SignupFormPage";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
-import CreateCompany from "./components/CreateCompany";
-import CompanyView from "./components/CompanyView";
-import CompaniesView from "./components/CompaniesView";
+// import CreateCompany from "./components/CreateCompany";
+// import CompanyView from "./components/CompanyView";
+// import CompaniesView from "./components/CompaniesView";
 import Splash from "./components/Splash";
-import CreateProduction from "./components/CreateProduction";
+// import CreateProduction from "./components/CreateProduction";
 
 function App() {
   const dispatch = useDispatch();
@@ -26,7 +26,7 @@ function App() {
           <Route exact path='/'>
             <Splash/>
           </Route>
-          <Route path="/signup">
+          {/* <Route path="/signup">
             <SignupFormPage />
           </Route>
           <Route path="/create-company">
@@ -40,7 +40,7 @@ function App() {
           </Route>
           <Route>
             <CreateProduction path="/create-production"/>
-          </Route>
+          </Route> */}
         </Switch>
       )}
     </>

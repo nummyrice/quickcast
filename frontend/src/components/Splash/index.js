@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import "./Splash.css";
 
 function Splash() {
-    const sessionUser = useSelector((state) => state.session?.user);
+    // const sessionUser = useSelector((state) => state.session?.user);
     return(
     <div className="splash_main">
         <div>
@@ -20,9 +20,9 @@ function Splash() {
             <div className='splash_description'>
                 <NavLink to='create-company'> Create Company</NavLink>
             </div>
-            {sessionUser?.Company && (<div className='splash_description'>
+            {/* {sessionUser?.Company && (<div className='splash_description'>
                 <NavLink to='company'>View My Company</NavLink>
-            </div>)}
+            </div>)} */}
         </div>
         <div className='splash_decor'>
             <img src='https://res.cloudinary.com/quickcast/image/upload/v1636991177/cinema_hu0ibf.jpg'/>
