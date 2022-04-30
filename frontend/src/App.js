@@ -10,6 +10,8 @@ import Navigation from "./components/Navigation";
 // import CompaniesView from "./components/CompaniesView";
 import Splash from "./components/Splash";
 // import CreateProduction from "./components/CreateProduction";
+import ProtectedRoute from "./components/Auth/ProtectedRoute";
+import Main from "./components/Main";
 
 function App() {
   const dispatch = useDispatch();
@@ -23,9 +25,12 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
-          <Route exact path='/'>
+          <Route exact path='/welcome-to-quickcast'>
             <Splash/>
           </Route>
+          <ProtectedRoute path='/'>
+            <Main/>
+          </ProtectedRoute>
           {/* <Route path="/signup">
             <SignupFormPage />
           </Route>

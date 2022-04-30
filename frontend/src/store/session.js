@@ -4,10 +4,9 @@ const SET_USER = 'session/setUser';
 const REMOVE_USER = 'session/removeUser';
 const SET_PORTFOLIO = 'session/userPortfolio/set';
 const REMOVE_PORTFOLIO = 'session/userPortfolio/remove';
-const UPDATE_PORTFOLIO = 'session/userPortfolio/update';
 const SET_COMPANY = 'userCompany/set';
 const REMOVE_COMPANY = 'userCompany/remove';
-const UPDATE_COMPANY = 'userCompany/update';
+
 
 const setUser = (user) => {
   return {
@@ -31,19 +30,9 @@ const removePortfolio = () => ({
   type: REMOVE_PORTFOLIO
 })
 
-const updatePortfolio = (updatedPortfolio) => ({
-  type: UPDATE_PORTFOLIO,
-  payload: updatedPortfolio
-})
-
 const setCompany = (company) => ({
   type: SET_COMPANY,
   payload: company
-})
-
-const updateCompany = (updatedCompany) => ({
-  type: UPDATE_COMPANY,
-  payload: updateCompany
 })
 
 const removeCompany = () => ({
@@ -62,6 +51,8 @@ export const login = (user) => async (dispatch) => {
   });
   const data = await response.json();
   dispatch(setUser(data.user));
+  dispatch(setPortfolio(data.actorPortfolio))
+  dispatch(setCompany(data.company))
   return response;
 };
 
@@ -78,7 +69,9 @@ export const logout = () => async (dispatch) => {
 export const restoreUser = (user) => async dispatch => {
   const response = await csrfFetch('/api/session');
   const data = await response.json();
-  dispatch(setUser(data.user));
+  dispatch(setUser(data.user))
+  dispatch(setPortfolio(data.actorPortfolio))
+  dispatch(setCompany(data.company))
   return response;
 };
 
@@ -161,7 +154,7 @@ export const createAndSetCompany = (company) => async (dispatch) => {
     //await response data
     const updatedCompany = await response.json()
     // dispatch updatedCompany data to the store
-    dispatch(updateCompany(updatedCompany));
+    // dispatch(updateCompany(updatedCompany));
     // return the response in case there were errors
     // const history = useHistory();
     // if (response.status <= 400) history.push('/company');
@@ -213,30 +206,21 @@ export const deleteCompany = (company) => async (dispatch) => {
   }
 };
 
-const initialState = { user: null };
+const initialState = { user: null, actorPortfolio: null, company: null };
 const sessionReducer = (state = initialState, action) => {
-  let newState;
   switch (action.type) {
     case SET_USER:
-      newState = Object.assign({}, state);
-      newState.user = action.payload;
-      return newState;
+        return {user: action.payload, actorPortfolio: state.actorPortfolio, company: state.company};
     case REMOVE_USER:
-      newState = Object.assign({}, state);
-      newState.user = null;
-      return newState;
+        return {user: null, actorPortfolio: null, company: null};
     case SET_PORTFOLIO:
-        return action.payload;
-    case UPDATE_PORTFOLIO:
-        return action.payload;
+        return {user: state.user, actorPortfolio: action.payload, company: state.company};
     case REMOVE_PORTFOLIO:
-        return null;
+        return {user: state.user, actorPortfolio: null, company: state.company};
       case SET_COMPANY:
-          return action.payload;
-      case UPDATE_COMPANY:
-          return action.payload;
+        return {user: state.user, actorPortfolio: state.actorPortfolio, company: action.payload};
       case REMOVE_COMPANY:
-          return null;
+        return {user: state.user, actorPortfolio: state.actorPortfolio, company: null};
     default:
       return state;
   }

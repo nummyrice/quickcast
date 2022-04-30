@@ -85,9 +85,17 @@ module.exports = (sequelize, DataTypes) => {
   //IN PROGRESS: must add other associations here as they are built
   // returns object with only the User instance information that is safe to save to a JWT
   User.prototype.toSafeObject = function() { // remember, this cannot be an arrow function
-    const { id, username, email, company, actorPortfolio } = this; // context will be the User instance
-    return { id, username, email, company, actorPortfolio };
+    const { id, username, email} = this; // context will be the User instance
+    return { id, username, email};
   };
+
+  User.prototype.acquireAuthDetails = function () {
+    const { id, username, email, Company, ActorPortfolio } = this;
+    const user = { id, username, email}
+    const actorPortfolio = {...ActorPortfolio.dataValues}
+    const company = {...Company.dataValues}
+    return {user, actorPortfolio, company}
+  }
 
   // checks if recieved password matches the User instance hashed password
   User.prototype.validatePassword = function (password) {
