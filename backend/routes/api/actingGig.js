@@ -48,7 +48,7 @@ const validateUpdate = [
     check('id')
         .exists()
         .withMessage('Gig ID requried.'),
-        check('userId')
+     check('userId')
         .exists()
         .withMessage('User ID required')
     ,
@@ -80,6 +80,8 @@ const validateUpdate = [
         .optional(),
     handleValidationErrors
 ]
+
+//TODO: must paginate GET routes
 // Get all gigs
 router.get('/all', asyncHandler(async (req, res) => {
     const gigs = await ActingGig.findAll();
@@ -108,8 +110,7 @@ router.post('/', validateGig,  asyncHandler(async (req, res) => {
     if (tags.length) {
         await Promise.all(tags.map(async (string) => {
             const sanitizedString = string.trim().toLowerCase()
-            // console.log('TAGS______________:', sanitizedString)
-            const tag = await Tag.findOrCreate({where: {name: sanitizedString}})
+            const [tag, created] = await Tag.findOrCreate({where: {name: sanitizedString}})
             return await newGig.addTag(tag)
         }))
     }

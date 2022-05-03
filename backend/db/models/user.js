@@ -37,10 +37,22 @@ module.exports = (sequelize, DataTypes) => {
       attributes: {
         exclude: ['hashedPassword', 'email', 'createdAt', 'updatedAt'],
       },
+      include: [
+        {model: sequelize.models.ActorPortfolio,
+          attributes: {include: ['id', 'firstName', 'lastName', 'phoneNumber', 'dateOfBirth', 'biography', 'profilePhoto', 'website', 'location']}},
+        {model: sequelize.models.Company,
+          attributes: {include: ['id', 'name', 'phoneNumber', 'details', 'image', 'details', 'website']}
+        }]
     },
     scopes: {
       currentUser: {
         attributes: { exclude: ['hashedPassword'] },
+        include: [
+          {model: sequelize.models.ActorPortfolio,
+            attributes: {include: ['id', 'firstName', 'lastName', 'phoneNumber', 'dateOfBirth', 'biography', 'profilePhoto', 'website', 'location']}},
+          {model: sequelize.models.Company,
+            attributes: {include: ['id', 'name', 'phoneNumber', 'details', 'image', 'details', 'website']}
+          }]
       },
       loginUser: {
         attributes: {},
@@ -59,13 +71,31 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'cascade',
       hooks: true,
     })
+    User.hasMany(models.PortfolioGallery, {
+      foreignKey: 'userId',
+      onDelete: 'cascade',
+      hooks: true
+    })
+    User.hasOne(models.ActorPortfolio, {
+      foreignKey: 'userId',
+      onDelete: 'cascade',
+      hooks: true
+    })
   };
   //IN PROGRESS: must add other associations here as they are built
   // returns object with only the User instance information that is safe to save to a JWT
   User.prototype.toSafeObject = function() { // remember, this cannot be an arrow function
-    const { id, username, email, Company, ActingGigs } = this; // context will be the User instance
-    return { id, username, email, Company, ActingGigs};
+    const { id, username, email} = this; // context will be the User instance
+    return { id, username, email};
   };
+
+  User.prototype.acquireAuthDetails = function () {
+    const { id, username, email, Company, ActorPortfolio } = this;
+    const user = { id, username, email}
+    const actorPortfolio = ActorPortfolio ? {...ActorPortfolio.dataValues} : null
+    const company = Company ? {...Company.dataValues} : null
+    return {user, actorPortfolio, company}
+  }
 
   // checks if recieved password matches the User instance hashed password
   User.prototype.validatePassword = function (password) {

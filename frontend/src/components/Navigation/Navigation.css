@@ -1,13 +1,21 @@
 .navigation_bar {
     display: flex;
-    background: rgb(245, 245, 141);
-    position:sticky;
-    filter: drop-shadow(0 0 0.75rem rgb(255, 255, 255));}
+    background: green;
+    position: fixed;
+    bottom: 0px;
+    z-index: 1;
+    /* filter: drop-shadow(0 0 0.75rem rgb(255, 255, 255)); */
+}
 
-.navigation_bar > div {
-    margin: auto;
-    padding: 10px;
-};
+@media (min-width: 900px) {
+    .navigation_bar {
+        display: flex;
+        flex-direction: column;
+        background: green;
+        position: static;
+
+    }
+}
 
 .navigation_bar.button {
     font-family: Verdana, Geneva, Tahoma, sans-serif;

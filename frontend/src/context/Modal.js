@@ -10,15 +10,17 @@ export function ModalProvider({ children }) {
   const [value, setValue] = useState(); // HTML div element
 
   useEffect(() => {
-    setValue(modalRef.current);
+    const portalRoot = document.getElementById('portal-root')
+    setValue(portalRoot);
   }, [])
 
+  console.log('MODAL REF: ', modalRef)
   return (
     <>
       <ModalContext.Provider value={value}>
         {children}
       </ModalContext.Provider>
-      <div ref={modalRef} />
+      {/* <div ref={modalRef} /> */}
     </>
   );
 }

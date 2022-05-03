@@ -20,8 +20,10 @@ const validateCompany = [
     .withMessage('User ID required.')
     .bail()
     .custom(async value => {
-      return await User.findByPk(value);
-    }).withMessage('User does not exists.'),
+      const userExists = await User.findByPk(value);
+      if (!userExists) return Promise.reject('User does not exists.')
+      return true;
+    }),
   check('name')
     .exists({checkFalsey: true})
     .withMessage('Please provide a company name.'),
@@ -142,8 +144,6 @@ const getTagId = async (tag) => {
     return newTag.id;
   }
 };
-
-
 
 // Create company production
 // router.post('/gig/create', requireAuth, asyncHandler(async (req, res) => {

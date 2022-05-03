@@ -81,10 +81,11 @@ router.post('/', validateSignup, asyncHandler(async (req, res) => {
 );
 
 // Update User
-router.put('/', validateUpdate, asyncHandler(async (req, res) => {
+router.put('/', validateUpdate, asyncHandler(async (req, res, next) => {
   const requiredData = matchedData(req, { includeOptionals: false });
   const {email, password, userId, username} = requiredData;
   const user = await User.findByPk(userId)
+  if (!user) return next(new Error('User does not exist.'))
   const updatedUser = await user.updateDetails(username, email, password)
   return res.json(updatedUser)
 }))

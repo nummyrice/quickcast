@@ -4,6 +4,9 @@ const usersRouter = require('./users.js');
 const companyRouter = require('./company.js');
 const actingGig = require('./actingGig.js');
 const gigrole = require('./gigrole.js');
+const actorPortfolio = require('./actorPortfolio.js');
+const portfolioGallery = require('./portfoliogallery.js')
+const tag = require('./tag.js')
 const asyncHandler = require('express-async-handler');
 const { setTokenCookie } = require('../../utils/auth.js');
 const { User } = require('../../db/models');
@@ -13,6 +16,9 @@ router.use('/users', usersRouter);
 router.use('/company', companyRouter);
 router.use('/actingGig', actingGig);
 router.use('/gigrole', gigrole);
+router.use('/actorPortfolio', actorPortfolio);
+router.use('/portfolioGallery', portfolioGallery);
+router.use('/tag', tag)
 
 
 // TEST

@@ -36,10 +36,10 @@ if (process.env.NODE_ENV !== 'production') {
     });
   }
 
-module.exports = router;
+  // TEST
+  router.get('/hello/world', function(req, res) {
+    res.cookie('XSRF-TOKEN', req.csrfToken());
+    res.send('Hello World!');
+  });
 
-// TEST
-// router.get('/hello/world', function(req, res) {
-//   res.cookie('XSRF-TOKEN', req.csrfToken());
-//   res.send('Hello World!');
-// });
+module.exports = router;

@@ -1,15 +1,14 @@
 import { csrfFetch } from './csrf';
-
-
-
-
 // action type for storing the login and removing the login from the store
 const SET_USER = 'session/setUser';
 const REMOVE_USER = 'session/removeUser';
-const SET_USERS_COMPANY = 'session/setCompany';
-const DELETE_USERS_COMPANY = 'session/removeCompany';
-const UPDATE_USERS_COMPANY = 'session/updateCompany';
-const SET_USERS_GIGS = 'companies/gigs/add';
+const SET_PORTFOLIO = 'session/userPortfolio/set';
+const REMOVE_PORTFOLIO = 'session/userPortfolio/remove';
+const SET_COMPANY = 'session/userCompany/set';
+const REMOVE_COMPANY = 'session/userCompany/remove';
+const SET_COMPANY_PURPOSE = 'session/user/purpose/setAsCompany'
+const SET_ACTOR_PURPOSE = 'session/user/purpose/setAsActor'
+const SET_PURPOSE = 'session/user/determine-purpose'
 
 const setUser = (user) => {
   return {
@@ -23,34 +22,37 @@ const removeUser = () => {
     type: REMOVE_USER,
   };
 };
-// issues with how this payload is set up. The current action
-// and reducer together are requiring that you key into the payload at .company
-const setUsersCompany = (company) => {
-  return {
-    type: SET_USERS_COMPANY,
-    payload: company,
-  }
-};
 
-const updateUsersCompany = (updatedCompany) => {
-  return {
-    type: UPDATE_USERS_COMPANY,
-    payload: updatedCompany,
-  }
-}
+const setPortfolio = (portfolio) => ({
+  type: SET_PORTFOLIO,
+  payload: portfolio
+})
 
-const deleteUsersCompany = () => {
-  return {
-    type:DELETE_USERS_COMPANY,
-  }
-};
+const removePortfolio = () => ({
+  type: REMOVE_PORTFOLIO
+})
 
-const setUsersGigs = (companyGigs) => {
-  return {
-      type: SET_USERS_GIGS,
-      payload: companyGigs,
-  };
-};
+const setCompany = (company) => ({
+  type: SET_COMPANY,
+  payload: company
+})
+
+const removeCompany = () => ({
+  type: REMOVE_COMPANY
+})
+
+const setPurposeAsCompany = () => ({
+  type:SET_COMPANY_PURPOSE
+})
+
+const setActorAsPurpose = () => ({
+  type:SET_ACTOR_PURPOSE
+})
+
+const setPurpose = (purpose) => ({
+  type: SET_PURPOSE,
+  payload: purpose
+})
 
 // THUNK for Login
 export const login = (user) => async (dispatch) => {
@@ -64,8 +66,71 @@ export const login = (user) => async (dispatch) => {
   });
   const data = await response.json();
   dispatch(setUser(data.user));
+  dispatch(setPortfolio(data.actorPortfolio))
+  dispatch(setCompany(data.company))
+  if (data.user) {
+    const purpose = getPurpose(data)
+    dispatch(setPurpose(purpose))
+  }
   return response;
 };
+
+//THUNK for logout
+export const logout = () => async (dispatch) => {
+  const response = await csrfFetch('/api/session', {
+    method: 'DELETE',
+  });
+  dispatch(removeUser());
+  dispatch(removeCompany())
+  dispatch(removePortfolio())
+  return response;
+};
+
+// THUNK for restoring session after page refreshes
+export const restoreUser = (user) => async dispatch => {
+  const response = await csrfFetch('/api/session');
+  const data = await response.json();
+  dispatch(setUser(data.user))
+  dispatch(setPortfolio(data.actorPortfolio))
+  dispatch(setCompany(data.company))
+  if (data.user) {
+    const purpose = getPurpose(data)
+    dispatch(setPurpose(purpose))
+  }
+  return data;
+};
+
+// THUNK for signup
+export const signup = ({username, email, password}) => async (dispatch) => {
+  const response = await csrfFetch('/api/users', {
+    method: 'POST',
+    body: JSON.stringify({
+      username,
+      email,
+      password,
+    })
+  });
+  const data = await response.json();
+  dispatch(setUser(data.user))
+  return response;
+};
+
+//THUNK for user portfolio
+export const createAndSetPortfolio = (portfolio) => async (dispatch) => {
+    const portfolioData = new FormData();
+    for (const key in portfolio) {
+      portfolioData.append(key, portfolio[key])
+    }
+    console.log('portfolioData', portfolioData)
+    // const response = await csrfFetch('/api/actorPortfolio', {
+    //   method: 'POST',
+    //   body: portfolioData
+    // })
+    // const data = await response.json()
+    // if (response.ok) {
+    //   dispatch(setPortfolio(data))
+    // }
+}
 
 // THUNK for storing company in user
 export const createAndSetCompany = (company) => async (dispatch) => {
@@ -75,7 +140,6 @@ export const createAndSetCompany = (company) => async (dispatch) => {
           company[data] = ''
       };
   };
-
   const { companyName, phoneNumber, details, image, website } = company
   let response;
   if (image) {
@@ -99,45 +163,73 @@ export const createAndSetCompany = (company) => async (dispatch) => {
   };
   const newCompany = await response.json();
 
-  dispatch(setUsersCompany(newCompany));
+  dispatch(setCompany(newCompany));
   return response;
 };
 
-// THUNK for updating company
-export const updateAndSetCompany = (company) => async (dispatch) => {
-  const { companyName, phoneNumber, details, image, website } = company
-  let response;
-  // if image file was provided
-  if (company.image) {
-    // create formData and send a put request to update the database
-    const companyData = new FormData();
-    companyData.append('companyName', companyName);
-    companyData.append('phoneNumber', phoneNumber);
-    companyData.append('details', details);
-    companyData.append('companyImage', image);
-    companyData.append('website', website);
+  // THUNK for updating company
+  export const updateAndSetCompany = (company) => async (dispatch) => {
+    const { companyName, phoneNumber, details, image, website } = company
+    let response;
+    // if image file was provided
+    if (company.image) {
+      // create formData and send a put request to update the database
+      const companyData = new FormData();
+      companyData.append('companyName', companyName);
+      companyData.append('phoneNumber', phoneNumber);
+      companyData.append('details', details);
+      companyData.append('companyImage', image);
+      companyData.append('website', website);
 
-    response = await csrfFetch('/api/company', {
-      method: 'PUT',
-      body: companyData,
-    });
-    //  else send company in a put fetch request to update the database
-  } else {
-    const companyData = {companyName, phoneNumber, details, website};
-    response = await csrfFetch('/api/company', {
-      method: 'PUT',
-      body: JSON.stringify(companyData),
-    });
-  };
-  //await response data
-  const updatedCompany = await response.json()
-  // dispatch updatedCompany data to the store
-  dispatch(updateUsersCompany(updatedCompany));
-  // return the response in case there were errors
-  // const history = useHistory();
-  // if (response.status <= 400) history.push('/company');
-  return response;
-}
+      response = await csrfFetch('/api/company', {
+        method: 'PUT',
+        body: companyData,
+      });
+      //  else send company in a put fetch request to update the database
+    } else {
+      const companyData = {companyName, phoneNumber, details, website};
+      response = await csrfFetch('/api/company', {
+        method: 'PUT',
+        body: JSON.stringify(companyData),
+      });
+    };
+    //await response data
+    const updatedCompany = await response.json()
+    // dispatch updatedCompany data to the store
+    // dispatch(updateCompany(updatedCompany));
+    // return the response in case there were errors
+    // const history = useHistory();
+    // if (response.status <= 400) history.push('/company');
+    return response;
+  }
+
+//THUNK for submitting new gig
+// export const submitGigSetGigs = (newGig) => async (dispatch) => {
+//   // await csrf fetch to server
+//   const response = await csrfFetch('api/company/gig/create', {
+//       method: 'POST',
+//       body: JSON.stringify(newGig),
+//   });
+//   // await json() gigs for this company
+//   const allGigs = await response.json();
+//   //TODO: might not need newGig sent back from the server
+//   // const {allGigs} = gigsAndNewGig;
+//   // dispatch update gigs for this company
+//   dispatch(setUsersGigs(allGigs));
+//   // return response
+//   return response;
+// };
+
+//THUNK for updating a gig
+// export const updateGigSetGigs = (gigToUpdate) => async (dispatch) => {
+//   const response = await csrfFetch('api/company/gig/update', {
+//     method: 'PUT',
+//     body: JSON.stringify(gigToUpdate),
+//   });
+//   const allGigs = await response.json();
+//   dispatch(setUsersGigs(allGigs));
+//   return response;
+// };
 
 // THUNK for deleting company
 export const deleteCompany = (company) => async (dispatch) => {
@@ -149,102 +241,49 @@ export const deleteCompany = (company) => async (dispatch) => {
 
   const data = await response.json();
   if (data.successfullyDeleted) {
-    dispatch(deleteUsersCompany());
+    dispatch(removeCompany());
     return response;
   } else {
     return response;
   }
 };
+const getPurpose = (data) => {
+  // const purpose = Window.localStorage.getItem('purpose')
+  const purpose = null;
+  if (purpose && (purpose === 'actor' || purpose === 'company')) return purpose;
+  if (data.actorPortfolio && data.company) {
+    Window.localStorage.setItem('purpose', 'actor')
+    return 'actor'
+  }
+  if (data.actorPortfolio) {
+    Window.localStorage.setItem('purpose', 'actor')
+    return 'actor'
+  }
+  if (data.company) {
+    Window.localStorage.setItem('purpose', 'company')
+    return 'company'
+  }
+  return null;
 
-//TODO:
-//THUNK for retrieving all gigs
+}
 
-
-//THUNK for submitting new gig
-export const submitGigSetGigs = (newGig) => async (dispatch) => {
-  // await csrf fetch to server
-  const response = await csrfFetch('api/company/gig/create', {
-      method: 'POST',
-      body: JSON.stringify(newGig),
-  });
-  // await json() gigs for this company
-  const allGigs = await response.json();
-  //TODO: might not need newGig sent back from the server
-  // const {allGigs} = gigsAndNewGig;
-  // dispatch update gigs for this company
-  dispatch(setUsersGigs(allGigs));
-  // return response
-  return response;
-};
-
-//THUNK for updating a gig
-export const updateGigSetGigs = (gigToUpdate) => async (dispatch) => {
-  const response = await csrfFetch('api/company/gig/update', {
-    method: 'PUT',
-    body: JSON.stringify(gigToUpdate),
-  });
-  const allGigs = await response.json();
-  dispatch(setUsersGigs(allGigs));
-  return response;
-};
-
-// THUNK for restoring session after page refreshes
-export const restoreUser = (user) => async dispatch => {
-  const response = await csrfFetch('/api/session');
-  const data = await response.json();
-  dispatch(setUser(data.user));
-  return response;
-};
-
-// THUNK for signup
-export const signup = ({username, email, password}) => async (dispatch) => {
-  const response = await csrfFetch('/api/users', {
-    method: 'POST',
-    body: JSON.stringify({
-      username,
-      email,
-      password,
-    })
-  });
-  const data = await response.json();
-  dispatch(setUser(data.user))
-  return response;
-};
-
-//THUNK for logout
-export const logout = () => async (dispatch) => {
-  const response = await csrfFetch('/api/session', {
-    method: 'DELETE',
-  });
-  dispatch(removeUser());
-  return response;
-};
-
-const initialState = { user: null };
+const initialState = { user: null, actorPortfolio: null, company: null };
 const sessionReducer = (state = initialState, action) => {
-  let newState;
   switch (action.type) {
     case SET_USER:
-      newState = Object.assign({}, state);
-      newState.user = action.payload;
-      return newState;
+        return {user: action.payload, actorPortfolio: state.actorPortfolio, company: state.company};
     case REMOVE_USER:
-      newState = Object.assign({}, state);
-      newState.user = null;
-      return newState;
-    case SET_USERS_COMPANY:
-      newState = { user: {...state.user, Company: {...action.payload.company}}}
-      return newState;
-    case UPDATE_USERS_COMPANY:
-      newState = { user: {...state.user, Company: {...action.payload.updatedCompany}}}
-      return newState;
-    case DELETE_USERS_COMPANY:
-      newState = { user: {...state.user, Company: null}};
-      return newState;
-    case SET_USERS_GIGS:
-      newState = Object.assign({}, state);
-      newState.ActingGigs = action.payload;
-      return newState;
+        return {user: null, actorPortfolio: null, company: null};
+    case SET_PORTFOLIO:
+        return {user: state.user, actorPortfolio: action.payload, company: state.company};
+    case REMOVE_PORTFOLIO:
+        return {user: state.user, actorPortfolio: null, company: state.company};
+      case SET_COMPANY:
+        return {user: state.user, actorPortfolio: state.actorPortfolio, company: action.payload};
+      case REMOVE_COMPANY:
+        return {user: state.user, actorPortfolio: state.actorPortfolio, company: null};
+      case SET_PURPOSE:
+        return {user: {...state.user, purpose: action.payload}, actorPortfolio: state.actorPortfolio, company: null}
     default:
       return state;
   }

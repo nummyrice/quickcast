@@ -1,46 +1,33 @@
 import { csrfFetch } from './csrf';
+const SET_COMPANIES = 'companies/set';
+const CLEAR_COMPANIES = 'companies/clear';
+const REMOVE_COMPANY = 'companies/remove';
 
-const SET_COMPANIES = 'companies/add';
-const REMOVE_COMPANIES = 'companies/remove';
+const setCompany = (companies) => ({
+  type: SET_COMPANIES,
+  payload: companies
+})
 
-const setCompanies = (companies) => {
-    return {
-        type: SET_COMPANIES,
-        payload: companies,
-    };
-};
+const removeCompany = (companyId) => ({
+  type: REMOVE_COMPANY,
+  payload: companyId
+})
 
-const removeCompanies = () => {
-    return {
-        type: REMOVE_COMPANIES,
-    };
-};
+const clearCompanies = () => ({
+  type: CLEAR_COMPANIES
+})
 
-//THUNK for retrieving all companies
-export const getAndSetAllCompanies = () => async (dispatch) => {
-
-    const response = await csrfFetch('api/company/all');
-    const companiesArray = await response.json();
-
-    dispatch(setCompanies(companiesArray));
-    return response;
-};
-
-
-const initialState = null;
-
+const initialState = [];
 const companyReducer = (state = initialState, action) => {
-    let newState;
     switch (action.type) {
         case SET_COMPANIES:
-            //TODO: is this copy deep enough?
-            newState = Object.assign({}, state);
-            newState = action.payload;
-            return newState;
-        case REMOVE_COMPANIES:
-            newState = Object.assign({}, state);
-            newState = null;
-            return newState;
+            return action.payload;
+        case REMOVE_COMPANY:
+            const companyIndex = state.findIndex(company => company.id === action.payload)
+            state.splice(companyIndex, 1)
+            return [...state];
+        case CLEAR_COMPANIES:
+            return [];
         default:
             return state;
     }
