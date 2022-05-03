@@ -1,10 +1,16 @@
 import React from 'react';
+import style from './Main.module.css'
+import { Outlet } from 'react-router-dom';
+import Widgets from '../Widgets';
 
 const Main = () => {
     return(
-        <div className="jesus" style={{width: '100px', height: '100px', backgroundColor: 'pink'}}>
-
-        </div>
+        <>
+            <div id={style.main} className={style.jesus}>
+                <Outlet/>
+            </div>
+            <Widgets/>
+        </>
     )
 }
 

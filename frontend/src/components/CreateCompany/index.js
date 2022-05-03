@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect, useHistory } from "react-router-dom";
+import { Navigate, useHistory } from "react-router-dom";
 // import * as sessionActions from "../../store/session";
 // import * as companyActions from "../../store/company";
 import '../CompanyView/CompanyView.css'
@@ -31,14 +31,14 @@ function CreateCompany() {
                 if (data && data.errors) setErrors(data.errors);
             });
     };
-    // IN PROGRESS: redirect to company page
+    // IN PROGRESS: Navigate to company page
     if (!sessionUser) {
         // history.push('/')
-        return (<Redirect to='/'/>)
+        return (<Navigate to='/'/>)
     };
 
     if (sessionUser.Company) {
-        return (<Redirect to='/company'/>);
+        return (<Navigate to='/company'/>);
     }
     return(
         <form className='company_card'onSubmit={handleSubmit}>

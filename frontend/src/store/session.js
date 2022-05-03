@@ -4,9 +4,11 @@ const SET_USER = 'session/setUser';
 const REMOVE_USER = 'session/removeUser';
 const SET_PORTFOLIO = 'session/userPortfolio/set';
 const REMOVE_PORTFOLIO = 'session/userPortfolio/remove';
-const SET_COMPANY = 'userCompany/set';
-const REMOVE_COMPANY = 'userCompany/remove';
-
+const SET_COMPANY = 'session/userCompany/set';
+const REMOVE_COMPANY = 'session/userCompany/remove';
+const SET_COMPANY_PURPOSE = 'session/user/purpose/setAsCompany'
+const SET_ACTOR_PURPOSE = 'session/user/purpose/setAsActor'
+const SET_PURPOSE = 'session/user/determine-purpose'
 
 const setUser = (user) => {
   return {
@@ -39,6 +41,19 @@ const removeCompany = () => ({
   type: REMOVE_COMPANY
 })
 
+const setPurposeAsCompany = () => ({
+  type:SET_COMPANY_PURPOSE
+})
+
+const setActorAsPurpose = () => ({
+  type:SET_ACTOR_PURPOSE
+})
+
+const setPurpose = (purpose) => ({
+  type: SET_PURPOSE,
+  payload: purpose
+})
+
 // THUNK for Login
 export const login = (user) => async (dispatch) => {
   const { credential, password } = user;
@@ -53,6 +68,10 @@ export const login = (user) => async (dispatch) => {
   dispatch(setUser(data.user));
   dispatch(setPortfolio(data.actorPortfolio))
   dispatch(setCompany(data.company))
+  if (data.user) {
+    const purpose = getPurpose(data)
+    dispatch(setPurpose(purpose))
+  }
   return response;
 };
 
@@ -62,6 +81,8 @@ export const logout = () => async (dispatch) => {
     method: 'DELETE',
   });
   dispatch(removeUser());
+  dispatch(removeCompany())
+  dispatch(removePortfolio())
   return response;
 };
 
@@ -72,7 +93,11 @@ export const restoreUser = (user) => async dispatch => {
   dispatch(setUser(data.user))
   dispatch(setPortfolio(data.actorPortfolio))
   dispatch(setCompany(data.company))
-  return response;
+  if (data.user) {
+    const purpose = getPurpose(data)
+    dispatch(setPurpose(purpose))
+  }
+  return data;
 };
 
 // THUNK for signup
@@ -89,6 +114,23 @@ export const signup = ({username, email, password}) => async (dispatch) => {
   dispatch(setUser(data.user))
   return response;
 };
+
+//THUNK for user portfolio
+export const createAndSetPortfolio = (portfolio) => async (dispatch) => {
+    const portfolioData = new FormData();
+    for (const key in portfolio) {
+      portfolioData.append(key, portfolio[key])
+    }
+    console.log('portfolioData', portfolioData)
+    // const response = await csrfFetch('/api/actorPortfolio', {
+    //   method: 'POST',
+    //   body: portfolioData
+    // })
+    // const data = await response.json()
+    // if (response.ok) {
+    //   dispatch(setPortfolio(data))
+    // }
+}
 
 // THUNK for storing company in user
 export const createAndSetCompany = (company) => async (dispatch) => {
@@ -205,6 +247,25 @@ export const deleteCompany = (company) => async (dispatch) => {
     return response;
   }
 };
+const getPurpose = (data) => {
+  // const purpose = Window.localStorage.getItem('purpose')
+  const purpose = null;
+  if (purpose && (purpose === 'actor' || purpose === 'company')) return purpose;
+  if (data.actorPortfolio && data.company) {
+    Window.localStorage.setItem('purpose', 'actor')
+    return 'actor'
+  }
+  if (data.actorPortfolio) {
+    Window.localStorage.setItem('purpose', 'actor')
+    return 'actor'
+  }
+  if (data.company) {
+    Window.localStorage.setItem('purpose', 'company')
+    return 'company'
+  }
+  return null;
+
+}
 
 const initialState = { user: null, actorPortfolio: null, company: null };
 const sessionReducer = (state = initialState, action) => {
@@ -221,6 +282,8 @@ const sessionReducer = (state = initialState, action) => {
         return {user: state.user, actorPortfolio: state.actorPortfolio, company: action.payload};
       case REMOVE_COMPANY:
         return {user: state.user, actorPortfolio: state.actorPortfolio, company: null};
+      case SET_PURPOSE:
+        return {user: {...state.user, purpose: action.payload}, actorPortfolio: state.actorPortfolio, company: null}
     default:
       return state;
   }

@@ -1,6 +1,3 @@
-body {
-    background-image: url("https://res.cloudinary.com/quickcast/image/upload/v1636731216/wepik-20211012-7329_e20om0.jpg");
-}
 
 .splash_description {
     background-color: rgba(255, 255, 255, 0.479);
@@ -11,8 +8,13 @@ body {
 }
 
 .splash_main {
-    max-width: 75%;
-    margin: 0px auto 0px auto;
+    /* margin: 0px auto 0px auto; */
+    background: repeat url(https://res.cloudinary.com/quickcast/image/upload/v1636991177/cinema_hu0ibf.jpg)
+}
+
+@media (min-width: 900px) {
+    .splash_main {
+    }
 }
 
 h1 {

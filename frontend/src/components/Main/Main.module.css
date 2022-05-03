@@ -1,0 +1,8 @@
+#main {
+    background-color: yellow;
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    overflow-y: scroll;
+    height: 100vh;
+}

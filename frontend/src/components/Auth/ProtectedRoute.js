@@ -1,13 +1,11 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import { useSelector } from 'react-redux';
 
 const ProtectedRoute = props => {
-    const user = useSelector(state => state.session.user)
+    const sessionUser = useSelector(state => state.session.user)
     return (
-      <Route {...props}>
-        {(user)? props.children  : <Redirect to='/welcome-to-quickcast' />}
-      </Route>
+        (sessionUser)? props.children  : <Navigate to='/welcome-to-quickcast/login' />
     )
 }
 

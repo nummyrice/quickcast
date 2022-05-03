@@ -1,55 +1,42 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { Route, Switch } from "react-router-dom";
-// import LoginFormPage from "./components/LoginFormPage";
-// import SignupFormPage from "./components/SignupFormPage";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
-// import CreateCompany from "./components/CreateCompany";
-// import CompanyView from "./components/CompanyView";
-// import CompaniesView from "./components/CompaniesView";
-import Splash from "./components/Splash";
-// import CreateProduction from "./components/CreateProduction";
-import ProtectedRoute from "./components/Auth/ProtectedRoute";
-import Main from "./components/Main";
+import Widgets from './components/Widgets'
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
+  const location = useLocation()
+  const navigate = useNavigate()
   const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
-    dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
-  }, [dispatch]);
+    // const currentLocale = location.pathname
+    console.log('how many times?')
+    dispatch(sessionActions.restoreUser())
+    .then(data => {
+      setIsLoaded(true)
+      if (!data.user) return navigate('/welcome-to-quickcast/login')
+      console.log("then")
+    }, res => console.log("REJECTED", res))
+      .finally(
+        // setIsLoaded(true)
+        console.log("finally")
+        )
+      }, []);
+      const session = useSelector(state => state.session)
 
-  return (
+  // if (!session.user) return <Navigate to='/welcome-to-quickcast'/>
+  if (session.user && location.pathname === '/') return <Navigate to='/home'/>
+  // console.log('isLoaded ', isLoaded)
+  if (isLoaded) return(
     <>
-      <Navigation isLoaded={isLoaded} />
-      {isLoaded && (
-        <Switch>
-          <Route exact path='/welcome-to-quickcast'>
-            <Splash/>
-          </Route>
-          <ProtectedRoute path='/'>
-            <Main/>
-          </ProtectedRoute>
-          {/* <Route path="/signup">
-            <SignupFormPage />
-          </Route>
-          <Route path="/create-company">
-            <CreateCompany/>
-          </Route>
-          <Route path="/company">
-            <CompanyView/>
-          </Route>
-          <Route path="/companies">
-            <CompaniesView/>
-          </Route>
-          <Route>
-            <CreateProduction path="/create-production"/>
-          </Route> */}
-        </Switch>
-      )}
+      <Navigation sessionUser={session.user}/>
+      <Outlet/>
     </>
   );
-}
-
+  return(
+    <h1 style={{color: 'white'}}>LOading</h1>
+  )
+  }
 export default App;

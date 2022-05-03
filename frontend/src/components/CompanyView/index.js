@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, Redirect } from 'react-router-dom';
+import { useHistory, Navigate } from 'react-router-dom';
 import './CompanyView.css';
 import { Modal } from '../../context/Modal';
 import EditCompanyModal from './EditCompanyModal.js';
@@ -18,7 +18,7 @@ function CompanyView() {
     // TODO: Optimize?
     if (!sessionUser || !sessionUser.Company) {
         // history.push('/')
-        return (<Redirect to='/'/>)
+        return (<Navigate to='/'/>)
     };
     return(
         <>

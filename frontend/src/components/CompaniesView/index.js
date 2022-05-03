@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, Redirect } from 'react-router-dom';
+import { useHistory, Navigate } from 'react-router-dom';
 // import * as companiesActions from '../../store/company';
 // should create unique companies view css?
 import '../CompanyView/CompanyView.css';

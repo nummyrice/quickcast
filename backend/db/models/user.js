@@ -92,8 +92,8 @@ module.exports = (sequelize, DataTypes) => {
   User.prototype.acquireAuthDetails = function () {
     const { id, username, email, Company, ActorPortfolio } = this;
     const user = { id, username, email}
-    const actorPortfolio = {...ActorPortfolio.dataValues}
-    const company = {...Company.dataValues}
+    const actorPortfolio = ActorPortfolio ? {...ActorPortfolio.dataValues} : null
+    const company = Company ? {...Company.dataValues} : null
     return {user, actorPortfolio, company}
   }
 

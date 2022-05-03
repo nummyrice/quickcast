@@ -1,65 +1,112 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import LoginFormModal from '../LoginFormModal';
 import './Navigation.css';
 import { login } from '../../store/session';
+import * as sessionActions from '../../store/session'
 
 
-function Navigation({ isLoaded }){
+function Navigation({ sessionUser }){
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const sessionUser = useSelector(state => state.session.user);
   const password = 'password';
   const credential = 'demo@user.io';
 
 
+// Splash Links
+  // home
+  // signup
+  // login
+
+// Home (Company)
+  // My Company Portfolio
+  //  My Gigs
+  // Portfolios
+  // Search (when on mobile sized screen only)
+
+// Home (Actor)
+  // My Portfolio
+  // Search (when on mobile sized screen only)
   let sessionLinks;
-  if (sessionUser) {
+
+  if (!sessionUser) {
     sessionLinks = (
       <>
-        {sessionUser.Company && (
-        <>
-          <div className='splash_description'>
-              <NavLink to='company'>View My Company</NavLink>
-           </div>
-          <div>
-            <NavLink className="button" to='/create-production'>Post a Production</NavLink>
-          </div>
-        </>
-          )}
-        <ProfileButton user={sessionUser} />
+        <NavLink to='/welcome-to-quickcast'>
+          {"Splash Home Link"}
+        </NavLink>
+        <NavLink to='/welcome-to-quickcast/login'>
+          {"Login"}
+        </NavLink>
+        <NavLink to='/welcome-to-quickcast/signup'>
+          {"Sign Up"}
+        </NavLink>
       </>
-    );
+    )
+  } else if (sessionUser.purpose === 'actor') {
+    sessionLinks = (
+      <>
+        <NavLink to='/home'>
+          {"actor home link"}
+        </NavLink>
+        <div>
+          {"My portfolio"}
+        </div>
+        <div>
+          {"Search"}
+        </div>
+        <button onClick={() => {
+          dispatch(sessionActions.logout())
+        }}>
+          {"Logout"}
+        </button>
+
+      </>
+    )
+  } else if (sessionUser.purpose === 'company') {
+    sessionLinks = (
+      <>
+        <NavLink to='/home'>
+          {"company home"}
+        </NavLink>
+        <div>
+          {"My company"}
+        </div>
+        <div>
+          {"My gigs"}
+        </div>
+        <div>
+          {"Search"}
+        </div>
+        <button onClick={() => {
+          dispatch(sessionActions.logout())
+        }}>
+          {"Logout"}
+        </button>
+      </>
+    )
   } else {
     sessionLinks = (
       <>
-        <div>
-          <LoginFormModal/>
-        </div>
-        <div>
-          <button onClick={() => {dispatch(login({password, credential}))}}> Demo User</button>
-        </div>
-        <div>
-          <NavLink className="button signup" to="/signup">Sign Up</NavLink>
-        </div>
+         <NavLink to='/home'>
+          {"home"}
+        </NavLink>
+        <button onClick={() => {
+          dispatch(sessionActions.logout())
+        }}>
+          {"Logout"}
+        </button>
       </>
-    );
+    )
   }
 
   return (
     <div className="navigation_bar">
-      <div>
-        <NavLink className="button home" exact to="/">quickCast</NavLink>
-      </div>
-        {isLoaded && sessionLinks}
+        {sessionLinks}
     </div>
   );
 }
 
 export default Navigation;
-
-        // <form action='api/test'>
-        //   <input type='file' name='fileUpload'></input>
-        //   <input type='submit'></input>
-        // </form>
