@@ -51,9 +51,9 @@ function Navigation({ sessionUser }){
         <NavLink to='/home'>
           {"actor home link"}
         </NavLink>
-        <div>
+        <NavLink to='/home/my-portfolio'>
           {"My portfolio"}
-        </div>
+        </NavLink>
         <div>
           {"Search"}
         </div>

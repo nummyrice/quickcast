@@ -1,4 +1,5 @@
 import { csrfFetch } from './csrf';
+import { setErrors } from './errors'
 // action type for storing the login and removing the login from the store
 const SET_USER = 'session/setUser';
 const REMOVE_USER = 'session/removeUser';
@@ -45,7 +46,7 @@ const setPurposeAsCompany = () => ({
   type:SET_COMPANY_PURPOSE
 })
 
-const setActorAsPurpose = () => ({
+const setPurposeAsActor = () => ({
   type:SET_ACTOR_PURPOSE
 })
 
@@ -121,15 +122,85 @@ export const createAndSetPortfolio = (portfolio) => async (dispatch) => {
     for (const key in portfolio) {
       portfolioData.append(key, portfolio[key])
     }
-    console.log('portfolioData', portfolioData)
-    // const response = await csrfFetch('/api/actorPortfolio', {
-    //   method: 'POST',
-    //   body: portfolioData
-    // })
-    // const data = await response.json()
-    // if (response.ok) {
-    //   dispatch(setPortfolio(data))
-    // }
+    // console.log('portfolioData', portfolio)
+    try {
+      const response = await csrfFetch('/api/actorPortfolio', {
+        method: 'POST',
+        body: portfolioData
+      })
+      const data = await response.json()
+      if (response.ok) {
+        dispatch(setPortfolio(data))
+        dispatch(setPurposeAsActor())
+      } else {
+      console.log('THUNK ERRORS SENT TO ERROR REDUCER?, ', data)
+
+        if (data.errors) dispatch(setErrors(data.errors))
+      }
+      return response;
+    } catch(res) {
+      res.json()
+      .then((data) => {
+        if (data.errors) dispatch(setErrors(data.errors))
+      })
+      return res;
+    }
+}
+
+// THUNK for updating user portfolio
+export const updateAndSetPortfolio = (portfolio) => async (dispatch) => {
+  const portfolioData = new FormData();
+  for (const key in portfolio) {
+    portfolioData.append(key, portfolio[key])
+  }
+  // console.log('portfolioData', portfolio)
+  try {
+    const response = await csrfFetch('/api/actorPortfolio', {
+      method: 'PUT',
+      body: portfolioData
+    })
+    const data = await response.json()
+    if (response.ok) {
+      dispatch(setPortfolio(data))
+      dispatch(setPurposeAsActor())
+    }
+    return response;
+
+  } catch(res) {
+    res.json()
+    .then((data) => {
+      console.log('test Update result before response check', data)
+      if (data.message) dispatch(setErrors([data.message]))
+    })
+    return res;
+  }
+
+}
+
+// THUNK for deleting portfolio
+export const deleteAndRemovePortfolio = (portfolioId) => async (dispatch) => {
+  try {
+    const response = await csrfFetch('/api/actorPortfolio', {
+      method: 'DELETE',
+      body: JSON.stringify({portfolioId})
+    })
+    const data = await response.json()
+    if (response.ok) {
+      dispatch(removePortfolio())
+      const purpose = getPurpose(data)
+      dispatch(setPurpose(purpose))
+    } else {
+      console.log('THUNK ERRORS SENT TO ERROR REDUCER?, ', data)
+      if (data.errors) dispatch(setErrors(data.errors))
+    }
+    return response;
+  } catch (res) {
+    res.json()
+    .then((data) => {
+      if (data.errors) dispatch(setErrors(data.errors))
+    })
+    return res;
+  }
 }
 
 // THUNK for storing company in user
@@ -252,15 +323,15 @@ const getPurpose = (data) => {
   const purpose = null;
   if (purpose && (purpose === 'actor' || purpose === 'company')) return purpose;
   if (data.actorPortfolio && data.company) {
-    Window.localStorage.setItem('purpose', 'actor')
+    // Window.localStorage.setItem('purpose', 'actor')
     return 'actor'
   }
   if (data.actorPortfolio) {
-    Window.localStorage.setItem('purpose', 'actor')
+    // Window.localStorage.setItem('purpose', 'actor')
     return 'actor'
   }
   if (data.company) {
-    Window.localStorage.setItem('purpose', 'company')
+    // Window.localStorage.setItem('purpose', 'company')
     return 'company'
   }
   return null;
@@ -284,6 +355,10 @@ const sessionReducer = (state = initialState, action) => {
         return {user: state.user, actorPortfolio: state.actorPortfolio, company: null};
       case SET_PURPOSE:
         return {user: {...state.user, purpose: action.payload}, actorPortfolio: state.actorPortfolio, company: null}
+      case SET_ACTOR_PURPOSE:
+        return {user: {...state.user, purpose: 'actor'}, actorPortfolio: state.actorPortfolio, company: null}
+      case SET_COMPANY_PURPOSE:
+          return {user: {...state.user, purpose: 'company'}, actorPortfolio: state.actorPortfolio, company: null}
     default:
       return state;
   }
