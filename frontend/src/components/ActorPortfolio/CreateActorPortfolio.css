@@ -46,3 +46,43 @@
     border-right: none;
     position: relative;
 }
+/* -----Gallery----- */
+#portfolio_gallery {
+    display: grid;
+    grid-template-columns: 200px 200px;
+
+}
+.photo_block {
+    background-color: grey;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.photo_block input:read-only {
+    background: none;
+    /* background-color: none; */
+    border: none;
+    position: relative;
+}
+
+.photo_block input {
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    position: relative;
+}
+
+.photo_block span::after {
+    content: '✎';
+    color: black;
+    right: 0px;
+
+}
+
+#portfolio_gallery img {
+    object-fit: cover;
+    width: 60px;
+    height: 60px;
+}

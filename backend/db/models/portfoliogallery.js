@@ -24,11 +24,12 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   PortfolioGallery.prototype.updateDetails = async function (data) {
+    console.log('portfolio gallery prototype: ', data )
     if (data.userId) this.userId = data.userId;
     if (data.title) this.title = data.title;
     if (data.photoUrl) this.photoUrl = data.photoUrl;
     if (data.order) this.order = data.order;
-    await this.save;
+    await this.save();
     return this;
   }
   return PortfolioGallery;
