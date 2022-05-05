@@ -39,6 +39,7 @@ const restoreUser = (req, res, next) => {
             const { id } = jwtPayload.data;
             // req.user = await User.scope('currentUser').findOne({where: {id: id}, include: {all: true}});
             req.user = await User.scope('currentUser').findOne({where: {id: id}});
+            // console.log("req.user________________: ", req.user)
         } catch (e) {
             res.clearCookie('token');
             return next();

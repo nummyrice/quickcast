@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 
 
 module.exports = (sequelize, DataTypes) => {
+  // console.log("Models from User________________:", sequelize.models)
   const User = sequelize.define('User', {
     username: {
       type: DataTypes.STRING,

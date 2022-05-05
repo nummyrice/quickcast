@@ -1,7 +1,5 @@
 'use strict';
 
-const company = require("./company");
-
 module.exports = (sequelize, DataTypes) => {
   const ActingGig = sequelize.define('ActingGig', {
     userId: {
@@ -37,7 +35,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: 'TV & Video'
     },
-  }, {});
+  },
+   {});
   ActingGig.associate = function(models) {
     // associations can be defined here
     ActingGig.belongsTo(models.Company, {
@@ -54,7 +53,18 @@ module.exports = (sequelize, DataTypes) => {
     ActingGig.belongsToMany(models.Tag, {
       through: "ActingGigTag",
       as: 'tags',
-      foreignKey: "actingGigId"
+      foreignKey: "actingGigId",
+      onDelete: 'cascade',
+      hooks: true
+    })
+    ActingGig.addScope('withTags', {
+      include:[{
+        model: models.Tag,
+        as: 'tags',
+        attributes: {
+          include: ['name', 'id']
+        }
+      }]
     })
   };
 

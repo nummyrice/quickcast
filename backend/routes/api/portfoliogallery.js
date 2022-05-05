@@ -62,7 +62,6 @@ router.post('/by_user', asyncHandler(async (req, res, next) => {
     console.log("User EXISTS: ", userExists)
     if (!userExists) return next(new Error('User does not exist.'))
     const userGallery = await PortfolioGallery.findAll({where: {userId: userId}, order: [['order', 'ASC']]})
-    console.log("user gallery", userGallery)
     return res.json(userGallery)
 }))
 
@@ -79,7 +78,6 @@ router.post('/', singleUpload, validateGallery, asyncHandler(async(req, res) => 
         order
     })
     const userGallery = await PortfolioGallery.findAll({where: {userId: userId}, order: [['order', 'ASC']]})
-    console.log("USER GALLERY: ", userGallery)
     return res.json(userGallery)
 }))
 

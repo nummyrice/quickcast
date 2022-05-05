@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
     if (phoneNumber) this.phoneNumber = phoneNumber;
     if (details) this.details = details;
     if (website) this.website = website;
-    if (imageUrl) this.image = imageUrl;
+    if (imageUrl.companyPhoto) this.image = imageUrl.companyPhoto;
     return await this.save();
   }
   return Company;

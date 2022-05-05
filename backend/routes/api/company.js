@@ -8,8 +8,10 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 // setup for cloudinary image storage
 const multer = require('multer');
-const upload = multer();
-const { uploadToCloudinary } = require('../../utils/cloudinary');
+// const upload = multer();
+// const { uploadToCloudinary } = require('../../utils/cloudinary');
+const { uploadS3, s3 } = require('../../utils/aws.js')
+const singleUpload = uploadS3.single("image")
 
 const router = express.Router();
 
@@ -21,7 +23,9 @@ const validateCompany = [
     .bail()
     .custom(async value => {
       const userExists = await User.findByPk(value);
-      if (!userExists) return Promise.reject('User does not exists.')
+      if (!userExists) return Promise.reject('User does not exist.')
+      const usersCompany = await Company.findOne({where: {userId: value}})
+      if (usersCompany) return Promise.reject('Company for this user already exists')
       return true;
     }),
   check('name')
@@ -39,9 +43,9 @@ const validateCompany = [
       return true;
     }),
   check('details')
-    .optional(),
+    .optional({checkFalsy: true}),
   check('website')
-    .optional()
+    .optional({checkFalsy: true})
     .isURL()
     .withMessage('Please provide a valid URL.'),
   handleValidationErrors,
@@ -56,26 +60,26 @@ const validateUpdate = [
       if (!companyExists) return Promise.reject('Company does not exist')
     }),
   check('name')
+    .optional({checkFalsy: true})
     .isLength({ min: 1, max: 30})
-    .withMessage('Please provide a company name less than 30 characters.')
-    .optional(),
+    .withMessage('Please provide a company name less than 30 characters.'),
   check('phoneNumber')
+    .optional({checkFalsy: true})
     .isLength({ min: 10, max: 12})
     .withMessage('Phone number must be a valid length.')
-    .exists({checkFalsey: true})
     .isMobilePhone("any")
     .withMessage('Please provide a valid phone number.')
     .custom(async value => {
       const numExists = await Company.findOne({where: {phoneNumber: value}})
       if (numExists) return Promise.reject('Phone numbers must be unique.');
       return true;
-    }).optional(),
+    }),
     check('details')
-    .optional(),
+      .optional({checkFalsy: true}),
     check('website')
-    .isURL()
-    .withMessage('Please provide a valid URL.')
-    .optional(),
+      .optional({checkFalsy: true})
+      .isURL()
+      .withMessage('Please provide a valid URL.'),
     handleValidationErrors,
   ];
 
@@ -90,22 +94,24 @@ const validateUpdate = [
 
   // Create Company Portfolio
 // TODO: add requireAuth to middleware
-router.post('/', upload.single('companyImage'), validateCompany, asyncHandler(async (req, res) => {
+router.post('/', singleUpload, validateCompany, asyncHandler(async (req, res) => {
   const requiredData = matchedData(req, { includeOptionals: false });
-  const {userId, name, phoneNumber, details, website } = requiredData
+  const {userId, name, phoneNumber, details, website, image='' } = requiredData
   const isImage = req.file && req.file.buffer;
-  let image;
-  if (isImage) {
-    image = await uploadToCloudinary(isImage)
-    image = image.url;
-  };
-
+  /* ------ Cloudinary ------ */
+  // let image;
+  // if (isImage) {
+  //   image = await uploadToCloudinary(isImage)
+  //   image = image.url;
+  // };
+  const uploadedUrl = { companyPhoto: undefined};
+  if (req.file && req.file.location) uploadedUrl.companyPhoto = req.file.location
   const company = await Company.create({
     userId,
     name,
     phoneNumber,
     details,
-    image,
+    image: uploadedUrl.companyPhoto ? uploadedUrl.companyPhoto : image,
     website,
   });
   return res.json(company);
@@ -113,14 +119,25 @@ router.post('/', upload.single('companyImage'), validateCompany, asyncHandler(as
 
 // Update Company Portfolio
 // TODO: add requireAuth to middleware
-router.put('/', upload.single('companyImage'), validateUpdate, asyncHandler(async (req, res) => {
+router.put('/', singleUpload, validateUpdate, asyncHandler(async (req, res) => {
+  const uploadedUrl = { companyPhoto: undefined};
+  if (req.file && req.file.location) uploadedUrl.companyPhoto = req.file.location
   const requiredData = matchedData(req, { includeOptionals: false });
   const {id, name, phoneNumber, details, website} = requiredData
-    const isImage = req.file && req.file.buffer;
-    let image;
-    if (isImage) image = await uploadToCloudinary(isImage);
+  /* ------ Cloudinary ------ */
+    // const isImage = req.file && req.file.buffer;
+    // let image;
+    // if (isImage) image = await uploadToCloudinary(isImage);
     const companyToUpdate = await Company.findByPk(id);
-    const updatedCompany = await companyToUpdate.updateDetails(name, phoneNumber, details, website, image)
+    if (companyToUpdate.image) {
+      const prevImageUrl = companyToUpdate.profilePhoto.split('/')
+      const prevImageKey = prevImageUrl[prevImageUrl.length - 1]
+      s3.deleteObject({Bucket:'quickcast-app', Key: prevImageKey}, function(err, data) {
+          if (err) console.log(err, err.stack);
+          else console.log("successfully deleted")
+      })
+    }
+    const updatedCompany = await companyToUpdate.updateDetails(name, phoneNumber, details, website, uploadedUrl)
     return res.json(updatedCompany);
 }))
 
@@ -130,6 +147,14 @@ router.delete('/', asyncHandler(async (req, res, next) => {
   const companyId = req.body.id;
   const companyToDelete = await Company.findByPk(companyId);
   if (!companyToDelete) return next(new Error('Company does not exist'))
+  if (companyToDelete.image) {
+    const prevImageUrl = companyToDelete.profilePhoto.split('/')
+    const prevImageKey = prevImageUrl[prevImageUrl.length - 1]
+    s3.deleteObject({Bucket:'quickcast-app', Key: prevImageKey}, function(err, data) {
+        if (err) console.log(err, err.stack);
+        else console.log("successfully deleted")
+    })
+  }
   await companyToDelete.destroy();
   return res.json({'message': "successfully deleted"})
 }));
