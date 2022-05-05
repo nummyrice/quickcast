@@ -1,9 +1,0 @@
-#create_portfolio_form {
-    display: flex;
-    flex-direction: column;
-    margin: 2rem;
-}
-
-#create_portfolio_form label, button {
-    margin-top: 1rem;
-}

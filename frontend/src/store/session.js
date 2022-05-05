@@ -1,4 +1,5 @@
 import { csrfFetch } from './csrf';
+import { setErrors } from './errors'
 // action type for storing the login and removing the login from the store
 const SET_USER = 'session/setUser';
 const REMOVE_USER = 'session/removeUser';
@@ -9,6 +10,8 @@ const REMOVE_COMPANY = 'session/userCompany/remove';
 const SET_COMPANY_PURPOSE = 'session/user/purpose/setAsCompany'
 const SET_ACTOR_PURPOSE = 'session/user/purpose/setAsActor'
 const SET_PURPOSE = 'session/user/determine-purpose'
+const SET_GALLERY = 'session/user/gallery/set'
+const REMOVE_GALLERY = 'session/user/gallery/remove'
 
 const setUser = (user) => {
   return {
@@ -45,13 +48,22 @@ const setPurposeAsCompany = () => ({
   type:SET_COMPANY_PURPOSE
 })
 
-const setActorAsPurpose = () => ({
+const setPurposeAsActor = () => ({
   type:SET_ACTOR_PURPOSE
 })
 
 const setPurpose = (purpose) => ({
   type: SET_PURPOSE,
   payload: purpose
+})
+
+const setGallery = (gallery) => ({
+  type: SET_GALLERY,
+  payload: gallery
+})
+
+const removeGallery = () => ({
+  type: REMOVE_GALLERY
 })
 
 // THUNK for Login
@@ -83,6 +95,7 @@ export const logout = () => async (dispatch) => {
   dispatch(removeUser());
   dispatch(removeCompany())
   dispatch(removePortfolio())
+  dispatch(removeGallery())
   return response;
 };
 
@@ -121,15 +134,85 @@ export const createAndSetPortfolio = (portfolio) => async (dispatch) => {
     for (const key in portfolio) {
       portfolioData.append(key, portfolio[key])
     }
-    console.log('portfolioData', portfolioData)
-    // const response = await csrfFetch('/api/actorPortfolio', {
-    //   method: 'POST',
-    //   body: portfolioData
-    // })
-    // const data = await response.json()
-    // if (response.ok) {
-    //   dispatch(setPortfolio(data))
-    // }
+    // console.log('portfolioData', portfolio)
+    try {
+      const response = await csrfFetch('/api/actorPortfolio', {
+        method: 'POST',
+        body: portfolioData
+      })
+      const data = await response.json()
+      if (response.ok) {
+        dispatch(setPortfolio(data))
+        dispatch(setPurposeAsActor())
+      } else {
+      console.log('THUNK ERRORS SENT TO ERROR REDUCER?, ', data)
+
+        if (data.errors) dispatch(setErrors(data.errors))
+      }
+      return response;
+    } catch(res) {
+      res.json()
+      .then((data) => {
+        if (data.errors) dispatch(setErrors(data.errors))
+      })
+      return res;
+    }
+}
+
+// THUNK for updating user portfolio
+export const updateAndSetPortfolio = (portfolio) => async (dispatch) => {
+  const portfolioData = new FormData();
+  for (const key in portfolio) {
+    portfolioData.append(key, portfolio[key])
+  }
+  // console.log('portfolioData', portfolio)
+  try {
+    const response = await csrfFetch('/api/actorPortfolio', {
+      method: 'PUT',
+      body: portfolioData
+    })
+    const data = await response.json()
+    if (response.ok) {
+      dispatch(setPortfolio(data))
+      dispatch(setPurposeAsActor())
+    }
+    return response;
+
+  } catch(res) {
+    res.json()
+    .then((data) => {
+      console.log('test Update result before response check', data)
+      if (data.message) dispatch(setErrors([data.message]))
+    })
+    return res;
+  }
+
+}
+
+// THUNK for deleting portfolio
+export const deleteAndRemovePortfolio = (portfolioId) => async (dispatch) => {
+  try {
+    const response = await csrfFetch('/api/actorPortfolio', {
+      method: 'DELETE',
+      body: JSON.stringify({portfolioId})
+    })
+    const data = await response.json()
+    if (response.ok) {
+      dispatch(removePortfolio())
+      const purpose = getPurpose(data)
+      dispatch(setPurpose(purpose))
+    } else {
+      console.log('THUNK ERRORS SENT TO ERROR REDUCER?, ', data)
+      if (data.errors) dispatch(setErrors(data.errors))
+    }
+    return response;
+  } catch (res) {
+    res.json()
+    .then((data) => {
+      if (data.errors) dispatch(setErrors(data.errors))
+    })
+    return res;
+  }
 }
 
 // THUNK for storing company in user
@@ -247,46 +330,149 @@ export const deleteCompany = (company) => async (dispatch) => {
     return response;
   }
 };
-const getPurpose = (data) => {
+
+// THUNK for retrieving user's Gallery
+export const getGallery = (userId) => async (dispatch) => {
+  try {
+    const response = await csrfFetch('/api/portfolioGallery/by_user', {
+      method: 'POST',
+      body: JSON.stringify({userId}),
+    });
+    const data = await response.json();
+    if (response.ok) {
+      dispatch(setGallery(data))
+    }
+    return response
+  } catch(res) {
+    console.log("get gallery error", res)
+    res.json()
+    .then((data) => {
+      if (data.errors) dispatch(setErrors(data.errors))
+    })
+    return res;
+  }
+};
+
+// THUNK for adding user's photo
+export const addPhoto = (newPhoto) => async (dispatch) => {
+  console.log('new photo', newPhoto)
+  const photoData = new FormData();
+  photoData.append('userId', newPhoto.userId);
+  photoData.append('image', newPhoto.image);
+  photoData.append('title', newPhoto.title);
+  photoData.append('order', newPhoto.order)
+  try {
+    const response = await csrfFetch('/api/portfolioGallery', {
+      method: 'POST',
+      body: photoData,
+    });
+    const data = await response.json();
+    if (response.ok) {
+      dispatch(setGallery(data))
+    }
+    return response
+  } catch(res) {
+    res.json()
+    .then((data) => {
+      if (data.errors) dispatch(setErrors(data.errors))
+    })
+    return res;
+  }
+}
+
+
+// THUNK for adding user's photo
+export const updatePhoto = (updatedPhoto) => async (dispatch) => {
+
+  try {
+    const response = await csrfFetch('/api/portfolioGallery', {
+      method: 'PUT',
+      body: JSON.stringify(updatedPhoto),
+    });
+    const data = await response.json();
+    if (response.ok) {
+      dispatch(setGallery(data))
+    }
+    return response
+  } catch(res) {
+    res.json()
+    .then((data) => {
+      if (data.errors) dispatch(setErrors(data.errors))
+    })
+    return res;
+  }
+}
+
+
+// THUNK for deleting user photo
+export const deletePhoto = (photoId) => async (dispatch) => {
+  try {
+    const response = await csrfFetch('/api/portfolioGallery', {
+      method: 'DELETE',
+      body: JSON.stringify({photoId}),
+    });
+    const data = await response.json();
+    if (response.ok) {
+      dispatch(setGallery(data))
+    }
+    return response
+  } catch(res) {
+    res.json()
+    .then((data) => {
+      if (data.errors) dispatch(setErrors(data.errors))
+    })
+    return res;
+  }
+}
+
+const initialState = { user: null, actorPortfolio: null, company: null, gallery: [] };
+const sessionReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case SET_USER:
+        return {user: action.payload, actorPortfolio: state.actorPortfolio, company: state.company, gallery: state.gallery};
+    case REMOVE_USER:
+        return {user: null, actorPortfolio: null, company: null, gallery: state.gallery};
+    case SET_PORTFOLIO:
+        return {user: state.user, actorPortfolio: action.payload, company: state.company, gallery: state.gallery};
+    case REMOVE_PORTFOLIO:
+        return {user: state.user, actorPortfolio: null, company: state.company, gallery: state.gallery};
+      case SET_COMPANY:
+        return {user: state.user, actorPortfolio: state.actorPortfolio, company: action.payload, gallery: state.gallery};
+      case REMOVE_COMPANY:
+        return {user: state.user, actorPortfolio: state.actorPortfolio, company: null, gallery: state.gallery};
+      case SET_PURPOSE:
+        return {user: {...state.user, purpose: action.payload}, actorPortfolio: state.actorPortfolio, company: null, gallery: state.gallery}
+      case SET_ACTOR_PURPOSE:
+        return {user: {...state.user, purpose: 'actor'}, actorPortfolio: state.actorPortfolio, company: null, gallery: state.gallery}
+      case SET_COMPANY_PURPOSE:
+          return {user: {...state.user, purpose: 'company'}, actorPortfolio: state.actorPortfolio, company: null, gallery: state.gallery}
+      case SET_GALLERY:
+        return {user: state.user, actorPortfolio: state.actorPortfolio, company: state.company, gallery: action.payload}
+      case REMOVE_GALLERY:
+        return {user: state.user, actorPortfolio: state.actorPortfolio, company: state.company, gallery: []}
+      default:
+        return state;
+          }
+};
+
+function  getPurpose(data) {
   // const purpose = Window.localStorage.getItem('purpose')
   const purpose = null;
   if (purpose && (purpose === 'actor' || purpose === 'company')) return purpose;
   if (data.actorPortfolio && data.company) {
-    Window.localStorage.setItem('purpose', 'actor')
+    // Window.localStorage.setItem('purpose', 'actor')
     return 'actor'
   }
   if (data.actorPortfolio) {
-    Window.localStorage.setItem('purpose', 'actor')
+    // Window.localStorage.setItem('purpose', 'actor')
     return 'actor'
   }
   if (data.company) {
-    Window.localStorage.setItem('purpose', 'company')
+    // Window.localStorage.setItem('purpose', 'company')
     return 'company'
   }
   return null;
 
 }
-
-const initialState = { user: null, actorPortfolio: null, company: null };
-const sessionReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case SET_USER:
-        return {user: action.payload, actorPortfolio: state.actorPortfolio, company: state.company};
-    case REMOVE_USER:
-        return {user: null, actorPortfolio: null, company: null};
-    case SET_PORTFOLIO:
-        return {user: state.user, actorPortfolio: action.payload, company: state.company};
-    case REMOVE_PORTFOLIO:
-        return {user: state.user, actorPortfolio: null, company: state.company};
-      case SET_COMPANY:
-        return {user: state.user, actorPortfolio: state.actorPortfolio, company: action.payload};
-      case REMOVE_COMPANY:
-        return {user: state.user, actorPortfolio: state.actorPortfolio, company: null};
-      case SET_PURPOSE:
-        return {user: {...state.user, purpose: action.payload}, actorPortfolio: state.actorPortfolio, company: null}
-    default:
-      return state;
-  }
-};
 
 export default sessionReducer;

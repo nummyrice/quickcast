@@ -23,7 +23,9 @@ import ProtectedRoute from './components/Auth/ProtectedRoute';
 import Widgets from './components/Widgets';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm'
-import CreateActorPortfolio from './components/CreateActorPortfolio';
+import CreateActorPortfolio from './components/ActorPortfolio/CreateActorPortfolio';
+import ActorPortfolio from './components/ActorPortfolio';
+import PortfolioGallery from './components/ActorPortfolio/PortfolioGallery';
 // do not expose store to the window in production
 const store = configureStore();
 
@@ -49,6 +51,8 @@ function Root() {
               </Route>
               <Route path='home' element={<Main/>}>
                   <Route path='create-portfolio' element={<CreateActorPortfolio/>}/>
+                  <Route path='my-portfolio' element={<ActorPortfolio/>}/>
+                  <Route path='my-gallery' element={<PortfolioGallery/>}/>
                 </Route>
             </Route>
             <Route path='*' element={<Navigate to='/welcome-to-quickcast'/>}/>

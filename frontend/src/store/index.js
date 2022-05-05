@@ -3,11 +3,13 @@ import thunk from 'redux-thunk';
 import companyReducer from './company';
 import portfolioReducer from './portfolio';
 import sessionReducer from './session';
+import errorsReducer from './errors';
 
 const rootReducer = combineReducers({
     session: sessionReducer,
     companies: companyReducer,
-    portfolios: portfolioReducer
+    portfolios: portfolioReducer,
+    errors: errorsReducer
 });
 
 let enhancer;

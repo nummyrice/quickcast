@@ -2,7 +2,7 @@ const express = require('express');
 const asyncHandler = require('express-async-handler');
 const { check, matchedData } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
-const { User, ActingGig, Tag } = require('../../db/models');
+const { User, ActingGig, Tag, ActingGigTag } = require('../../db/models');
 
 const router = express.Router();
 
@@ -38,9 +38,9 @@ const validateGig = [
         .withMessage('Gigs must include a primary location.')
     ,
     check('gigType')
-        .optional(),
+        .optional({checkFalsy: true}),
     check('tags')
-        .optional(),
+        .optional({checkFalsy: true}),
     handleValidationErrors
 ]
 
@@ -53,31 +53,31 @@ const validateUpdate = [
         .withMessage('User ID required')
     ,
     check('companyId')
-        .optional()
+        .optional({checkFalsy: true})
     ,
     check('title')
         .isLength({min: 3, max: 50})
         .withMessage('Gig title must be between 3 and 50 characters')
-        .optional()
+        .optional({checkFalsy: true})
     ,
     check('description')
-        .optional()
+        .optional({checkFalsy: true})
     ,
     check('rehearsalProductionDates')
-        .optional()
+        .optional({checkFalsy: true})
     ,
     check('compensationDetails')
-        .optional()
+        .optional({checkFalsy: true})
     ,
     check('location')
-        .optional()
+        .optional({checkFalsy: true})
     ,
     check('gigType')
         .isIn(['Commercials', 'Theatre', 'Performing Arts', 'TV & Video', 'Voiceover', 'Stunts', 'Other'])
         .withMessage('Not a valid category.')
-        .optional(),
+        .optional({checkFalsy: true}),
     check('tags')
-        .optional(),
+        .optional({checkFalsy: true}),
     handleValidationErrors
 ]
 
@@ -96,9 +96,10 @@ router.get('/by_company', asyncHandler(async(req, res) => {
 }))
 
 // Get User Gigs
-router.get('/by_user',  asyncHandler(async(req, res) => {
+router.post('/by_user',  asyncHandler(async(req, res) => {
     const userId = req.body.userId
     const usersGigs = await ActingGig.findAll({where: {userId: userId}})
+    console.log("NEW GIG: ", usersGigs)
     return res.json(usersGigs)
 }))
 
@@ -130,8 +131,12 @@ router.put('/', validateUpdate,  asyncHandler(async (req, res) => {
 // Delete Gig
 router.delete('/', asyncHandler(async (req, res, next) => {
     const gigId = req.body.gigId;
-    const gigToDelete = await ActingGig.findByPk(gigId);
+    const gigToDelete = await ActingGig.scope('withTags').findByPk(gigId);
     if (!gigToDelete) return next(new Error('Gig does not exist'))
+    await Promise.all(gigToDelete.tags.map(async tag => {
+        const actingGigTagToDelete = await ActingGigTag.findOne({where: {actingGigId: gigToDelete.id, tagId: tag.id}})
+        return await actingGigTagToDelete.destroy()
+    }))
     await gigToDelete.destroy();
     return res.json({'message': "successfully deleted"})
   }));
