@@ -48,7 +48,7 @@ const PortfolioGallery = () => {
                 if (!titles[photo.id]) setTitles({...titles, [photo.id]: {value: photo.title, edit: false}})
                 return(
                     <div key={photo.id} className='photo_block'>
-                        <img src={photo.photoUrl}/>
+                        <img alt={`gallery_${index}`} src={photo.photoUrl}/>
                         <span>
                             <input readOnly={titles[photo.id] ? !titles[photo.id].edit : true} onClick={e => setTitles({...titles, [photo.id]: {value: titles[photo.id].value, edit: true}})} onChange={e => setTitles({...titles, [photo.id]: {value: e.target.value, edit: titles[photo.id].edit}})} value={titles[photo.id] ? titles[photo.id].value : ''}></input>
                         </span>

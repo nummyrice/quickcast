@@ -8,7 +8,7 @@ import { login } from '../../store/session';
 import * as sessionActions from '../../store/session'
 
 
-function Navigation({ sessionUser }){
+function Navigation({ session }){
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const password = 'password';
@@ -31,7 +31,7 @@ function Navigation({ sessionUser }){
   // Search (when on mobile sized screen only)
   let sessionLinks;
 
-  if (!sessionUser) {
+  if (!session.user) {
     sessionLinks = (
       <>
         <NavLink to='/welcome-to-quickcast'>
@@ -45,7 +45,7 @@ function Navigation({ sessionUser }){
         </NavLink>
       </>
     )
-  } else if (sessionUser.purpose === 'actor') {
+  } else if (session.user.purpose === 'actor') {
     sessionLinks = (
       <>
         <NavLink to='/home'>
@@ -53,6 +53,9 @@ function Navigation({ sessionUser }){
         </NavLink>
         <NavLink to='/home/my-portfolio'>
           {"My portfolio"}
+        </NavLink>
+        <NavLink to='/home/my-gallery'>
+          {"My Gallery"}
         </NavLink>
         <div>
           {"Search"}
@@ -65,21 +68,21 @@ function Navigation({ sessionUser }){
 
       </>
     )
-  } else if (sessionUser.purpose === 'company') {
+  } else if (session.user.purpose === 'company') {
     sessionLinks = (
       <>
         <NavLink to='/home'>
           {"company home"}
         </NavLink>
-        <div>
-          {"My company"}
-        </div>
+        <NavLink to='/home/my-company'>
+          {"My Company"}
+        </NavLink>
         <div>
           {"My gigs"}
         </div>
-        <div>
-          {"Search"}
-        </div>
+        <NavLink to='/home/search-portfolios'>
+          {"Search Talent"}
+        </NavLink>
         <button onClick={() => {
           dispatch(sessionActions.logout())
         }}>
@@ -93,6 +96,12 @@ function Navigation({ sessionUser }){
          <NavLink to='/home'>
           {"home"}
         </NavLink>
+        <NavLink to='/home/create-portfolio'>
+          {"Looking for a Gig"}
+        </NavLink>
+        <NavLink to='/home/create-company'>
+          {"Looking for talent"}
+        </NavLink>
         <button onClick={() => {
           dispatch(sessionActions.logout())
         }}>
@@ -105,6 +114,11 @@ function Navigation({ sessionUser }){
   return (
     <div className="navigation_bar">
         {sessionLinks}
+        {session.user && session.company && session.actorPortfolio &&
+          <div onClick={e => dispatch(sessionActions.toggleAndSetPurpose())}>
+            {'Toggle Purpose'}
+          </div>
+        }
     </div>
   );
 }

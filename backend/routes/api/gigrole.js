@@ -40,7 +40,7 @@ const validateRole = [
 
 const validateUpdate = [
     check('id')
-        .exists()
+        .exists({checkFalsy:true})
         .withMessage('Role ID required.')
         .bail()
         .custom(async value => {
@@ -55,19 +55,19 @@ const validateUpdate = [
             if (!gigExists) return Promise.reject('Gig does not exist.')
             return true;
         })
-        .optional()
+        .optional({checkFalsy:true})
     ,
     check('title')
-        .optional()
+        .optional({checkFalsy:true})
     ,
     check('gender')
-        .optional()
+        .optional({checkFalsy:true})
     ,
     check('ageRange')
-        .optional()
+        .optional({checkFalsy:true})
     ,
     check('description')
-        .optional()
+        .optional({checkFalsy:true})
     ,
     handleValidationErrors
 ]
@@ -84,6 +84,11 @@ router.get('/all', asyncHandler(async (req, res) => {
     return res.json(roles)
 }))
 
+router.post('/by_user', asyncHandler(async (req, res) => {
+    const userId = req.body.userId
+    const gigRoles = await ActingGig.scope('getRoles').findAll({where:{userId: userId}})
+    return res.json(gigRoles)
+}))
   // Create  Role
 // TODO: add requireAuth to middleware
 router.post('/', validateRole, asyncHandler(async (req, res) => {
@@ -105,7 +110,6 @@ router.post('/', validateRole, asyncHandler(async (req, res) => {
     const {id, gigId, title, description, gender, ageRange} = requiredData;
     const roleToUpdate = await GigRole.findByPk(id);
     const updatedRole = await roleToUpdate.updateDetails(gigId, title, description, gender, ageRange);
-
     res.json(updatedRole);
 }));
 

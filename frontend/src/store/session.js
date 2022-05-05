@@ -10,8 +10,19 @@ const REMOVE_COMPANY = 'session/userCompany/remove';
 const SET_COMPANY_PURPOSE = 'session/user/purpose/setAsCompany'
 const SET_ACTOR_PURPOSE = 'session/user/purpose/setAsActor'
 const SET_PURPOSE = 'session/user/determine-purpose'
+const TOGGLE_PURPOSE = 'session/user/toggle-purpose'
 const SET_GALLERY = 'session/user/gallery/set'
 const REMOVE_GALLERY = 'session/user/gallery/remove'
+const SET_PRODUCTIONS = 'session/user/productions/set'
+const SET_PRODUCTION = 'session/user/production/set'
+const REMOVE_RODUCTION = 'session/user/production/remove'
+const CLEAR_PRODUCTIONS = 'session/user/productions/clear'
+const UPDATE_PRODUCTIONS = 'session/user/productions/update'
+const SET_ROLES = 'session/user/roles/set'
+const SET_ROLE = 'session/user/role/set'
+const REMOVE_ROLE = 'session/user/role/remove'
+const UPDATE_ROLE = 'session/user/role/update'
+const CLEAR_ROLES = 'session/user/roles/clear'
 
 const setUser = (user) => {
   return {
@@ -57,6 +68,10 @@ const setPurpose = (purpose) => ({
   payload: purpose
 })
 
+const togglePurpose = () => ({
+  type: TOGGLE_PURPOSE
+})
+
 const setGallery = (gallery) => ({
   type: SET_GALLERY,
   payload: gallery
@@ -64,6 +79,53 @@ const setGallery = (gallery) => ({
 
 const removeGallery = () => ({
   type: REMOVE_GALLERY
+})
+
+const setProductions = (productions) => ({
+  type: SET_PRODUCTIONS,
+  payload: productions
+})
+
+const setProduction = (production) => ({
+  type: SET_PRODUCTION,
+  payload: production
+})
+
+const updateProductions = (production) => ({
+  type: UPDATE_PRODUCTIONS,
+  payload: production
+})
+
+const removeProduction = (productionId) => ({
+  type: REMOVE_RODUCTION,
+  payload: productionId
+})
+const clearProductions = () => ({
+  type: CLEAR_PRODUCTIONS
+})
+
+const setRoles = (roles) => ({
+  type: SET_ROLES,
+  payload: roles
+})
+
+const setRole = (role) => ({
+  type: SET_ROLE,
+  payload: role
+})
+
+const updateRole = (role) => ({
+  type: UPDATE_ROLE,
+  payload: role
+})
+
+const removeRole = (gigId, roleId) => ({
+  type: REMOVE_ROLE,
+  payload: {roleId, gigId}
+})
+
+const clearRoles = () => ({
+  type: CLEAR_ROLES
 })
 
 // THUNK for Login
@@ -93,9 +155,6 @@ export const logout = () => async (dispatch) => {
     method: 'DELETE',
   });
   dispatch(removeUser());
-  dispatch(removeCompany())
-  dispatch(removePortfolio())
-  dispatch(removeGallery())
   return response;
 };
 
@@ -141,14 +200,8 @@ export const createAndSetPortfolio = (portfolio) => async (dispatch) => {
         body: portfolioData
       })
       const data = await response.json()
-      if (response.ok) {
-        dispatch(setPortfolio(data))
-        dispatch(setPurposeAsActor())
-      } else {
-      console.log('THUNK ERRORS SENT TO ERROR REDUCER?, ', data)
-
-        if (data.errors) dispatch(setErrors(data.errors))
-      }
+      dispatch(setPortfolio(data))
+      dispatch(setPurposeAsActor())
       return response;
     } catch(res) {
       res.json()
@@ -172,12 +225,9 @@ export const updateAndSetPortfolio = (portfolio) => async (dispatch) => {
       body: portfolioData
     })
     const data = await response.json()
-    if (response.ok) {
-      dispatch(setPortfolio(data))
-      dispatch(setPurposeAsActor())
-    }
+    dispatch(setPortfolio(data))
+    dispatch(setPurposeAsActor())
     return response;
-
   } catch(res) {
     res.json()
     .then((data) => {
@@ -186,7 +236,6 @@ export const updateAndSetPortfolio = (portfolio) => async (dispatch) => {
     })
     return res;
   }
-
 }
 
 // THUNK for deleting portfolio
@@ -197,14 +246,10 @@ export const deleteAndRemovePortfolio = (portfolioId) => async (dispatch) => {
       body: JSON.stringify({portfolioId})
     })
     const data = await response.json()
-    if (response.ok) {
-      dispatch(removePortfolio())
-      const purpose = getPurpose(data)
-      dispatch(setPurpose(purpose))
-    } else {
-      console.log('THUNK ERRORS SENT TO ERROR REDUCER?, ', data)
-      if (data.errors) dispatch(setErrors(data.errors))
-    }
+    dispatch(removePortfolio())
+    const purpose = getPurpose(data)
+    dispatch(setPurpose(purpose))
+
     return response;
   } catch (res) {
     res.json()
@@ -218,118 +263,255 @@ export const deleteAndRemovePortfolio = (portfolioId) => async (dispatch) => {
 // THUNK for storing company in user
 export const createAndSetCompany = (company) => async (dispatch) => {
   // ensures there is no null, unefined is used instead
-  for (const data in company) {
-      if (!company[data]) {
-          company[data] = ''
-      };
-  };
-  const { companyName, phoneNumber, details, image, website } = company
-  let response;
-  if (image) {
     // builds company multipart form data including image buffer
     const companyData = new FormData();
-    companyData.append('companyName', companyName);
-    companyData.append('phoneNumber', phoneNumber);
-    companyData.append('details', details);
-    companyData.append('companyImage', image);
-    companyData.append('website', website);
-
-    response = await csrfFetch('/api/company', {
+    for (const key in company) {
+      companyData.append(key, company[key])
+    }
+  try {
+    const response = await csrfFetch('/api/company', {
       method: 'POST',
       body: companyData,
     });
-  } else {
-    response = await csrfFetch('/api/company', {
-      method: 'POST',
-      body: JSON.stringify(company),
-    });
-  };
-  const newCompany = await response.json();
-
-  dispatch(setCompany(newCompany));
-  return response;
+    const data = await response.json();
+    dispatch(setCompany(data));
+    dispatch(setPurposeAsCompany())
+    return response;
+  } catch(res) {
+    res.json()
+    .then((data) => {
+      console.log('test Update result before response check', data)
+      if (data.message) dispatch(setErrors([data.message]))
+    })
+    return res;
+  }
 };
 
-  // THUNK for updating company
-  export const updateAndSetCompany = (company) => async (dispatch) => {
-    const { companyName, phoneNumber, details, image, website } = company
-    let response;
-    // if image file was provided
-    if (company.image) {
-      // create formData and send a put request to update the database
-      const companyData = new FormData();
-      companyData.append('companyName', companyName);
-      companyData.append('phoneNumber', phoneNumber);
-      companyData.append('details', details);
-      companyData.append('companyImage', image);
-      companyData.append('website', website);
+// THUNK for updating company
+export const updateAndSetCompany = (company) => async (dispatch) => {
+  try {
+    // create formData and send a put request to update the database
+    const companyData = new FormData()
+    for (const key in company) {
+      companyData.append(key, company[key])
+    }
 
-      response = await csrfFetch('/api/company', {
-        method: 'PUT',
-        body: companyData,
-      });
-      //  else send company in a put fetch request to update the database
-    } else {
-      const companyData = {companyName, phoneNumber, details, website};
-      response = await csrfFetch('/api/company', {
-        method: 'PUT',
-        body: JSON.stringify(companyData),
-      });
-    };
-    //await response data
-    const updatedCompany = await response.json()
-    // dispatch updatedCompany data to the store
-    // dispatch(updateCompany(updatedCompany));
-    // return the response in case there were errors
-    // const history = useHistory();
-    // if (response.status <= 400) history.push('/company');
-    return response;
+    const response = await csrfFetch('/api/company', {
+      method: 'PUT',
+      body: companyData,
+    });
+
+  const data = await response.json()
+  dispatch(setCompany(data));
+  return response;
+
+  } catch(res) {
+    res.json()
+    .then((data) => {
+      // console.log('test Update result before response check', data)
+      if (data.message) dispatch(setErrors([data.message]))
+    })
+    return res;
   }
-
-//THUNK for submitting new gig
-// export const submitGigSetGigs = (newGig) => async (dispatch) => {
-//   // await csrf fetch to server
-//   const response = await csrfFetch('api/company/gig/create', {
-//       method: 'POST',
-//       body: JSON.stringify(newGig),
-//   });
-//   // await json() gigs for this company
-//   const allGigs = await response.json();
-//   //TODO: might not need newGig sent back from the server
-//   // const {allGigs} = gigsAndNewGig;
-//   // dispatch update gigs for this company
-//   dispatch(setUsersGigs(allGigs));
-//   // return response
-//   return response;
-// };
-
-//THUNK for updating a gig
-// export const updateGigSetGigs = (gigToUpdate) => async (dispatch) => {
-//   const response = await csrfFetch('api/company/gig/update', {
-//     method: 'PUT',
-//     body: JSON.stringify(gigToUpdate),
-//   });
-//   const allGigs = await response.json();
-//   dispatch(setUsersGigs(allGigs));
-//   return response;
-// };
+}
 
 // THUNK for deleting company
-export const deleteCompany = (company) => async (dispatch) => {
-
-  const response = await csrfFetch('/api/company', {
-    method: 'DELETE',
-    body: JSON.stringify(company),
-  });
-
-  const data = await response.json();
-  if (data.successfullyDeleted) {
+export const deleteAndRemoveCompany = (companyId) => async (dispatch) => {
+  try {
+    const response = await csrfFetch('/api/company', {
+      method: 'DELETE',
+      body: JSON.stringify({id:companyId}),
+    });
     dispatch(removeCompany());
+    dispatch(clearProductions())
     return response;
-  } else {
-    return response;
+  } catch(res) {
+    res.json()
+    .then((data) => {
+      // console.log('test Update result before response check', data)
+      if (data.message) dispatch(setErrors([data.message]))
+    })
+    return res;
   }
 };
+
+// THUNK for getting user gigs
+export const getAndSetProductions = (userId) => async (dispatch) => {
+  try {
+    const response = await csrfFetch('/api/actingGig/by_user', {
+        method: 'POST',
+        body: JSON.stringify({userId}),
+    });
+    // returns all gigs for the user
+    const data = await response.json();
+    dispatch(setProductions(data))
+    return response;
+
+  } catch(res) {
+    res.json()
+    .then((data) => {
+      // console.log('test Update result before response check', data)
+      if (data.message) dispatch(setErrors([data.message]))
+    })
+    return res;
+  }
+};
+
+// THUNK for submitting new gig
+export const createAndSetProduction = (newGig) => async (dispatch) => {
+  try {
+    const response = await csrfFetch('/api/actingGig', {
+        method: 'POST',
+        body: JSON.stringify(newGig),
+    });
+    // returns newGig with all tags attached
+    const data = await response.json();
+    dispatch(setProduction(data))
+    return response;
+
+  } catch(res) {
+    res.json()
+    .then((data) => {
+      // console.log('test Update result before response check', data)
+      if (data.message) dispatch(setErrors([data.message]))
+    })
+    return res;
+  }
+};
+
+
+// THUNK for updating a gig
+export const updateAndSetProduction = (gigToUpdate) => async (dispatch) => {
+  try {
+    const response = await csrfFetch('/api/actingGig', {
+      method: 'PUT',
+      body: JSON.stringify(gigToUpdate),
+    });
+    // returns the updated gig
+    const data = await response.json();
+    dispatch(updateProductions(data));
+    return response;
+  } catch(res) {
+    res.json()
+    .then((data) => {
+      // console.log('test Update result before response check', data)
+      if (data.message) dispatch(setErrors([data.message]))
+    })
+    return res;
+  }
+};
+
+// THUNK for deleting user photo
+export const deleteAndRemoveProduction = (gigId) => async (dispatch) => {
+  try {
+    // returns success message
+    const response = await csrfFetch('/api/actingGig', {
+      method: 'DELETE',
+      body: JSON.stringify({gigId}),
+    });
+    dispatch(removeProduction(gigId))
+    return response
+  } catch(res) {
+    res.json()
+    .then((data) => {
+      if (data.errors) dispatch(setErrors(data.errors))
+    })
+    return res;
+  }
+}
+
+// THUNK for getting users roles sorted by gig
+export const getAndSetRoles = (userId) => async (dispatch) => {
+  try {
+    const response = await csrfFetch('/api/gigrole/by_user', {
+        method: 'POST',
+        body: JSON.stringify({userId}),
+    });
+    // returns all roles grouped by gig
+    /*
+    [{
+      id:2,
+      gigRoles: [{
+        id:1,
+        title: Scooby Doo
+       }]
+    }]
+    */
+    const data = await response.json();
+    dispatch(setRoles(data))
+    return response;
+
+  } catch(res) {
+    res.json()
+    .then((data) => {
+      // console.log('test Update result before response check', data)
+      if (data.message) dispatch(setErrors([data.message]))
+    })
+    return res;
+  }
+};
+
+// THUNK for createing gig role
+export const createAndSetRole = (newRole) => async (dispatch) => {
+  try {
+    const response = await csrfFetch('/api/gigrole', {
+        method: 'POST',
+        body: JSON.stringify(newRole),
+    });
+    // returns newGig with all tags attached
+    const data = await response.json();
+    dispatch(setRole(data))
+    return response;
+
+  } catch(res) {
+    res.json()
+    .then((data) => {
+      // console.log('test Update result before response check', data)
+      if (data.message) dispatch(setErrors([data.message]))
+    })
+    return res;
+  }
+};
+
+// THUNK for updating a gig role
+export const updateAndSetRole = (roleToUpdate) => async (dispatch) => {
+  try {
+    const response = await csrfFetch('/api/gigrole', {
+      method: 'PUT',
+      body: JSON.stringify(roleToUpdate),
+    });
+    // returns the updated gig
+    const data = await response.json();
+    dispatch(updateRole(data));
+    return response;
+  } catch(res) {
+    res.json()
+    .then((data) => {
+      // console.log('test Update result before response check', data)
+      if (data.message) dispatch(setErrors([data.message]))
+    })
+    return res;
+  }
+};
+
+// THUNK FOR deleting a gig role
+export const deleteAndRemoveRole = (roleId, gigId) => async (dispatch) => {
+  try {
+    // returns success message
+    const response = await csrfFetch('/api/gigrole', {
+      method: 'DELETE',
+      body: JSON.stringify({roleId}),
+    });
+    dispatch(removeRole(gigId, roleId))
+    return response
+  } catch(res) {
+    res.json()
+    .then((data) => {
+      if (data.errors) dispatch(setErrors(data.errors))
+    })
+    return res;
+  }
+}
 
 // THUNK for retrieving user's Gallery
 export const getGallery = (userId) => async (dispatch) => {
@@ -355,7 +537,6 @@ export const getGallery = (userId) => async (dispatch) => {
 
 // THUNK for adding user's photo
 export const addPhoto = (newPhoto) => async (dispatch) => {
-  console.log('new photo', newPhoto)
   const photoData = new FormData();
   photoData.append('userId', newPhoto.userId);
   photoData.append('image', newPhoto.image);
@@ -425,33 +606,93 @@ export const deletePhoto = (photoId) => async (dispatch) => {
   }
 }
 
-const initialState = { user: null, actorPortfolio: null, company: null, gallery: [] };
+// THUNK for toggling purpose
+export const toggleAndSetPurpose = () => async (dispatch) => {
+  dispatch(togglePurpose())
+}
+
+const initialState = { user: null, actorPortfolio: null, company: null, gallery: [], productions: [], roles: [] };
 const sessionReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_USER:
-        return {user: action.payload, actorPortfolio: state.actorPortfolio, company: state.company, gallery: state.gallery};
+        return {user: action.payload, actorPortfolio: state.actorPortfolio, company: state.company, gallery: state.gallery, productions: state.productions, roles: state.roles};
     case REMOVE_USER:
-        return {user: null, actorPortfolio: null, company: null, gallery: state.gallery};
+        return initialState;
     case SET_PORTFOLIO:
-        return {user: state.user, actorPortfolio: action.payload, company: state.company, gallery: state.gallery};
+        return {...state, actorPortfolio: action.payload};
     case REMOVE_PORTFOLIO:
-        return {user: state.user, actorPortfolio: null, company: state.company, gallery: state.gallery};
-      case SET_COMPANY:
-        return {user: state.user, actorPortfolio: state.actorPortfolio, company: action.payload, gallery: state.gallery};
-      case REMOVE_COMPANY:
-        return {user: state.user, actorPortfolio: state.actorPortfolio, company: null, gallery: state.gallery};
-      case SET_PURPOSE:
-        return {user: {...state.user, purpose: action.payload}, actorPortfolio: state.actorPortfolio, company: null, gallery: state.gallery}
-      case SET_ACTOR_PURPOSE:
-        return {user: {...state.user, purpose: 'actor'}, actorPortfolio: state.actorPortfolio, company: null, gallery: state.gallery}
-      case SET_COMPANY_PURPOSE:
-          return {user: {...state.user, purpose: 'company'}, actorPortfolio: state.actorPortfolio, company: null, gallery: state.gallery}
-      case SET_GALLERY:
-        return {user: state.user, actorPortfolio: state.actorPortfolio, company: state.company, gallery: action.payload}
-      case REMOVE_GALLERY:
-        return {user: state.user, actorPortfolio: state.actorPortfolio, company: state.company, gallery: []}
-      default:
-        return state;
+        return {...state, actorPortfolio: null};
+    case SET_COMPANY:
+      return {...state, company: action.payload};
+    case REMOVE_COMPANY:
+      return {...state, company: null};
+    case SET_PURPOSE:
+      return {...state, user: {...state.user, purpose: action.payload}}
+    case TOGGLE_PURPOSE:
+      const currentPurpose = state.user.purpose
+      if (currentPurpose === 'actor') return {...state, user: {...state.user, purpose: 'company'}}
+      if (currentPurpose === 'company') return {...state, user: {...state.user, purpose: 'actor'}}
+      return state;
+    case SET_ACTOR_PURPOSE:
+      return {...state, user: {...state.user, purpose: 'actor'}}
+    case SET_COMPANY_PURPOSE:
+        return {...state, user: {...state.user, purpose: 'company'}}
+    case SET_GALLERY:
+      return {...state, gallery: action.payload}
+    case REMOVE_GALLERY:
+      return {...state, gallery: []}
+    case SET_PRODUCTIONS:
+      return {...state, productions: action.payload}
+    case SET_PRODUCTION:
+      const newProductions = [...state.productions]
+      newProductions.push(action.payload)
+      return {...state, productions: newProductions}
+    case REMOVE_RODUCTION:
+      const productionIndex = state.productions.findIndex((gig) => gig.id === action.payload)
+      const updatedProductions = [...state.productions]
+      updatedProductions.splice(productionIndex, 1)
+      return {...state, productions: updatedProductions}
+    case UPDATE_PRODUCTIONS:
+      const updatedProductionIndex = state.productions.findIndex(gig => gig.id === action.payload.id)
+      const updatedGigs = [...state.productions]
+      updatedGigs.splice(updatedProductionIndex, 1, action.payload)
+      return {...state, productions: updatedGigs}
+    case CLEAR_PRODUCTIONS:
+      return {...state, productions: []}
+    case SET_ROLES:
+      return {...state, roles: action.payload}
+    case SET_ROLE:
+      const gigIndex = state.roles.findIndex(gig => gig.id === action.payload.gigId)
+      const newGigs = [...state.roles]
+      const newRoles = [...state.roles[gigIndex].gigRoles]
+      newRoles.push(action.payload)
+      newGigs.splice(gigIndex, 1, {...state.roles[gigIndex], gigRoles: newRoles})
+      return {...state, roles:newGigs};
+    case UPDATE_ROLE:{
+      console.log('MADE IT TO UPDATE ROLE', action.payload)
+      const gigIndex = state.roles.findIndex(gig => gig.id === action.payload.gigId)
+      console.log('GIG INFO: ', gigIndex, state.roles[gigIndex])
+      const roleIndex = state.roles[gigIndex].gigRoles.findIndex(role => role.id === action.payload.id)
+      const newRoles = [...state.roles[gigIndex].gigRoles]
+      newRoles.splice(roleIndex, 1, action.payload)
+      const newGigs = [...state.roles]
+      newGigs.splice(gigIndex, 1, {...state.roles[gigIndex], gigRoles: newRoles} )
+      return {...state, roles:newGigs};
+    }
+    case REMOVE_ROLE:{
+      const gigIndex = state.roles.findIndex(gig => gig.id === action.payload.gigId)
+      const roleIndex = state.roles[gigIndex].gigRoles.findIndex(role => role.id === action.payload.id)
+      const newRoles = [...state.roles[gigIndex].gigRoles]
+      const spliced = newRoles.splice(roleIndex, 1)
+      console.log('SPLICED: ', spliced)
+      const newGigs = [...state.roles]
+      newGigs.splice(gigIndex, 1, {id:action.payload.gigId, gigRoles: newRoles} )
+      return {...state, roles:newGigs};
+    }
+    case CLEAR_ROLES:
+      return {...state, roles: []}
+    default:
+      return state;
           }
 };
 
@@ -461,7 +702,7 @@ function  getPurpose(data) {
   if (purpose && (purpose === 'actor' || purpose === 'company')) return purpose;
   if (data.actorPortfolio && data.company) {
     // Window.localStorage.setItem('purpose', 'actor')
-    return 'actor'
+    return 'company'
   }
   if (data.actorPortfolio) {
     // Window.localStorage.setItem('purpose', 'actor')

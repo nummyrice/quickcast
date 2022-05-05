@@ -47,7 +47,7 @@ const ActorPortfolio = () => {
     if (!session.actorPortfolio) return <Navigate to='/home/create-portfolio'/>
     return(
         <form onSubmit={e => handleSubmit(e)} id='edit_portfolio_form'>
-            <img id='profile_photo' src={'https://quickcast-app.s3.us-west-1.amazonaws.com/1651548885787'}/>
+            <img alt='actor avatar' id='profile_photo' src={'https://quickcast-app.s3.us-west-1.amazonaws.com/1651548885787'}/>
             <label htmlFor='profilePhoto'>{"Profile Photo"}</label>
             <input type='file' onChange={e => setProfilePhoto({value:e.target.files[0], edit: true})} name='profilePhoto'/>
             <label htmlFor='firstName'>{"First Name"}</label>

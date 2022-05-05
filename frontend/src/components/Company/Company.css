@@ -1,0 +1,21 @@
+#company_nav {
+    display: flex;
+    justify-content: center;
+    top: 0px;
+}
+
+#company_nav a {
+    margin: 2rem;
+}
+
+#edit_company_form {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+}
+
+#edit_company_form img {
+    object-fit: cover;
+    width: 100px;
+    height: 100px;
+}

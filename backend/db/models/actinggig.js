@@ -46,6 +46,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'gigId',
       onDelete: 'cascade',
       hooks: true,
+      as: 'gigRoles'
     });
     ActingGig.belongsTo(models.User, {
       foreignKey: 'userId',
@@ -64,6 +65,24 @@ module.exports = (sequelize, DataTypes) => {
         attributes: {
           include: ['name', 'id']
         }
+      }]
+    })
+
+    ActingGig.addScope('getRoles', {
+      attributes:{
+        exclude:[
+          'description',
+          'rehearsalProductionDates',
+          'compensationDetails',
+          'location',
+          'gigType',
+          'createdAt',
+          'updatedAt'
+        ]
+      },
+      include:[{
+        model: models.GigRole,
+        as: 'gigRoles'
       }]
     })
   };

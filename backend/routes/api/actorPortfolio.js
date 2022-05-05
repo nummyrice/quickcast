@@ -102,7 +102,7 @@ const validateUpdate = [
     handleValidationErrors
 ]
 // Get all portfolios
-router.get('/all', asyncHandler(async (req, res) => {
+router.post('/all', asyncHandler(async (req, res) => {
     const offset = req.body.offset
     const portfolios = await ActorPortfolio.findAndCountAll({
         // where: {...},
@@ -110,7 +110,8 @@ router.get('/all', asyncHandler(async (req, res) => {
         limit: 5,
         offset: offset,
     })
-    return res.json(portfolios)
+    // console.log(portfolios.rows, 'PORTFOLIOS__________')
+    return res.json(portfolios.rows)
 }))
 
 // Create Portfolio
@@ -146,15 +147,18 @@ router.put('/', singleUpload, validateUpdate, asyncHandler(async (req, res) => {
     if (req.file && req.file.location) uploadedUrl.profilePicture = req.file.location
     const requiredData = matchedData(req, { includeOptionals: false});
     const portfolioToUpdate = await ActorPortfolio.findByPk(requiredData.id)
-    const prevPortfolioUrl = portfolioToUpdate.profilePhoto.split('/')
-    const prevPortfolioKey = prevPortfolioUrl[prevPortfolioUrl.length - 1]
-    s3.deleteObject({Bucket:'quickcast-app', Key: prevPortfolioKey}, function(err, data) {
-        if (err) console.log(err, err.stack);
-        else console.log("successfully deleted")
-    })
+    if (portfolioToUpdate.profilePhoto) {
+        const prevPortfolioUrl = portfolioToUpdate.profilePhoto.split('/')
+        const prevPortfolioKey = prevPortfolioUrl[prevPortfolioUrl.length - 1]
+        s3.deleteObject({Bucket:'quickcast-app', Key: prevPortfolioKey}, function(err, data) {
+            if (err) console.log(err, err.stack);
+            else console.log("successfully deleted")
+        })
+    }
     const updatedPortfolio = await portfolioToUpdate.updateDetails(requiredData, uploadedUrl)
     return res.json(updatedPortfolio)
 }))
+
 
 // Delete Portfolio
 router.delete('/', asyncHandler(async (req, res) => {

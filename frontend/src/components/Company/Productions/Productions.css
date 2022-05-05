@@ -1,0 +1,24 @@
+/* ======= Production ==== */
+
+#my_productions {
+
+}
+
+#create_production_form {
+    display: flex;
+    flex-direction: column;
+
+}
+
+#edit_gig_form {
+    display: flex;
+    flex-direction: column;
+}
+
+#edit_gig_form::after {
+    content:'';
+    border: 1px solid black;
+    width: 200px;
+    align-self: center;
+    margin-top: 2rem;
+}

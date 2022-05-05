@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
-import Widgets from './components/Widgets'
 import { Modal } from "./context/Modal";
 import ErrorWindow from "./components/ErrorWindow";
 import { clearErrors} from './store/errors'
@@ -39,7 +38,7 @@ function App() {
   // console.log('isLoaded ', isLoaded)
   if (isLoaded) return(
     <>
-      <Navigation sessionUser={session.user}/>
+      <Navigation session={session}/>
       <Outlet/>
       {errors.length > 0 && <Modal onClose={closeErrors}>
         <ErrorWindow errors={errors} closeErrors={closeErrors} />
