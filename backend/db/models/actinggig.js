@@ -68,7 +68,7 @@ module.exports = (sequelize, DataTypes) => {
       }]
     })
 
-    ActingGig.addScope('getRoles', {
+    ActingGig.addScope('userGigRoles', {
       attributes:{
         exclude:[
           'description',
@@ -79,6 +79,17 @@ module.exports = (sequelize, DataTypes) => {
           'createdAt',
           'updatedAt'
         ]
+      },
+      include:[{
+        model: models.GigRole,
+        as: 'gigRoles'
+      }]
+    })
+    // get all gigs
+      // get list of roles for each
+    ActingGig.addScope('getAttachedRoles', {
+      where: {
+
       },
       include:[{
         model: models.GigRole,

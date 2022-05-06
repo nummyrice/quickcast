@@ -28,6 +28,20 @@ module.exports = (sequelize, DataTypes) => {
     GigRole.belongsTo(models.ActingGig, {
       foreignKey: 'gigId'
     });
+
+    GigRole.hasMany(models.Application, {
+      foreignKey: 'roleId',
+      as: 'applicants',
+      onDelete: 'cascade',
+      hooks: true
+    })
+
+    GigRole.addScope('includeApplicants', {
+      include: [{
+        model: models.Application,
+        as: 'applicants'
+      }]
+    })
   };
 
   GigRole.prototype.updateDetails = async function (gigId, title, description, gender, ageRange) {

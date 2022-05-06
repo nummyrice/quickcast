@@ -33,6 +33,11 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'cascade',
       hooks: true,
     });
+    Company.hasMany(models.Application, {
+      foreignKey: 'companyId',
+      onDelete: 'cascade',
+      hooks: true
+    })
   };
 
   Company.prototype.updateDetails = async function (name, phoneNumber, details, website, imageUrl) {

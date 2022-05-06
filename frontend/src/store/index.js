@@ -4,11 +4,15 @@ import companyReducer from './company';
 import portfolioReducer from './portfolio';
 import sessionReducer from './session';
 import errorsReducer from './errors';
+import gigReducer from './gigs';
+import roleReducer from './roles';
 
 const rootReducer = combineReducers({
     session: sessionReducer,
     companies: companyReducer,
     portfolios: portfolioReducer,
+    gigs: gigReducer,
+    roles: roleReducer,
     errors: errorsReducer
 });
 

@@ -71,9 +71,16 @@ const validateUpdate = [
     ,
     handleValidationErrors
 ]
+// Get role
+router.get('/:id', asyncHandler(async (req, res) => {
+    const id = req.params.id
+    const role = await GigRole.findByPk(id)
+    if (!role) return next(new Error('Role does not exist'))
+    return res.json(role)
+}))
 
 // Get all roles
-router.get('/all', asyncHandler(async (req, res) => {
+router.post('/all', asyncHandler(async (req, res) => {
     const offset = req.body.offset
     const roles = await GigRole.findAndCountAll({
         // where: {...},
@@ -86,7 +93,7 @@ router.get('/all', asyncHandler(async (req, res) => {
 
 router.post('/by_user', asyncHandler(async (req, res) => {
     const userId = req.body.userId
-    const gigRoles = await ActingGig.scope('getRoles').findAll({where:{userId: userId}})
+    const gigRoles = await ActingGig.scope('userGigRoles').findAll({where:{userId: userId}})
     return res.json(gigRoles)
 }))
   // Create  Role

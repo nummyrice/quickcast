@@ -57,9 +57,9 @@ function Navigation({ session }){
         <NavLink to='/home/my-gallery'>
           {"My Gallery"}
         </NavLink>
-        <div>
-          {"Search"}
-        </div>
+        <NavLink to='/home/search-gigs'>
+          {"Search Productions"}
+        </NavLink>
         <button onClick={() => {
           dispatch(sessionActions.logout())
         }}>

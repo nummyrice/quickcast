@@ -15,16 +15,16 @@ const routes = require('./routes');
 app.use(morgan('dev'));
 app.use(express.json());
 // Set the _csrf token and create req.csrfToken method
-app.use(cookieParser());
-app.use(
-    csurf({
-        cookie: {
-            secure: isProduction,
-            sameSite: isProduction && "Lax",
-            httpOnly: true,
-        },
-    })
-    );
+// app.use(cookieParser());
+// app.use(
+//     csurf({
+//         cookie: {
+//             secure: isProduction,
+//             sameSite: isProduction && "Lax",
+//             httpOnly: true,
+//         },
+//     })
+//     );
 app.use(express.urlencoded({extended: true}));
 
 

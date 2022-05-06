@@ -83,8 +83,14 @@ const validateUpdate = [
 
 //TODO: must paginate GET routes
 // Get all gigs
-router.get('/all', asyncHandler(async (req, res) => {
-    const gigs = await ActingGig.findAll();
+router.post('/all', asyncHandler(async (req, res) => {
+    const offset = req.body.offset
+    const gigs = await ActingGig.scope('getAttachedRoles').findAll({
+        // where: {...},
+        // order: [...],
+        limit: 5,
+        offset: offset,
+    });
     return res.json(gigs)
 }))
 
@@ -99,7 +105,6 @@ router.get('/by_company', asyncHandler(async(req, res) => {
 router.post('/by_user',  asyncHandler(async(req, res) => {
     const userId = req.body.userId
     const usersGigs = await ActingGig.findAll({where: {userId: userId}})
-    console.log("NEW GIG: ", usersGigs)
     return res.json(usersGigs)
 }))
 

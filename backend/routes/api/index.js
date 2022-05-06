@@ -7,6 +7,7 @@ const gigrole = require('./gigrole.js');
 const actorPortfolio = require('./actorPortfolio.js');
 const portfolioGallery = require('./portfoliogallery.js')
 const tag = require('./tag.js')
+const application = require('./application.js')
 const asyncHandler = require('express-async-handler');
 const { setTokenCookie } = require('../../utils/auth.js');
 const { User } = require('../../db/models');
@@ -19,6 +20,7 @@ router.use('/gigrole', gigrole);
 router.use('/actorPortfolio', actorPortfolio);
 router.use('/portfolioGallery', portfolioGallery);
 router.use('/tag', tag)
+router.use('/application', application)
 
 
 // TEST
