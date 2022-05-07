@@ -9,6 +9,7 @@ import { setErrors } from '../../store/errors';
 
 const ViewOne = () => {
     const dispatch = useDispatch()
+    const user = useSelector(state => state.session.user)
     const params = useParams()
     const navigate = useNavigate()
     const [role, setRole] = useState(null)
@@ -27,10 +28,29 @@ const ViewOne = () => {
         }
           )
     }, [])
+
+    const apply = async (companyId, applicantId, roleId) => {
+        try {
+            const response = await csrfFetch('/api/application', {
+                method: 'POST',
+                body: JSON.stringify({companyId, applicantId, roleId})
+            })
+                const updatedApplicants = [...role.applicants]
+                updatedApplicants.push({applicantId: user.id})
+              setRole({...role, applicants: updatedApplicants})
+            return response;
+          } catch (res) {
+            res.json()
+            .then((data) => {
+              if (data.errors) dispatch(setErrors(data.errors))
+            })
+            return res;
+          }
+    }
     return(
         <div>
             {isLoaded && role &&
-                <RoleCard role={role}/>
+                <RoleCard apply={apply} role={role} user={user}/>
             }
         </div>
     )

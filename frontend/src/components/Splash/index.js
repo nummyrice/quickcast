@@ -5,7 +5,7 @@ import "./Splash.css";
 
 function Splash() {
     const sessionUser = useSelector((state) => state.session.user);
-    if (sessionUser) return <Navigate to='/' />
+    if (sessionUser) return <Navigate to='/home' />
     return(
     <div className="splash_main">
         <div>

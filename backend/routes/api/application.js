@@ -55,13 +55,21 @@ const validateUpdate = [
 ]
 
 // GET all for user
-router.get('/:applicantId', asyncHandler(async (req, res) => {
+router.get('/for_actor/:applicantId', asyncHandler(async (req, res) => {
     const applicantId = req.params.applicantId
-    const applications = await Application.findAll({where: {applicantId: applicantId}})
+    const applications = await Application.scope('withRoleDetails').findAll({where: {applicantId: applicantId}})
     return res.json(applications)
 }))
 
-router.post('/',validateApplicant, asyncHandler(async (req, res) => {
+// GET all for company
+router.get('/for_company/:companyId', asyncHandler(async (req, res) => {
+    const companyId = req.params.companyId
+    const actingGigsWithRolesAndApps = await ActingGig.scope('viewRolesAndApps').findAll({where: {companyId: companyId}})
+    return res.json(actingGigsWithRolesAndApps)
+}))
+
+// CREATE application
+router.post('/',validateApplicant, asyncHandler(async (req, res, next) => {
     const requiredData = matchedData(req, { includeOptionals: false });
     const userAlreadyApplied = await Application.findOne({where: {applicantId: requiredData.applicantId, roleId: requiredData.roleId}})
     if (userAlreadyApplied) return next(new Error('user already applied'))
@@ -69,6 +77,7 @@ router.post('/',validateApplicant, asyncHandler(async (req, res) => {
     return res.json(newApplication)
 }))
 
+// UPDATE app status
 router.put('/',validateUpdate, asyncHandler(async (req, res) => {
     const requiredData = matchedData(req, { includeOptionals: false });
     const appToUpdate = await Application.findByPk(requiredData.id)

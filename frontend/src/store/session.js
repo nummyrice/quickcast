@@ -23,6 +23,9 @@ const SET_ROLE = 'session/user/role/set'
 const REMOVE_ROLE = 'session/user/role/remove'
 const UPDATE_ROLE = 'session/user/role/update'
 const CLEAR_ROLES = 'session/user/roles/clear'
+const SET_APPS = 'applications/set';
+const CLEAR_APPS = 'applications/clear';
+const UPDATE_APP_STATUS = 'applications/status/update';
 
 const setUser = (user) => {
   return {
@@ -126,6 +129,20 @@ const removeRole = (gigId, roleId) => ({
 
 const clearRoles = () => ({
   type: CLEAR_ROLES
+})
+
+const setApplications = (applications) => ({
+  type: SET_APPS,
+  payload: applications
+})
+
+const updateAppStatus = (appId, status) => ({
+  type: UPDATE_APP_STATUS,
+  payload: {appId, status}
+})
+
+const clearPortfolios = () => ({
+  type: CLEAR_APPS
 })
 
 // THUNK for Login
@@ -606,16 +623,49 @@ export const deletePhoto = (photoId) => async (dispatch) => {
   }
 }
 
+// THUNK to get all actor portfolios paginated
+export const getAndSetApplications = (applicantId) => async (dispatch) => {
+  try {
+    const response = await csrfFetch(`/api/application/for_actor/${applicantId}`)
+    const data = await response.json()
+      dispatch(setApplications(data))
+
+  } catch (res) {
+    res.json()
+    .then((data) => {
+      if (data.errors) dispatch(setErrors(data.errors))
+    })
+    return res;
+  }
+}
+
+export const changeAndUpdateAppStatus = (appId, status) => async (dispatch) => {
+    try {
+        const response = await csrfFetch('/api/application', {
+            method: 'PUT',
+            body: JSON.stringify({appId, status})
+        })
+          dispatch(updateAppStatus(appId, status))
+        return response;
+      } catch (res) {
+        res.json()
+        .then((data) => {
+          if (data.errors) dispatch(setErrors(data.errors))
+        })
+        return res;
+      }
+}
+
 // THUNK for toggling purpose
 export const toggleAndSetPurpose = () => async (dispatch) => {
   dispatch(togglePurpose())
 }
 
-const initialState = { user: null, actorPortfolio: null, company: null, gallery: [], productions: [], roles: [] };
+const initialState = { user: null, actorPortfolio: null, company: null, gallery: [], productions: [], roles: [], applications: [] };
 const sessionReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_USER:
-        return {user: action.payload, actorPortfolio: state.actorPortfolio, company: state.company, gallery: state.gallery, productions: state.productions, roles: state.roles};
+        return {...state, user: action.payload};
     case REMOVE_USER:
         return initialState;
     case SET_PORTFOLIO:
@@ -691,6 +741,16 @@ const sessionReducer = (state = initialState, action) => {
     }
     case CLEAR_ROLES:
       return {...state, roles: []}
+    case SET_APPS:
+        return {...state, applications: action.payload};
+    case CLEAR_APPS:
+        return {...state, applications: []};
+    case UPDATE_APP_STATUS:
+        const appToUpdateIndex = state.findIndex(app => app.id === action.payload.appId)
+        const updatedApp = {...state[appToUpdateIndex], status: action.payload.status}
+        const applicationsToUpdate = [...state]
+        applicationsToUpdate.splice(appToUpdateIndex, 1, updatedApp)
+        return {...state, applications: applicationsToUpdate}
     default:
       return state;
           }
@@ -701,15 +761,15 @@ function  getPurpose(data) {
   const purpose = null;
   if (purpose && (purpose === 'actor' || purpose === 'company')) return purpose;
   if (data.actorPortfolio && data.company) {
-    // Window.localStorage.setItem('purpose', 'actor')
-    return 'company'
+    localStorage.setItem('purpose', 'actor')
+    return 'actor'
   }
   if (data.actorPortfolio) {
-    // Window.localStorage.setItem('purpose', 'actor')
+    localStorage.setItem('purpose', 'actor')
     return 'actor'
   }
   if (data.company) {
-    // Window.localStorage.setItem('purpose', 'company')
+    localStorage.setItem('purpose', 'company')
     return 'company'
   }
   return null;

@@ -14,7 +14,6 @@ function App() {
   const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
     // const currentLocale = location.pathname
-    console.log('how many times?')
     dispatch(sessionActions.restoreUser())
     .then(data => {
       setIsLoaded(true)

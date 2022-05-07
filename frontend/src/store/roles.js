@@ -1,34 +1,34 @@
 import { csrfFetch } from "./csrf";
 import { setErrors } from "./errors";
-/* ================== COPIED CODE ===================== */
-const SET_PORTFOLIOS = 'portfolios/set';
-const CLEAR_PORTFOLIOS = 'portfolios/clear';
-const REMOVE_PORTFOLIO = 'portfolios/remove';
 
-const setPortfolios = (portfolios) => ({
-  type: SET_PORTFOLIOS,
+const SET_ROLES = 'roles/set';
+const CLEAR_ROLES = 'roles/clear';
+const REMOVE_ROLE = 'roles/remove';
+
+const setRoles = (portfolios) => ({
+  type: SET_ROLES,
   payload: portfolios
 })
 
-const removePortfolio = (portfolioId) => ({
-  type: REMOVE_PORTFOLIO,
+const removeRole = (portfolioId) => ({
+  type: REMOVE_ROLE,
   payload: portfolioId
 })
 
-const clearPortfolios = () => ({
-  type: CLEAR_PORTFOLIOS
+const clearRoles = () => ({
+  type: CLEAR_ROLES
 })
 
 // THUNK to get all actor portfolios paginated
 export const getPortfolios = (offset) => async (dispatch) => {
   try {
-    const response = await csrfFetch('/api/actorPortfolio/all', {
+    const response = await csrfFetch('/api/gigrole/all', {
       method: 'POST',
       body: JSON.stringify({offset})
     })
     const data = await response.json()
-      dispatch(setPortfolios(data))
-
+      dispatch(setRoles(data))
+    return response
   } catch (res) {
     res.json()
     .then((data) => {
@@ -41,15 +41,15 @@ export const getPortfolios = (offset) => async (dispatch) => {
 const initialState = [];
 const roleReducer = (state = initialState, action) => {
     switch (action.type) {
-        case SET_PORTFOLIOS:
+        case SET_ROLES:
             return action.payload;
-        case CLEAR_PORTFOLIOS:
+        case CLEAR_ROLES:
             return [];
-        case REMOVE_PORTFOLIO:
-            const portfolioIndex = state.findIndex(portfolio => portfolio.id === action.payload)
-            const newPortfolios = [...state]
-            newPortfolios.splice(portfolioIndex, 1)
-            return newPortfolios
+        case REMOVE_ROLE:
+            const roleIndex = state.findIndex(role => role.id === action.payload)
+            const newRoles = [...state]
+            newRoles.splice(roleIndex, 1)
+            return newRoles
         default:
             return state;
     }

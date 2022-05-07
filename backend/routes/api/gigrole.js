@@ -74,10 +74,11 @@ const validateUpdate = [
 // Get role
 router.get('/:id', asyncHandler(async (req, res) => {
     const id = req.params.id
-    const role = await GigRole.findByPk(id)
+    const role = await GigRole.scope('includeApplicantIds').findByPk(id)
     if (!role) return next(new Error('Role does not exist'))
     return res.json(role)
 }))
+
 
 // Get all roles
 router.post('/all', asyncHandler(async (req, res) => {

@@ -22,7 +22,8 @@ module.exports = (sequelize, DataTypes) => {
   Application.associate = function(models) {
     // associations can be defined here
     Application.belongsTo(models.User, {
-      foreignKey: 'id'
+      foreignKey: 'id',
+      as: 'applicant'
     })
 
     Application.belongsTo(models.Company, {

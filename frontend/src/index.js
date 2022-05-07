@@ -33,6 +33,7 @@ import CreateRole from './components/Company/Roles/CreateRole';
 import PortfolioView from './components/PortfolioView'
 import GigView from './components/GigView';
 import ViewOne from './components/Main/ViewOne';
+import Applications from './components/Applications';
 // do not expose store to the window in production
 const store = configureStore();
 
@@ -69,6 +70,7 @@ function Root() {
                   <Route path='search-portfolios' element={<PortfolioView/>}/>
                   <Route path='search-gigs' element={<GigView/>}/>
                   <Route path='view-role/:id' element={<ViewOne/>}/>
+                  <Route path='my-applications' element={<Applications/>}/>
                 </Route>
             </Route>
             <Route path='*' element={<Navigate to='/welcome-to-quickcast'/>}/>

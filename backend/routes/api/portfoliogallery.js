@@ -59,7 +59,6 @@ handleValidationErrors
 router.post('/by_user', asyncHandler(async (req, res, next) => {
     const userId = req.body.userId;
     const userExists = await User.findByPk(userId)
-    console.log("User EXISTS: ", userExists)
     if (!userExists) return next(new Error('User does not exist.'))
     const userGallery = await PortfolioGallery.findAll({where: {userId: userId}, order: [['order', 'ASC']]})
     return res.json(userGallery)

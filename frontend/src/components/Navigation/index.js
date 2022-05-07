@@ -60,8 +60,13 @@ function Navigation({ session }){
         <NavLink to='/home/search-gigs'>
           {"Search Productions"}
         </NavLink>
+        <NavLink to='/home/my-applications'>
+          {"My Applications"}
+        </NavLink>
         <button onClick={() => {
-          dispatch(sessionActions.logout())
+          dispatch(sessionActions.logout()).then(
+            // navigate('/welcome-to-quickcast')
+          )
         }}>
           {"Logout"}
         </button>
@@ -84,7 +89,9 @@ function Navigation({ session }){
           {"Search Talent"}
         </NavLink>
         <button onClick={() => {
-          dispatch(sessionActions.logout())
+          dispatch(sessionActions.logout()).then(
+            // navigate('/welcome-to-quickcast')
+          )
         }}>
           {"Logout"}
         </button>
@@ -103,7 +110,9 @@ function Navigation({ session }){
           {"Looking for talent"}
         </NavLink>
         <button onClick={() => {
-          dispatch(sessionActions.logout())
+          dispatch(sessionActions.logout()).then(
+            // navigate('/welcome-to-quickcast')
+          )
         }}>
           {"Logout"}
         </button>

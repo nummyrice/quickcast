@@ -26,7 +26,8 @@ module.exports = (sequelize, DataTypes) => {
   GigRole.associate = function(models) {
     // associations can be defined here
     GigRole.belongsTo(models.ActingGig, {
-      foreignKey: 'gigId'
+      foreignKey: 'gigId',
+      as: 'gig'
     });
 
     GigRole.hasMany(models.Application, {
@@ -40,6 +41,41 @@ module.exports = (sequelize, DataTypes) => {
       include: [{
         model: models.Application,
         as: 'applicants'
+      }]
+    })
+
+    GigRole.addScope('includeApplicantIds', {
+      include:[ {
+        model: models.Application,
+        as: 'applicants',
+        attributes: {
+          exclude: [
+            'id',
+            'companyId',
+            'status',
+            'createdAt',
+            'updatedAt',
+            'roleId'
+          ]
+        }
+      },
+      {
+        model: models.ActingGig,
+        as: 'gig',
+        attributes: {
+          exclude: [
+            'id',
+            'userId',
+            'title',
+            'description',
+            'rehearsalProductionDates',
+            'compensationDetails',
+            'location',
+            'gigType',
+            'createdAt',
+            'updatedAt'
+          ]
+        }
       }]
     })
   };

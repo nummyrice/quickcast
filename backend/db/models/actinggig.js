@@ -96,6 +96,21 @@ module.exports = (sequelize, DataTypes) => {
         as: 'gigRoles'
       }]
     })
+
+    ActingGig.addScope('viewRolesAndApps', {
+      include: {
+        model: models.GigRole,
+        as: 'gigRoles',
+        include: {
+          model: models.Application,
+          as: 'applicants',
+          include: {
+            model: models.User,
+            as: 'applicant'
+          }
+        }
+      }
+    })
   };
 
   ActingGig.prototype.updateDetails = async function (userId, companyId, title, description, rehearsalProductionDates, compensationDetails, location, gigType) {
