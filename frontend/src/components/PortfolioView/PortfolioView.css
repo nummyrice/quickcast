@@ -5,7 +5,7 @@ img {
     object-fit: cover;
 }
 
-img:before {
+.portfolio_card img:before {
     content: ' ';
     display: block;
     position: absolute;
