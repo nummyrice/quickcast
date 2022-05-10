@@ -28,6 +28,7 @@ function Productions() {
             // roles are sorted by production
     return(
     <div id='my_productions'>
+        <CreateProduction/>
         {isLoaded &&
             productions.map(gig => {
                 return(
@@ -35,7 +36,6 @@ function Productions() {
                 )
             })
         }
-        <CreateProduction/>
     </div>
     )
 };

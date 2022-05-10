@@ -42,7 +42,7 @@ const EditProduction = ({gig}) => {
         })
     }
     return(
-        <form onSubmit={e => handleSubmit(e)} id='edit_gig_form'>
+        <form className={`quickcast_edit_form`} onSubmit={e => handleSubmit(e)} id='edit_gig_form'>
             <label htmlFor='title'>{"Production Title"}</label>
             <span>
                 <input  readOnly={!title.edit} onClick={e => setTitle({value: title.value, edit:true })} name='title' onChange={e => setTitle({value: e.target.value, edit: title.edit})} value={title.value}/>
@@ -92,8 +92,8 @@ const EditProduction = ({gig}) => {
                     )
                 })}
             </ul>
-            <button form='edit_gig_form' type='submit'>{'Submit'}</button>
-            <button onClick={e => handleDelete(e)}>{"Delete Production"}</button>
+            <button className={`quickcast_submit_btn`} form='edit_gig_form' type='submit'>{'Submit'}</button>
+            <button className={`low_visibility_link`} onClick={e => handleDelete(e)}>{"Delete Production"}</button>
         </form>
     )
 }

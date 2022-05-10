@@ -146,6 +146,8 @@ router.put('/', singleUpload, validateUpdate, asyncHandler(async (req, res) => {
 router.delete('/', asyncHandler(async (req, res, next) => {
   const companyId = req.body.id;
   const companyToDelete = await Company.findByPk(companyId);
+  console.log('COMPANY:_________: ', companyToDelete)
+  console.log('------------------------------')
   if (!companyToDelete) return next(new Error('Company does not exist'))
   if (companyToDelete.image) {
     const prevImageUrl = companyToDelete.image.split('/')

@@ -2,7 +2,7 @@ const express = require('express');
 const asyncHandler = require('express-async-handler');
 const { check, matchedData } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
-const { User, ActingGig, Tag, ActorPortfolio} = require('../../db/models');
+const { User, ActingGig, Tag, ActorPortfolio, PortfolioGallery} = require('../../db/models');
 const { uploadS3, s3 } = require('../../utils/aws.js')
 const singleUpload = uploadS3.single("image")
 
@@ -108,10 +108,17 @@ router.post('/all', asyncHandler(async (req, res) => {
         // where: {...},
         // order: [...],
         limit: 5,
-        offset: offset,
+        offset: offset
     })
-    // console.log(portfolios.rows, 'PORTFOLIOS__________')
-    return res.json(portfolios.rows)
+    const galleries = {}
+    await Promise.all(portfolios.rows.map(async portfolio => {
+        const userId = portfolio.userId
+        const gallery = await PortfolioGallery.findAll({where: {userId: userId}})
+        galleries[userId] = gallery
+        return;
+    }))
+    console.log('PORTFOLIOS__________', portfolios.rows[0].dataValues)
+    return res.json({portfolios: portfolios.rows, galleries: galleries})
 }))
 
 // Create Portfolio

@@ -12,18 +12,18 @@ const RoleCard = ({role, gigName, user, apply}) => {
      if (role.applicants.some(applicant => applicant.applicantId === user.id)) {
          applicationDetails = (
          <>
-            <p>Your application has been submit</p>
-            <button onClick={e => navigate('/home')}>{'View Status'}</button>
+            <p className={`app_status_text`}>Your application has been submitted</p>
+            <button className={`quickcast_submit_btn`} onClick={e => navigate('/home/my-applications')}>{'View Status'}</button>
          </>)
      } else {
          applicationDetails = (
-            <button onClick={e => apply(role.gig.companyId, user.id, role.id)}>{'Apply'}</button>
+            <button className={`quickcast_submit_btn`} onClick={e => apply(role.gig.companyId, user.id, role.id)}>{'Apply'}</button>
          )
      }
     return(
         <div className='role_card'>
             <h1>{role.title}</h1>
-            <h1>{role.gender}</h1>
+            <h3>{role.gender}</h3>
             <p>{role.ageRange}</p>
             <p>{role.description}</p>
             {/* <p>{gigName}</p> */}

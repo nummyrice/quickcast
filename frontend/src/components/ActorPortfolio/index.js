@@ -46,8 +46,11 @@ const ActorPortfolio = () => {
     }
     if (!session.actorPortfolio) return <Navigate to='/home/create-portfolio'/>
     return(
-        <form onSubmit={e => handleSubmit(e)} id='edit_portfolio_form'>
-            <img alt='actor avatar' id='profile_photo' src={'https://quickcast-app.s3.us-west-1.amazonaws.com/1651548885787'}/>
+        <form className={`quickcast_edit_form`} onSubmit={e => handleSubmit(e)} id='edit_portfolio_form'>
+            <img className={`edit_profile`} alt='actor avatar' id='profile_photo' src={session.actorPortfolio.profilePhoto} onError={({ currentTarget }) => {
+              currentTarget.onerror = null; // prevents looping
+              currentTarget.src="https://quickcast-app.s3.us-west-1.amazonaws.com/Screen+Shot+2022-05-10+at+1.42.17+PM.png";
+            }}/>
             <label htmlFor='profilePhoto'>{"Profile Photo"}</label>
             <input type='file' onChange={e => setProfilePhoto({value:e.target.files[0], edit: true})} name='profilePhoto'/>
             <label htmlFor='firstName'>{"First Name"}</label>
@@ -78,8 +81,8 @@ const ActorPortfolio = () => {
             <span>
                 <input  readOnly={!location.edit} type='text' name='location' onClick={e => { setLocation({value: location.value, edit:true })}} onChange={e => setLocation({value: e.target.value, edit: location.edit})} value={location.value}/>
             </span>
-            <button form='edit_portfolio_form' type='submit'>{'Submit'}</button>
-            <button onClick={e => handleDelete(e)}>{"Delete Portfolio"}</button>
+            <button className={`quickcast_submit_btn`} form='edit_portfolio_form' type='submit'>{'Submit'}</button>
+            <button className={`low_visibility_link`} onClick={e => handleDelete(e)}>{"Delete Portfolio"}</button>
         </form>
     )
 }

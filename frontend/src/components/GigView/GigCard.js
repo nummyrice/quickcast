@@ -14,7 +14,6 @@ const GigCard = ({gig}) => {
     return(
         <div className='gig_card'>
             <h1>{gig.title}</h1>
-            <h1>{gig.lastName}</h1>
             <p>{gig.description}</p>
             <p>{gig.rehearsalProductionDates}</p>
             <p>{gig.compensationDetails}</p>
@@ -22,9 +21,9 @@ const GigCard = ({gig}) => {
             <p>{gig.gigType}</p>
             {gig.gigRoles.map(role => {
                 return(
-                    <div key={role.id}>
-                        <h4>{gig.title}</h4>
-                        <button onClick={() => navigate(`/home/view-role/${role.id}`)}>{'Details'}</button>
+                    <div className={`gig_role`} key={role.id}>
+                        <h3>{gig.title}</h3>
+                        <button className={`quickcast_submit_btn`} onClick={() => navigate(`/home/view-role/${role.id}`)}>{'Details'}</button>
                     </div>
                 )
             })}

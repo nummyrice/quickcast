@@ -38,6 +38,12 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'cascade',
       hooks: true
     })
+    Company.addHook('beforeDestroy',  'clearJoinTagsData', async (company, options) => {
+      const companyGigs = await models.ActingGig.findAll({where: {companyId: company.id}})
+      const gigIds = companyGigs.map(gig => gig.id)
+      await models.ActingGigTag.destroy({where:{actingGigId: gigIds}})
+      return;
+    })
   };
 
   Company.prototype.updateDetails = async function (name, phoneNumber, details, website, imageUrl) {

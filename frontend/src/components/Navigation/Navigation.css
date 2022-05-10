@@ -77,6 +77,7 @@
         border-right: 1px solid grey;
         border-top: none;
         min-width: 203px;
+        width: 240px;
 
     }
 
@@ -91,7 +92,7 @@
         align-items: center;
     }
 
-    h3 {
+    .navigation_bar h3 {
         display: block !important;
         color: black;
     }

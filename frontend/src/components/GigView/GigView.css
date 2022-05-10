@@ -1,0 +1,17 @@
+.gig_card {
+    border-bottom: 1px solid grey;
+    padding: 1rem;
+}
+
+.gig_card h1 {
+    color: black;
+    font-family: 'Oleo Script Swash Caps', cursive;
+}
+.gig_card .gig_role {
+    display: flex;
+    flex-direction: column;
+}
+
+.gig_card .gig_role button {
+    width: 10rem;
+}

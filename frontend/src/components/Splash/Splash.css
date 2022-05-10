@@ -8,6 +8,9 @@
     animation: background-move 12s ease-in-out infinite alternate;
     border-right: 1px solid grey;
     overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 @keyframes background-move {

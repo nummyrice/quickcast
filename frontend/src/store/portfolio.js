@@ -27,7 +27,16 @@ export const getPortfolios = (offset) => async (dispatch) => {
       body: JSON.stringify({offset})
     })
     const data = await response.json()
-      dispatch(setPortfolios(data))
+
+    data.portfolios.forEach(portfolio => {
+      if (data.galleries[portfolio.userId]) {
+        portfolio.gallery = data.galleries[portfolio.userId]
+      } else {
+        portfolio.gallery = []
+      }
+      return;
+      })
+      dispatch(setPortfolios(data.portfolios))
 
   } catch (res) {
     res.json()

@@ -1,7 +1,9 @@
 /* ======= Production ==== */
 
 #my_productions {
-
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #create_production_form {

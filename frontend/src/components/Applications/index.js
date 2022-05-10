@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch} from 'react-redux';
 import { getAndSetApplications } from '../../store/session';
 import { useOutletContext } from 'react-router-dom';
+import './Applications.css'
 // import GigCard from './GigCard';
 
 const Applications = () => {
@@ -23,7 +24,7 @@ const Applications = () => {
 
     console.log('LETS CHECK OUT APPLICATIONS', myApplications)
     return(
-        <div>
+        <div id={`apps_list`}>
             {isLoaded && myApplications.map(roleApp => {
 
                 /* ROLEAPP
@@ -38,8 +39,9 @@ const Applications = () => {
                     updatedAt: "2022-
                 }*/
                 return(
-                    <div key={roleApp.id}>
+                    <div className={`app_entry`} key={roleApp.id}>
                         <h1>{roleApp.roleDetails.title}</h1>
+                        <label>{'Status:'}</label>
                         <p>{roleApp.status}</p>
                         <p>{roleApp.createdAt}</p>
                     </div>

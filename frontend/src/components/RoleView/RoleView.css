@@ -1,0 +1,16 @@
+.role_card {
+    border-bottom: 1px solid grey;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.role_card h1 {
+    color: black;
+    font-family: 'Oleo Script Swash Caps', cursive;
+}
+
+.role_card .app_status_text {
+    font-family: 'Oleo Script Swash Caps', cursive;
+    font-size:1.2rem;
+}

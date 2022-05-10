@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import * as sessionActions from "../../store/session";
 // import * as companyActions from "../../store/company";
-import '../CompanyView/CompanyView.css'
+// import '../CompanyView/CompanyView.css'
 
 function CreateCompany() {
     const dispatch = useDispatch()
@@ -22,7 +22,7 @@ function CreateCompany() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(sessionActions.createAndSetCompany({userId: session.user.id, companyName, phoneNumber:phoneNumber.replace(/\D/g, ''), details, image, website }))
+        dispatch(sessionActions.createAndSetCompany({userId: session.user.id, name:companyName, phoneNumber:phoneNumber.replace(/\D/g, ''), details, image, website }))
         .then(result => {
             console.log("actor portfolio successfully submitted", result)
             if (result.ok) navigate('/home/my-company')
@@ -33,7 +33,7 @@ function CreateCompany() {
         return (<Navigate to='/my-company'/>);
     }
     return(
-        <form id='create_company_form' className='company_card' onSubmit={handleSubmit}>
+        <form className={`quickcast_form`} onSubmit={handleSubmit}>
             <label>{"Company Name"}</label>
                 <input
                 type='text'
@@ -50,6 +50,8 @@ function CreateCompany() {
             <label>{"Company Bio"}</label>
                 <textarea
                 value={details}
+                className={`large_text_field`}
+                rows={5}
                 onChange={(e) => setDetails(e.target.value)}
                 ></textarea>
             <label>{"Image or Logo"}</label>
@@ -64,7 +66,7 @@ function CreateCompany() {
                 placeholder="optional website url"
                 onChange={(e) => setWebsite(e.target.value)}
                 ></input>
-            <button form='create_company_form' type="submit">{"Submit"}</button>
+            <button className={`quickcast_submit_btn`} type="submit">{"Submit"}</button>
 
         </form>
     )

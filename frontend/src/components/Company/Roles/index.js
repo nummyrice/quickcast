@@ -27,6 +27,7 @@ function Roles() {
             // roles are sorted by production
     return(
     <div id='my_roles'>
+        {isLoaded && roles.length > 0 && <CreateRole sessionUser={session.user.id} gigs={roles}/>}
         {isLoaded &&
             roles.map(gig => {
                 return(
@@ -41,7 +42,6 @@ function Roles() {
                 )
             })
         }
-        {isLoaded && roles.length > 0 && <CreateRole sessionUser={session.user.id} gigs={roles}/>}
     </div>
     )
 };

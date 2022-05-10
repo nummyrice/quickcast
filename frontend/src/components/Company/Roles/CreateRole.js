@@ -35,7 +35,7 @@ function CreateRole({sessionUser, gigs}) {
     };
 
     return(
-        <form id='create_role_form' onSubmit={handleSubmit}>
+        <form className={`quickcast_form`}  id='create_role_form' onSubmit={handleSubmit}>
                 <label>{'Role Name'}</label>
                     <input
                     type='text'
@@ -50,6 +50,7 @@ function CreateRole({sessionUser, gigs}) {
                     ></input>
                 <label>{'Gender'}</label>
                     <select
+                    className={`select_dropdown`}
                     type='text'
                     value={gender}
                     onChange={(e) => setGender(e.target.value)}
@@ -71,6 +72,7 @@ function CreateRole({sessionUser, gigs}) {
                     />
                 <label>{'Production'}</label>
                     <select
+                    className={`select_dropdown`}
                     type='text'
                     value={gigId}
                     onChange={(e) => setGigId(e.target.value)}
@@ -78,7 +80,7 @@ function CreateRole({sessionUser, gigs}) {
                         {gigs.map(gig => <option key={gig.id} value={gig.id}>{gig.title}</option>)}
                     </select>
 
-                <button form='create_role_form' type="submit">submit</button>
+                <button className={`quickcast_submit_btn`} form='create_role_form' type="submit">submit</button>
 
         </form>
     )

@@ -44,7 +44,7 @@ function CreateProduction() {
         // displays role tabs
             // roles are sorted by production
     return(
-        <form id='create_production_form' onSubmit={handleSubmit}>
+        <form className={`quickcast_form`}id='create_production_form' onSubmit={handleSubmit}>
                 <label> Production Title
                     </label>
                     <input
@@ -103,7 +103,7 @@ function CreateProduction() {
                     value={tags}
                     onChange={(e) => setTags(e.target.value)}
                     ></input>
-                <button form='create_production_form' type="submit">submit</button>
+                <button className={`quickcast_submit_btn`} form='create_production_form' type="submit">submit</button>
 
         </form>
     )

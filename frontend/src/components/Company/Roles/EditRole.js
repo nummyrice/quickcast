@@ -36,7 +36,7 @@ const EditRole = ({role, gigs, session}) => {
         })
     }
     return(
-        <form onSubmit={e => handleSubmit(e)} id='edit_gig_form'>
+        <form className='quickcast_edit_form'  onSubmit={e => handleSubmit(e)} id='edit_gig_form'>
             <label htmlFor='title'>{"Role Name"}</label>
             <span>
                 <input  readOnly={!title.edit} onClick={e => setTitle({value: title.value, edit:true })} name='title' onChange={e => setTitle({value: e.target.value, edit: title.edit})} value={title.value}/>
@@ -47,7 +47,7 @@ const EditRole = ({role, gigs, session}) => {
             </span>
             <label htmlFor='gender'>{"Gender"}</label>
             <span>
-                <select  readOnly={!gender.edit}  name='gender' onClick={e => { setGender({value: gender.value, edit:true })}} onChange={e => setGender({value: e.target.value, edit: gender.edit})} value={gender.value}>
+                <select className={`select-dropdown`}  readOnly={!gender.edit}  name='gender' onClick={e => { setGender({value: gender.value, edit:true })}} onChange={e => setGender({value: e.target.value, edit: gender.edit})} value={gender.value}>
                     <option value='Male or Female'>{'Male or Female'}</option>
                     <option value='Female'>{'Female'}</option>
                     <option value='Male'>{'Male'}</option>
@@ -68,19 +68,20 @@ const EditRole = ({role, gigs, session}) => {
                     onChange={(e) => setMaxAge({value:e.target.value, edit: maxAge.edit})}
                     />
             </span>
-            <span>
             <label>{'Production'}</label>
+            <span>
                 <select
                 type='text'
                 value={gigId.value}
+                className={`select-dropdown`}
                 onChange={(e) => setGigId({value: e.target.value, edit: gigId.edit})}
                 onClick={e => setGigId({value: gigId.value, edit: true})}
                 >
                 {gigs.map(gig => <option key={gig.id} value={gig.id}>{gig.title}</option>)}
                 </select>
             </span>
-            <button form='edit_gig_form' type='submit'>{'Submit'}</button>
-            <button onClick={e => handleDelete(e)}>{"Delete Production"}</button>
+            <button className={`quickcast_submit_btn`} form='edit_gig_form' type='submit'>{'Submit'}</button>
+            <button className={`low_visibility_link`}  onClick={e => handleDelete(e)}>{"Delete Production"}</button>
         </form>
     )
 }

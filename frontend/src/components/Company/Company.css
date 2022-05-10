@@ -6,6 +6,18 @@
 
 #company_nav a {
     margin: 2rem;
+    text-align: center;
+    width: 100px;
+    color: black;
+
+}
+
+#company_nav a:hover {
+    color: #31518F;
+}
+
+#company_nav a.active {
+    border-bottom: 2px solid #ED4C6A;
 }
 
 #edit_company_form {

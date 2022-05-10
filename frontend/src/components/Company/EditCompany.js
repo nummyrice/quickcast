@@ -38,11 +38,14 @@ const EditCompany = () => {
         })
     }
     return(
-        <form onSubmit={e => handleSubmit(e)} id='edit_company_form'>
-            <img alt='company logo' id='company_image' src={'https://quickcast-app.s3.us-west-1.amazonaws.com/1651548885787'}/>
+        <form className={`quickcast_edit_form`} onSubmit={e => handleSubmit(e)} id='edit_company_form'>
+            <img className={`edit_profile`} alt='company logo' id='company_image' src={image.value} onError={({ currentTarget }) => {
+              currentTarget.onerror = null; // prevents looping
+              currentTarget.src="https://quickcast-app.s3.amazonaws.com/1651176057051";
+            }}/>
             <label htmlFor='profilePhoto'>{"Profile Photo"}</label>
             <input type='file' onChange={e => setImage({value:e.target.files[0], edit: true})} name='profilePhoto'/>
-            <label htmlFor='firstName'>{"First Name"}</label>
+            <label htmlFor='companyName'>{"Company"}</label>
             <span>
                 <input  readOnly={!name.edit} onClick={e => setName({value: name.value, edit:true })} name='name' onChange={e => setName({value: e.target.value, edit: name.edit})} value={name.value}/>
             </span>
@@ -58,8 +61,8 @@ const EditCompany = () => {
             <span>
                 <input  readOnly={!website.edit} type='url' name='website' onClick={e => { setWebsite({value: website.value, edit:true })}} onChange={e => setWebsite({value: e.target.value, edit: website.edit})} value={website.value}/>
             </span>
-            <button form='edit_company_form' type='submit'>{'Submit'}</button>
-            <button onClick={e => handleDelete(e)}>{"Delete Company"}</button>
+            <button className={`quickcast_submit_btn`} form='edit_company_form' type='submit'>{'Submit'}</button>
+            <button className={`low_visibility_link`} onClick={e => handleDelete(e)}>{"Delete Company"}</button>
         </form>
     )
 }
