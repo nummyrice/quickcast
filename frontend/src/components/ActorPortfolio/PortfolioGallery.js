@@ -44,25 +44,28 @@ const PortfolioGallery = () => {
 
     return(
         <div id='portfolio_gallery'>
-            {isLoaded && session.gallery.map((photo, index) => {
-                if (!titles[photo.id]) setTitles({...titles, [photo.id]: {value: photo.title, edit: false}})
-                return(
-                    <div key={photo.id} className='photo_block'>
-                        <img src={photo.photoUrl}/>
-                        <span>
-                            <input readOnly={titles[photo.id] ? !titles[photo.id].edit : true} onClick={e => setTitles({...titles, [photo.id]: {value: titles[photo.id].value, edit: true}})} onChange={e => setTitles({...titles, [photo.id]: {value: e.target.value, edit: titles[photo.id].edit}})} value={titles[photo.id] ? titles[photo.id].value : ''}></input>
-                        </span>
-                        <button onClick={() => {handlePhotoUpdate(titles[photo.id].value, photo.id )}}>{'Update Title'}</button>
-                        <button onClick={() => {handleDeletePhoto(photo.id)}}>{'Delete Photo'}</button>
-                </div>
-                )
-            })}
             {isLoaded && session.gallery.length < 4 &&
                 <div className='photo_block'>
                     <label htmlFor={`add_image`}>{"Add New Photo"}</label>
                     <input type='file' onChange={e => handleAddPhoto(e.target.files[0], session.gallery.length+1)} name={`add_image`}/>
                 </div>
             }
+            {isLoaded && session.gallery.map((photo, index) => {
+                if (!titles[photo.id]) setTitles({...titles, [photo.id]: {value: photo.title, edit: false}})
+                return(
+                    <div key={photo.id} className='photo_block'>
+                        <img alt={`gallery_${index}`} src={photo.photoUrl} onError={({ currentTarget }) => {
+                            currentTarget.onerror = null; // prevents looping
+                            currentTarget.src="https://quickcast-app.s3.amazonaws.com/1651176057051";
+                            }}/>
+                        <span>
+                            <input readOnly={titles[photo.id] ? !titles[photo.id].edit : true} onClick={e => setTitles({...titles, [photo.id]: {value: titles[photo.id].value, edit: true}})} onChange={e => setTitles({...titles, [photo.id]: {value: e.target.value, edit: titles[photo.id].edit}})} value={titles[photo.id] ? titles[photo.id].value : ''}></input>
+                        </span>
+                        <button className={`quickcast_submit_btn`} onClick={() => {handlePhotoUpdate(titles[photo.id].value, photo.id )}}>{'Update Title'}</button>
+                        <button className={`low_visibility_link`}  onClick={() => {handleDeletePhoto(photo.id)}}>{'Delete Photo'}</button>
+                </div>
+                )
+            })}
         </div>
     )
 }

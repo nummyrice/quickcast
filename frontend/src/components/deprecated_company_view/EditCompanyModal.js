@@ -1,50 +1,63 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useHistory } from "react-router-dom";
-// import * as sessionActions from "../../store/session";
-// import * as companyActions from "../../store/company";
-import '../CompanyView/CompanyView.css'
+import * as sessionActions from "../../store/session";
+import { Redirect } from "react-router-dom";
+import  { useHistory } from 'react-router-dom';
+import './CompanyView.css';
 
-function CreateCompany() {
+
+
+function EditCompanyModal({ onComplete }) {
+    //TODO if a falsey value exists in the database for a field in Company profile then the default value should be an empty string
     const dispatch = useDispatch();
     const sessionUser = useSelector((state) => state.session.user);
-    const [companyName, setCompanyName] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [details, setDetails] = useState('');
-    const [image, setImage] = useState('');
-    const [website, setWebsite] = useState('');
+    const [companyName, setCompanyName] = useState(sessionUser.Company.name);
+    const [phoneNumber, setPhoneNumber] = useState(sessionUser.Company.phoneNumber);
+    const [details, setDetails] = useState(sessionUser.Company.details);
+    const [image, setImage] = useState();
+    const [website, setWebsite] = useState(sessionUser.Company.website);
     const [errors, setErrors] = useState([]);
-    // const history = useHistory();
+    const [deleteWarning, setDeleteWarning] = useState(true);
+    const history = useHistory();
+
 
     const onChangeImageFile = (e) => {
         const file = e.target.files[0];
         setImage(file);
     };
-
+    // Submits put request to update database
     const handleSubmit = (e) => {
         e.preventDefault();
         setErrors([]);
         return dispatch(sessionActions
-            .createAndSetCompany({ companyName, phoneNumber, details, image, website }))
+            .updateAndSetCompany({ companyName, phoneNumber, details, image, website }))
+            .then((res) => {
+                history.push('/company')
+                onComplete();
+            })
             .catch(async (res) => {
                 const data = await res.json();
                 if (data && data.errors) setErrors(data.errors);
             });
-    };
-    // IN PROGRESS: Navigate to company page
-    if (!sessionUser) {
-        // history.push('/')
-        return (<Navigate to='/'/>)
+
     };
 
-    if (sessionUser.Company) {
-        return (<Navigate to='/company'/>);
-    }
+    const submitDeleteRequest = (e) => {
+        e.preventDefault();
+        setErrors([]);
+        return dispatch(sessionActions.deleteCompany(sessionUser.Company));
+    };
+
+    if (!sessionUser || !sessionUser.Company) {
+        return (<Redirect to='/'/>)
+    };
     return(
-        <form className='company_card'onSubmit={handleSubmit}>
+        <form className='company_card' onSubmit={handleSubmit}>
+            <div>
             <ul>
                 {errors.map((error, idx) => <li key={idx}>{error}</li>)}
             </ul>
+            </div>
             <div>
             <label>Company Name
                 <input
@@ -93,9 +106,16 @@ function CreateCompany() {
             </div>
             <div>
             <button type="submit">submit</button>
+            {!deleteWarning && (
+                <div>
+                    <span>Proceed to delete this company?</span>
+                    <button onClick={submitDeleteRequest}>delete company</button>
+                </div>
+            )}
+            {deleteWarning &&(<button onClick={() => setDeleteWarning(false)}>delete company</button>)}
             </div>
         </form>
     )
-};
+}
 
-export default CreateCompany;
+export default EditCompanyModal;

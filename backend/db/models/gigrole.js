@@ -26,8 +26,58 @@ module.exports = (sequelize, DataTypes) => {
   GigRole.associate = function(models) {
     // associations can be defined here
     GigRole.belongsTo(models.ActingGig, {
-      foreignKey: 'gigId'
+      foreignKey: 'gigId',
+      as: 'gig'
     });
+
+    GigRole.hasMany(models.Application, {
+      foreignKey: 'roleId',
+      as: 'applicants',
+      onDelete: 'cascade',
+      hooks: true
+    })
+
+    GigRole.addScope('includeApplicants', {
+      include: [{
+        model: models.Application,
+        as: 'applicants'
+      }]
+    })
+
+    GigRole.addScope('includeApplicantIds', {
+      include:[ {
+        model: models.Application,
+        as: 'applicants',
+        attributes: {
+          exclude: [
+            'id',
+            'companyId',
+            'status',
+            'createdAt',
+            'updatedAt',
+            'roleId'
+          ]
+        }
+      },
+      {
+        model: models.ActingGig,
+        as: 'gig',
+        attributes: {
+          exclude: [
+            'id',
+            'userId',
+            'title',
+            'description',
+            'rehearsalProductionDates',
+            'compensationDetails',
+            'location',
+            'gigType',
+            'createdAt',
+            'updatedAt'
+          ]
+        }
+      }]
+    })
   };
 
   GigRole.prototype.updateDetails = async function (gigId, title, description, gender, ageRange) {

@@ -11,8 +11,17 @@ function SignupForm() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState([]);
+  const demoPassword = 'password';
+  const demoCredential = 'demo@user.io';
 
-  if (sessionUser) return <Navigate to="/" />;
+  const demoUserLogin = () => {
+    dispatch(sessionActions.login({credential: demoCredential, password: demoPassword}))
+      .then(res => {
+        console.log('successfully logged in as Demo user')
+      }).catch(e => {
+        setErrors(['there was an issue logging in as Demo'])
+      })
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -28,47 +37,45 @@ function SignupForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <ul>
-        {errors.map((error, idx) => <li key={idx}>{error}</li>)}
-      </ul>
+    <form className={'quickcast_form'} onSubmit={handleSubmit}>
       <label>
         Email
+      </label>
         <input
           type="text"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-      </label>
       <label>
         Username
+      </label>
         <input
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           required
         />
-      </label>
       <label>
         Password
+      </label>
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-      </label>
       <label>
         Confirm Password
+      </label>
         <input
           type="password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
         />
-      </label>
-      <button type="submit">Sign Up</button>
+      <button className={`quickcast_submit_btn`} type="submit">Sign Up</button>
+      <p className={`text_links`} onClick={demoUserLogin}>{'Login as Demo User'}</p>
     </form>
   );
 }

@@ -1,0 +1,16 @@
+
+
+.text_links {
+    margin: .25rem;
+    color: purple;
+}
+
+.text_links:hover {
+    color: blue;
+    cursor: pointer;
+}
+
+@media (min-width: 900px) {
+
+
+}

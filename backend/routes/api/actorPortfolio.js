@@ -2,7 +2,7 @@ const express = require('express');
 const asyncHandler = require('express-async-handler');
 const { check, matchedData } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
-const { User, ActingGig, Tag, ActorPortfolio} = require('../../db/models');
+const { User, ActingGig, Tag, ActorPortfolio, PortfolioGallery} = require('../../db/models');
 const { uploadS3, s3 } = require('../../utils/aws.js')
 const singleUpload = uploadS3.single("image")
 
@@ -102,15 +102,23 @@ const validateUpdate = [
     handleValidationErrors
 ]
 // Get all portfolios
-router.get('/all', asyncHandler(async (req, res) => {
+router.post('/all', asyncHandler(async (req, res) => {
     const offset = req.body.offset
     const portfolios = await ActorPortfolio.findAndCountAll({
         // where: {...},
         // order: [...],
         limit: 5,
-        offset: offset,
+        offset: offset
     })
-    return res.json(portfolios)
+    const galleries = {}
+    await Promise.all(portfolios.rows.map(async portfolio => {
+        const userId = portfolio.userId
+        const gallery = await PortfolioGallery.findAll({where: {userId: userId}})
+        galleries[userId] = gallery
+        return;
+    }))
+    console.log('PORTFOLIOS__________', portfolios.rows[0].dataValues)
+    return res.json({portfolios: portfolios.rows, galleries: galleries})
 }))
 
 // Create Portfolio
@@ -146,15 +154,18 @@ router.put('/', singleUpload, validateUpdate, asyncHandler(async (req, res) => {
     if (req.file && req.file.location) uploadedUrl.profilePicture = req.file.location
     const requiredData = matchedData(req, { includeOptionals: false});
     const portfolioToUpdate = await ActorPortfolio.findByPk(requiredData.id)
-    const prevPortfolioUrl = portfolioToUpdate.profilePhoto.split('/')
-    const prevPortfolioKey = prevPortfolioUrl[prevPortfolioUrl.length - 1]
-    s3.deleteObject({Bucket:'quickcast-app', Key: prevPortfolioKey}, function(err, data) {
-        if (err) console.log(err, err.stack);
-        else console.log("successfully deleted")
-    })
+    if (portfolioToUpdate.profilePhoto) {
+        const prevPortfolioUrl = portfolioToUpdate.profilePhoto.split('/')
+        const prevPortfolioKey = prevPortfolioUrl[prevPortfolioUrl.length - 1]
+        s3.deleteObject({Bucket:'quickcast-app', Key: prevPortfolioKey}, function(err, data) {
+            if (err) console.log(err, err.stack);
+            else console.log("successfully deleted")
+        })
+    }
     const updatedPortfolio = await portfolioToUpdate.updateDetails(requiredData, uploadedUrl)
     return res.json(updatedPortfolio)
 }))
+
 
 // Delete Portfolio
 router.delete('/', asyncHandler(async (req, res) => {

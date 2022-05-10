@@ -46,6 +46,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'gigId',
       onDelete: 'cascade',
       hooks: true,
+      as: 'gigRoles'
     });
     ActingGig.belongsTo(models.User, {
       foreignKey: 'userId',
@@ -65,6 +66,50 @@ module.exports = (sequelize, DataTypes) => {
           include: ['name', 'id']
         }
       }]
+    })
+
+    ActingGig.addScope('userGigRoles', {
+      attributes:{
+        exclude:[
+          'description',
+          'rehearsalProductionDates',
+          'compensationDetails',
+          'location',
+          'gigType',
+          'createdAt',
+          'updatedAt'
+        ]
+      },
+      include:[{
+        model: models.GigRole,
+        as: 'gigRoles'
+      }]
+    })
+    // get all gigs
+      // get list of roles for each
+    ActingGig.addScope('getAttachedRoles', {
+      where: {
+
+      },
+      include:[{
+        model: models.GigRole,
+        as: 'gigRoles'
+      }]
+    })
+
+    ActingGig.addScope('viewRolesAndApps', {
+      include: {
+        model: models.GigRole,
+        as: 'gigRoles',
+        include: {
+          model: models.Application,
+          as: 'applicants',
+          include: {
+            model: models.User,
+            as: 'applicant'
+          }
+        }
+      }
     })
   };
 

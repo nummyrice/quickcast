@@ -1,0 +1,27 @@
+#apps_list {
+    display: grid;
+    flex-shrink: 0;
+    grid-template-columns: 1fr;
+    margin: 1rem;
+    width: 100%;
+}
+
+.app_entry {
+    border: 1px solid grey;
+    border-radius: 99999px;
+    padding-right: 4rem;
+    padding-left: 4rem;
+    margin-bottom: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.app_entry h1 {
+    color: black;
+    font-family: 'Oleo Script Swash Caps', cursive;
+    margin-top: 0;
+    margin-bottom: 0;
+    /* max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden; */
+}

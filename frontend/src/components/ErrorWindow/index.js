@@ -4,12 +4,18 @@ const ErrorWindow = ({errors, closeErrors}) => {
     return(
         <ul>
             {errors.map(error => {
-                const errorMessage = error.message ? error.message : 'generic server error'
+                let errorMessage;
+                if (typeof error === 'string') {
+                    errorMessage = error
+                } else if (error.message) {
+                    errorMessage = error.message
+                } else {
+                    errorMessage = 'there was an unknown error with your request'
+                }
                 return(
-                    <li>{errorMessage}</li>
+                    <li key={errorMessage}>{errorMessage}</li>
                 )
             })}
-            <li></li>
         </ul>
     )
 }

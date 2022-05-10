@@ -1,0 +1,24 @@
+#widgets {
+    display: none;
+}
+
+.example_widgets {
+    background-color: #E8DACA;
+    height: 150px;
+    width: 150px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin: 1rem;
+    border-radius: 6px;
+    padding: 2rem;
+    text-align: center;
+    border: 1px solid grey;
+}
+
+@media (min-width: 900px) {
+    #widgets {
+        display: block;
+        /* background-color: pink; */
+        height: 100vh;
+        border-left: 1px solid grey;
+    }
+}

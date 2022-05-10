@@ -1,3 +1,6 @@
+import { csrfFetch } from "./csrf";
+import { setErrors } from "./errors";
+
 const SET_PORTFOLIOS = 'portfolios/set';
 const CLEAR_PORTFOLIOS = 'portfolios/clear';
 const REMOVE_PORTFOLIO = 'portfolios/remove';
@@ -16,9 +19,32 @@ const clearPortfolios = () => ({
   type: CLEAR_PORTFOLIOS
 })
 
-export const getPortfolios = (id) => async (dispatch) => {
+// THUNK to get all actor portfolios paginated
+export const getPortfolios = (offset) => async (dispatch) => {
+  try {
+    const response = await csrfFetch('/api/actorPortfolio/all', {
+      method: 'POST',
+      body: JSON.stringify({offset})
+    })
+    const data = await response.json()
 
-    dispatch(setPortfolios())
+    data.portfolios.forEach(portfolio => {
+      if (data.galleries[portfolio.userId]) {
+        portfolio.gallery = data.galleries[portfolio.userId]
+      } else {
+        portfolio.gallery = []
+      }
+      return;
+      })
+      dispatch(setPortfolios(data.portfolios))
+
+  } catch (res) {
+    res.json()
+    .then((data) => {
+      if (data.errors) dispatch(setErrors(data.errors))
+    })
+    return res;
+  }
 }
 
 const initialState = [];
@@ -30,8 +56,9 @@ const portfolioReducer = (state = initialState, action) => {
             return [];
         case REMOVE_PORTFOLIO:
             const portfolioIndex = state.findIndex(portfolio => portfolio.id === action.payload)
-            state.splice(portfolioIndex, 1)
-            return [...state];
+            const newPortfolios = [...state]
+            newPortfolios.splice(portfolioIndex, 1)
+            return newPortfolios
         default:
             return state;
     }

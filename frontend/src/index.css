@@ -2,6 +2,8 @@
 body {
     background-color: white;
     box-sizing:border-box;
+    font-family: 'Roboto', sans-serif;
+    overflow: hidden;
 }
 
 #root {
@@ -10,11 +12,201 @@ body {
     margin: 0;
     position: relative;
     justify-content: center;
+    height: 100%;
 
 }
 
 
-@media (min-width: 900px) {
 
+/* img:before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background-image: linear-gradient(#29b5a8, #c8b5d8);
+
+} */
+
+
+/*----------- Forms -----------*/
+
+.quickcast_form {
+    display: flex;
+    flex-direction: column;
+    margin: 2rem !important;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 2rem;
+    border-radius: 2.5px;
+}
+
+.quickcast_form > input {
+    border-radius: 60px;
+    border: none;
+    background-color: #E3E9F7;
+    margin-bottom: 1rem;
+    height: 2rem;
+    padding: 0px 1rem 0px 1rem;
+}
+
+.quickcast_form > label {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    font-weight: bolder;
+    color: #31518F;
+}
+
+.quickcast_submit_btn {
+    background-color: #ED4C6A;
+    border-radius: 20px;
+    border: none;
+    padding: 0.5rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    float: left;
+    color: white;
+    transition: background-color .25s;
+}
+
+.quickcast_submit_btn:hover {
+    background-color: #db4560;
+    cursor: pointer;
+}
+
+.quickcast_submit_btn:active {
+
+}
+
+.quickcast_form > textarea {
+    border: none;
+    background-color: #E3E9F7;
+    border-radius: 6px;
+}
+
+@media (min-width: 900px) {
+    .quickcast_form {
+        width: 25rem;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+}
+
+/*-------- Edit Forms ------ */
+.quickcast_edit_form {
+    display: flex;
+    flex-direction: column;
+    margin: 2rem;
+}
+
+.quickcast_edit_form label, button {
+    margin-top: 2rem;
+}
+
+
+.quickcast_edit_form input:read-only {
+    background: none;
+    /* background-color: none; */
+    border: none;
+    position: relative;
+}
+
+.quickcast_edit_form input {
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    position: relative;
+    font-size: 20px;
+}
+
+.quickcast_edit_form span::after {
+    content: '✎';
+    color: black;
+    right: 0px;
+}
+
+/*---------- Msc. ----------*/
+.logout_btn {
+    background: none;
+    border: none;
+    color: purple;
+    text-transform: lowercase;
+    font-weight: bold;
+}
+
+.logout_btn:hover {
+    cursor: pointer;
+    color: blue;
+}
+
+.mobile_nav_spacer {
+    height: 101px;
+    flex-shrink: 0;
+}
+
+.select-dropdown,
+.select-dropdown * {
+	margin: 0;
+	padding: 0;
+	position: relative;
+	box-sizing: border-box;
+}
+.select-dropdown {
+	position: relative;
+	/* background-color: #E6E6E6; */
+	border-radius: 4px;
+}
+.select-dropdown select {
+	font-size: 3rem;
+	font-weight: normal;
+	max-width: 100%;
+	padding: 8px 24px 8px 10px;
+	border: none;
+	background-color: transparent;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+	appearance: none;
+}
+.select-dropdown select:active, .select-dropdown select:focus {
+	outline: none;
+	box-shadow: none;
+}
+.select-dropdown:after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	right: 8px;
+	width: 0;
+	height: 0;
+	margin-top: -2px;
+	border-top: 5px solid #aaa;
+	border-right: 5px solid transparent;
+	border-left: 5px solid transparent;
+}
+
+/*------- Pics ---------*/
+
+img.edit_profile {
+    border-radius: 100%;
+    background-image: linear-gradient(#29b5a8, #c8b5d8);
+    width: 100px;
+    height: 100px;
+    /* object-fit: cover;
+    position: relative; */
+    background-size: cover;
+    background-clip: padding-box;
+    border: 1px solid grey;
+}
+
+img.edit_profile::before{
+    border-radius: 100%;
+    content: ' ';
+    display: block;
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-image: linear-gradient(#29b5a8, #c8b5d8);
 
 }

@@ -1,19 +1,57 @@
-
-.splash_description {
-    background-color: rgba(255, 255, 255, 0.479);
-    border-radius: 20px;
-    padding: 10px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-
 .splash_main {
     /* margin: 0px auto 0px auto; */
-    background: repeat url(https://res.cloudinary.com/quickcast/image/upload/v1636991177/cinema_hu0ibf.jpg)
+    /* background: repeat url(https://res.cloudinary.com/quickcast/image/upload/v1636991177/cinema_hu0ibf.jpg); */
+    background: repeat url('../../assets/performers_background.svg');
+    height: 100vh;
+    /* width: 100vw; */
+    background-size: 170% auto;
+    animation: background-move 12s ease-in-out infinite alternate;
+    border-right: 1px solid grey;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@keyframes background-move {
+    0% {
+        background-position: 10vw 0;
+    }
+    33% {
+        background-position: 0 10vh;
+    }
+    100%{
+        background-position: -10vw 0;
+      }
+}
+
+.splash_main > p {
+    background-color: white;
+    border-radius: 2.5px;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    padding: 2rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.splash_main h1 {
+    font-family: 'Oleo Script Swash Caps', cursive;
+    text-align: center;
+    /* -webkit-text-stroke: 0.05px black; */
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    margin-right: 1rem;
+    margin-left: 1rem;
 }
 
 @media (min-width: 900px) {
-    .splash_main {
+    .splash_main h1 {
+        font-size: 100px;
+    }
+
+    .splash_main > p {
+       width: 25rem;
+       margin-right: auto;
+       margin-left: auto;
     }
 }
 
