@@ -13,6 +13,7 @@ import { ReactComponent as SearchIcon } from '../../assets/magnifying_glass.svg'
 import { ReactComponent as MyApplications} from '../../assets/clipboard.svg'
 import { ReactComponent as CompanyDetailsIcon } from '../../assets/details.svg'
 import { ReactComponent as SearchTalentIcon } from '../../assets/search_group2.svg'
+import { ReactComponent as XClose } from '../../assets/x_close.svg'
 
 function Navigation({ session }){
   const navigate = useNavigate();
@@ -59,11 +60,11 @@ function Navigation({ session }){
           <Home className={`nav_icon nav_home`}/>
           <h3>{"Home"}</h3>
         </NavLink>
-        <NavLink to='/home/my-portfolio' style={{textDecoration: 'none'}}>
+        <NavLink className={`move_to_side_menu`} to='/home/my-portfolio' style={{textDecoration: 'none'}}>
           <MyPortfolio className={`nav_icon`}/>
          <h3>{"My portfolio"}</h3>
         </NavLink>
-        <NavLink to='/home/my-gallery' style={{textDecoration: 'none'}}>
+        <NavLink className={`move_to_side_menu`} to='/home/my-gallery' style={{textDecoration: 'none'}}>
         <MyGallery className={`nav_icon`}/>
           <h3>{"My Gallery"}</h3>
         </NavLink>
@@ -75,23 +76,49 @@ function Navigation({ session }){
           <MyApplications className={`nav_icon`}/>
           <h3>{"My Applications"}</h3>
         </NavLink>
-        <button onClick={() => {
+        <button className={`move_to_side_menu logout_btn`} onClick={() => {
           dispatch(sessionActions.logout()).then(
             // navigate('/welcome-to-quickcast')
           )
         }}>
           {"Logout"}
         </button>
-        <div id='profile_section'>
+        <div onClick={e => setOpenMenu(!openMenu)} id='profile_section'>
           <img alt='avatar' src={session.actorPortfolio.profilePhoto} onError={({ currentTarget }) => {
             currentTarget.onerror = null; // prevents looping
             currentTarget.src="https://quickcast-app.s3.amazonaws.com/1651176057051";
           }}/>
-
+          <h3>{session.user.userName}</h3>
         </div>
-        <div id='mobile_slide_menu_actor'>
-
-
+        <div className={`toggle_wrapper`}>
+          {session.user && session.company && session.actorPortfolio &&
+            <Toggle dispatch={dispatch} session={session}/>
+          }
+        </div>
+        <div id='mobile_slide_menu_actor' className={`${openMenu ? 'openMenu' : null}`}>
+          <div className={`profile_header`}>
+            <img alt='avatar' src={session.actorPortfolio.profilePhoto} onError={({ currentTarget }) => {
+              currentTarget.onerror = null; // prevents looping
+              currentTarget.src="https://quickcast-app.s3.amazonaws.com/1651176057051";
+            }}/>
+            <XClose onClick={e => setOpenMenu(false)}/>
+          </div>
+          <NavLink to='/home/my-portfolio' style={{textDecoration: 'none'}}>
+            <MyPortfolio className={`nav_icon`}/>
+          <h3>{"My portfolio"}</h3>
+          </NavLink>
+          <NavLink className={`move_to_side_menu`} to='/home/my-gallery' style={{textDecoration: 'none'}}>
+          <MyGallery className={`nav_icon`}/>
+            <h3>{"My Gallery"}</h3>
+          </NavLink>
+          <button  className={`logout_btn`} onClick={() => {
+            dispatch(sessionActions.logout()).then(
+              // navigate('/welcome-to-quickcast')
+            )
+            }}>
+          {"Logout"}
+          </button>
+          <Toggle dispatch={dispatch} session={session}/>
         </div>
 
       </>
@@ -107,20 +134,46 @@ function Navigation({ session }){
           <CompanyDetailsIcon className={`nav_icon`}/>
           <h3>{"My Company"}</h3>
         </NavLink>
-        {/* <div>
-          {"My gigs"}
-        </div> */}
         <NavLink to='/home/search-portfolios' style={{textDecoration: 'none'}}>
           <SearchTalentIcon className={`nav_icon`}/>
           <h3>{"Search Talent"}</h3>
         </NavLink>
-        <button onClick={() => {
+        <button className={`move_to_side_menu logout_btn`} onClick={() => {
           dispatch(sessionActions.logout()).then(
             // navigate('/welcome-to-quickcast')
           )
         }}>
           {"Logout"}
         </button>
+        <div onClick={e => setOpenMenu(!openMenu)} id='profile_section'>
+          <img alt='avatar' src={session.company.image} onError={({ currentTarget }) => {
+            currentTarget.onerror = null; // prevents looping
+            currentTarget.src="https://quickcast-app.s3.amazonaws.com/1651176057051";
+          }}/>
+
+        </div>
+        <div className={`toggle_wrapper`}>
+          {session.user && session.company && session.actorPortfolio &&
+            <Toggle dispatch={dispatch} session={session}/>
+          }
+        </div>
+        <div id='mobile_slide_menu_company' className={`${openMenu ? 'openMenu' : null}`}>
+          <div className={`profile_header`}>
+            <img alt='avatar' src={session.company.image} onError={({ currentTarget }) => {
+              currentTarget.onerror = null; // prevents looping
+              currentTarget.src="https://quickcast-app.s3.amazonaws.com/1651176057051";
+            }}/>
+            <XClose onClick={e => setOpenMenu(false)}/>
+          </div>
+          <button className={`logout_btn`} onClick={() => {
+            dispatch(sessionActions.logout()).then(
+              // navigate('/welcome-to-quickcast')
+            )
+            }}>
+          {"Logout"}
+          </button>
+          <Toggle dispatch={dispatch} session={session}/>
+        </div>
       </>
     )
   } else {
@@ -136,7 +189,7 @@ function Navigation({ session }){
         <NavLink to='/home/create-company'>
           {"Looking for talent"}
         </NavLink>
-        <button onClick={() => {
+        <button className={`logout_btn`} onClick={() => {
           dispatch(sessionActions.logout()).then(
             // navigate('/welcome-to-quickcast')
           )
@@ -150,9 +203,6 @@ function Navigation({ session }){
   return (
     <div className="navigation_bar">
         {sessionLinks}
-        {session.user && session.company && session.actorPortfolio &&
-          <Toggle dispatch={dispatch} session={session}/>
-        }
     </div>
   );
 }

@@ -1,10 +1,10 @@
 import React from 'react';
-import style from './Widgets.module.css';
+import './Widgets.css';
 
 const Widgets = () => {
     return(
-        <div id={style.widgets}>
-
+        <div id='widgets'>
+            <div className={`example_widgets`}>{'Widgets to be added...'}</div>
         </div>
     )
 }

@@ -148,7 +148,7 @@ router.delete('/', asyncHandler(async (req, res, next) => {
   const companyToDelete = await Company.findByPk(companyId);
   if (!companyToDelete) return next(new Error('Company does not exist'))
   if (companyToDelete.image) {
-    const prevImageUrl = companyToDelete.profilePhoto.split('/')
+    const prevImageUrl = companyToDelete.image.split('/')
     const prevImageKey = prevImageUrl[prevImageUrl.length - 1]
     s3.deleteObject({Bucket:'quickcast-app', Key: prevImageKey}, function(err, data) {
         if (err) console.log(err, err.stack);

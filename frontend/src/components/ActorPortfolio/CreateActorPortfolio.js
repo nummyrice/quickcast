@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, useNavigate } from 'react-router-dom';
-import './CreateActorPortfolio.css';
+// import './CreateActorPortfolio.css';
 import { createAndSetPortfolio } from '../../store/session';
 
 const CreateActorPortfolio = () => {
@@ -43,7 +43,7 @@ const CreateActorPortfolio = () => {
     }
 
     return(
-        <form onSubmit={e => handleSubmit(e)} id='create_portfolio_form'>
+        <form className={`quickcast_form`} onSubmit={e => handleSubmit(e)} id='create_portfolio_form'>
             <label htmlFor='firstName'>{"First Name"}</label>
             <input name='firstName'onChange={e => setFirstName(e.target.value)} value={firstName}/>
             <label htmlFor='lastName'>{"Last Name"}</label>
@@ -53,14 +53,14 @@ const CreateActorPortfolio = () => {
             <label htmlFor='dateOfBirth'>{"Date of Birth"}</label>
             <input type='date' name='dateOfBirth' onChange={e => setDateOfBirth(e.target.value)} value={dateOfBirth}/>
             <label htmlFor='biography'>{"Biography"}</label>
-            <input type='text' name='biography'  onChange={e => setBiography(e.target.value)} value={biography}/>
+            <textarea className={`large_text_field`} rows={5}  name='biography'  onChange={e => setBiography(e.target.value)} value={biography}/>
             <label htmlFor='profilePhoto'>{"Profile Photo"}</label>
             <input type='file' onChange={e => setProfilePhoto(e.target.files[0])} name='profilePhoto'/>
             <label htmlFor='website'>{"Website"}</label>
             <input type='url' name='website'onChange={e => setWebsite(e.target.value)} value={website}/>
             <label htmlFor='location' >{"Zip / Postal Code"}</label>
             <input type='text' name='location' onChange={e => setLocation(e.target.value)} value={location}/>
-            <button type='submit'>{'Submit'}</button>
+            <button className={`quickcast_submit_btn`} type='submit'>{'Submit'}</button>
         </form>
     )
 }

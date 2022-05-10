@@ -6,6 +6,13 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   ActingGigTag.associate = function(models) {
     // associations can be defined here
+    ActingGigTag.belongsTo(models.ActingGig, {
+      foreignKey: 'id'
+    })
+
+    ActingGigTag.belongsTo(models.Tag, {
+      foreignKey: 'id'
+    })
   };
   return ActingGigTag;
 };

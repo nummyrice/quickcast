@@ -1,5 +1,5 @@
 import React from 'react';
-import style from './Main.module.css'
+import'./Main.css'
 import { Navigate, Outlet } from 'react-router-dom';
 import Widgets from '../Widgets';
 import { useSelector } from 'react-redux';
@@ -9,8 +9,9 @@ const Main = () => {
     if (!session.user) return <Navigate to='/welcome-to-quickcast'/>
     return(
         <>
-            <div id={style.main} className={style.jesus}>
+            <div id='main'>
                 <Outlet context={[session]}/>
+                <div className={`mobile_nav_spacer`}/>
             </div>
             <Widgets/>
         </>

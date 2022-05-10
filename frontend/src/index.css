@@ -2,7 +2,8 @@
 body {
     background-color: white;
     box-sizing:border-box;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    overflow: hidden;
 }
 
 #root {
@@ -11,14 +12,11 @@ body {
     margin: 0;
     position: relative;
     justify-content: center;
+    height: 100%;
 
 }
 
 
-@media (min-width: 900px) {
-
-
-}
 
 /* img:before {
     content: ' ';
@@ -29,3 +27,90 @@ body {
     background-image: linear-gradient(#29b5a8, #c8b5d8);
 
 } */
+
+
+/*----------- Forms -----------*/
+
+.quickcast_form {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 2rem;
+    border-radius: 2.5px;
+}
+
+.quickcast_form > input {
+    border-radius: 60px;
+    border: none;
+    background-color: #E3E9F7;
+    margin-bottom: 1rem;
+    height: 2rem;
+    padding: 0px 1rem 0px 1rem;
+}
+
+.quickcast_form > label {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    font-weight: bolder;
+    color: #31518F;
+}
+
+.quickcast_submit_btn {
+    background-color: #ED4C6A;
+    border-radius: 20px;
+    border: none;
+    padding: 0.5rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    float: left;
+    color: white;
+    transition: background-color .25s;
+}
+
+.quickcast_submit_btn:hover {
+    background-color: #db4560;
+    cursor: pointer;
+}
+
+.quickcast_submit_btn:active {
+
+}
+
+.quickcast_form > textarea {
+    border: none;
+    background-color: #E3E9F7;
+    border-radius: 6px;
+}
+
+@media (min-width: 900px) {
+    .quickcast_form {
+        width: 25rem;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+}
+
+
+
+/*---------- Msc. ----------*/
+.logout_btn {
+    background: none;
+    border: none;
+    color: purple;
+    text-transform: lowercase;
+    font-weight: bold;
+}
+
+.logout_btn:hover {
+    cursor: pointer;
+    color: blue;
+}
+
+.mobile_nav_spacer {
+    height: 101px;
+    flex-shrink: 0;
+}
