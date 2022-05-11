@@ -28,7 +28,6 @@ const RoleCard = ({role, gigName, user, apply}) => {
             <p>{role.description}</p>
             {/* <p>{gigName}</p> */}
             {applicationDetails}
-
         </div>
     )
 }

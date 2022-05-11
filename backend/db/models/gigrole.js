@@ -37,6 +37,17 @@ module.exports = (sequelize, DataTypes) => {
       hooks: true
     })
 
+    GigRole.addScope('includeGigDetails', {
+      include: [{
+        model: models.ActingGig,
+        as: 'gig',
+        include: [{
+          model: models.Company,
+          attributes: ['name', 'id', 'image' ]
+        }]
+      }]
+    })
+
     GigRole.addScope('includeApplicants', {
       include: [{
         model: models.Application,

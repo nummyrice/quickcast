@@ -34,6 +34,7 @@ import PortfolioView from './components/PortfolioView'
 import GigView from './components/GigView';
 import ViewOne from './components/Main/ViewOne';
 import Applications from './components/Applications';
+import ActorFeed from './components/Main/ActorFeed'
 // do not expose store to the window in production
 const store = configureStore();
 
@@ -58,6 +59,7 @@ function Root() {
                 <Route path='signup' element={<SignupForm/>}/>
               </Route>
               <Route path='home' element={<Main/>}>
+                  <Route index element={<ActorFeed/>}/>
                   <Route path='create-portfolio' element={<CreateActorPortfolio/>}/>
                   <Route path='my-portfolio' element={<ActorPortfolio/>}/>
                   <Route path='my-gallery' element={<PortfolioGallery/>}/>

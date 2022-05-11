@@ -71,6 +71,23 @@ const validateUpdate = [
     ,
     handleValidationErrors
 ]
+
+// Get Most Recent Roles (Paginated)
+router.post('/feed', asyncHandler(async (req, res) => {
+    const offset = req.body.offset
+    const roles = await GigRole.scope('includeGigDetails').findAndCountAll({
+        // where: {...},
+        order: [['createdAt', 'DESC']],
+        limit: 5,
+        offset: offset,
+    })
+
+    // "roles": roles.rows,
+    // "total": roles.count
+    return res.json(roles)
+}))
+
+
 // Get role
 router.get('/:id', asyncHandler(async (req, res) => {
     const id = req.params.id

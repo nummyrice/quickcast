@@ -3,17 +3,17 @@
     flex-shrink: 0;
     grid-template-columns: 1fr;
     margin: 1rem;
-    width: 100%;
 }
 
 .app_entry {
     border: 1px solid grey;
-    border-radius: 99999px;
+    border-radius: 6px;
     padding-right: 4rem;
     padding-left: 4rem;
     margin-bottom: 1rem;
-    white-space: nowrap;
-    overflow: hidden;
+    flex-shrink: 0;
+    /* white-space: nowrap;
+    overflow: hidden; */
 }
 
 .app_entry h1 {
@@ -24,4 +24,21 @@
     /* max-width: 300px;
     white-space: nowrap;
     overflow: hidden; */
+}
+
+@media (min-width: 900px) {
+    /* .app_entry {
+        max-width: 100%;
+    } */
+
+    .app_entry {
+        border: 1px solid grey;
+        border-radius: 99999px;
+        padding-right: 4rem;
+        padding-left: 4rem;
+        margin-bottom: 1rem;
+        flex-shrink: 0;
+        /* white-space: nowrap;
+        overflow: hidden; */
+    }
 }

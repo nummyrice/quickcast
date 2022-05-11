@@ -41,6 +41,38 @@
 .mobile_nav_spacer {
     height: 101px;
 }
+
+/* ----------- Desktop Display ---------- */
+.feed_role_entry {
+    padding: 2rem;
+    padding-bottom: 4rem;
+}
+
+.feed_profile_image {
+    position: relative;
+    max-width: 250px;
+    object-fit: cover;
+    display: block;
+}
+
+.feed_profile_image::before {
+    border-radius: 100%;
+    content: ' ';
+    display: block;
+    position: absolute;
+    height: 100%;
+    background-image: linear-gradient(#29b5a8, #c8b5d8);
+}
+
+.feed_role_entry {
+    border-bottom: 1px solid grey;
+}
+
+.feed_role_entry h1 {
+    color: black;
+
+}
+/* ----------- Desktop Display ---------- */
 @media (min-width: 900px) {
    #main {
     max-width: 725px;
