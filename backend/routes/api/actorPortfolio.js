@@ -111,9 +111,14 @@ router.post('/feed', asyncHandler(async (req, res) => {
         limit: 5,
         offset: offset,
     })
-    // "roles": roles.rows,
-    // "total": roles.count
-    return res.json(roles)
+    const galleries = {}
+    await Promise.all(portfolios.rows.map(async portfolio => {
+        const userId = portfolio.userId
+        const gallery = await PortfolioGallery.findAll({where: {userId: userId}})
+        galleries[userId] = gallery
+        return;
+    }))
+    return res.json({portfolios: portfolios.rows, galleries: galleries})
 }))
 
 
@@ -134,7 +139,6 @@ router.post('/all', asyncHandler(async (req, res) => {
         galleries[userId] = gallery
         return;
     }))
-    console.log('PORTFOLIOS__________', portfolios.rows[0].dataValues)
     return res.json({portfolios: portfolios.rows, galleries: galleries})
 }))
 

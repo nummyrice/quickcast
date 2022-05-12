@@ -55,12 +55,20 @@ export const getPortfolios = (offset) => async (dispatch) => {
 
 export const getAndSetCompanyFeed = (offset) => async (dispatch) => {
   try {
-    const response = await csrfFetch('/api/ActingPortfolio/feed', {
+    const response = await csrfFetch('/api/actorPortfolio/feed', {
       method: 'POST',
       body: JSON.stringify({offset})
     })
     const data = await response.json()
-      dispatch(setPortfolios(data.rows))
+    data.portfolios.forEach(portfolio => {
+      if (data.galleries[portfolio.userId]) {
+        portfolio.gallery = data.galleries[portfolio.userId]
+      } else {
+        portfolio.gallery = []
+      }
+      return;
+      })
+    dispatch(setPortfolios(data.portfolios))
     return data
   } catch (res) {
     res.json()

@@ -20,7 +20,7 @@ const CompanyFeed = () => {
         console.log('how many times?')
         dispatch(getAndSetCompanyFeed(portfolioOffset))
         .then(async data => {
-            setPortfolioOffset(portfolioOffset + data.rows.length + 1)
+            setPortfolioOffset(portfolioOffset + data.portfolios.length + 1)
             setIsLoaded(true)
         }, err => console.log("REJECTED", err))
       .catch(err => {console.log("unable to acquire company feed ", err)})
@@ -32,7 +32,7 @@ const CompanyFeed = () => {
         <div id='company_feed'>
             {isLoaded && portfolios.map(portfolio => {
                 return(
-                   <PortfolioCard portfolio={portfolio} />
+                   <PortfolioCard key={portfolio.id} portfolio={portfolio} />
                 )
             })}
 
