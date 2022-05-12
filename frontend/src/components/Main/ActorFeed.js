@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch} from 'react-redux';
-import {  useNavigate } from 'react-router-dom';
-import { getAndSetFeed, clearRoles } from '../../store/roles';
+import {  useNavigate, useOutletContext } from 'react-router-dom';
+import { getAndSetFeed, clearRoles, addToRoles } from '../../store/roles';
 
 
 
@@ -11,22 +11,21 @@ const ActorFeed = () => {
     const roles = useSelector(state => state.roles)
     const navigate = useNavigate()
     const [isLoaded, setIsLoaded] = useState(false)
-    const [offset, setOffset] = useState(0)
 
+    const [session, roleOffset, setRoleOffset] = useOutletContext()
 
     useEffect(() => {
         // dispatch(clearRoles())
         console.log('how many times?')
-        dispatch(getAndSetFeed(offset))
+        dispatch(getAndSetFeed(roleOffset))
         .then(async data => {
-            setOffset(offset + data.count)
+            setRoleOffset(roleOffset + data.rows.length + 1)
             setIsLoaded(true)
         }, err => console.log("REJECTED", err))
       .catch(err => {console.log("unable to acquire actor feed ", err)})
     //   .finally(() => {
     //     })
     }, [])
-
 
     return(
         <div id='actor_feed'>

@@ -101,6 +101,23 @@ const validateUpdate = [
         .optional({checkFalsey: true}),
     handleValidationErrors
 ]
+
+// Get recent portfolios for company feed
+router.post('/feed', asyncHandler(async (req, res) => {
+    const offset = req.body.offset
+    const portfolios = await ActorPortfolio.findAndCountAll({
+        // where: {...},
+        order: [['createdAt', 'DESC']],
+        limit: 5,
+        offset: offset,
+    })
+    // "roles": roles.rows,
+    // "total": roles.count
+    return res.json(roles)
+}))
+
+
+
 // Get all portfolios
 router.post('/all', asyncHandler(async (req, res) => {
     const offset = req.body.offset

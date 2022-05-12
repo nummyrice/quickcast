@@ -5,7 +5,6 @@ import './PortfolioView.css';
 const PortfolioCard = ({portfolio}) => {
     const dispatch = useDispatch()
     // const [isLoaded, setIsLoaded] = useState(false)
-    console.log('portfolio___: ', portfolio)
     return(
         <div className='portfolio_card'>
             <img className={`profile_image`} alt='portfolio' src={portfolio.profilePhoto}  onError={({ currentTarget }) => {

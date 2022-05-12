@@ -54,6 +54,20 @@ const validateUpdate = [
     handleValidationErrors
 ]
 
+// Get most recent applications
+router.post('/feed', asyncHandler(async (req, res) => {
+    const offset = req.body.offset
+    const applications = await Application.findAndCountAll({
+        // where: {...},
+        order: [['createdAt', 'DESC']],
+        limit: 5,
+        offset: offset,
+    })
+    // "roles": roles.rows,
+    // "total": roles.count
+    return res.json(applications)
+}))
+
 // GET all for user
 router.get('/for_actor/:applicantId', asyncHandler(async (req, res) => {
     const applicantId = req.params.applicantId

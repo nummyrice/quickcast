@@ -29,12 +29,11 @@ import Company from './components/Company';
 import EditCompany from './components/Company/EditCompany';
 import Productions from './components/Company/Productions';
 import Roles from './components/Company/Roles'
-import CreateRole from './components/Company/Roles/CreateRole';
 import PortfolioView from './components/PortfolioView'
 import GigView from './components/GigView';
 import ViewOne from './components/Main/ViewOne';
 import Applications from './components/Applications';
-import ActorFeed from './components/Main/ActorFeed'
+import FeedSplitter from './components/Main/FeedSplitter'
 // do not expose store to the window in production
 const store = configureStore();
 
@@ -59,7 +58,7 @@ function Root() {
                 <Route path='signup' element={<SignupForm/>}/>
               </Route>
               <Route path='home' element={<Main/>}>
-                  <Route index element={<ActorFeed/>}/>
+                  <Route index element={<FeedSplitter/>}/>
                   <Route path='create-portfolio' element={<CreateActorPortfolio/>}/>
                   <Route path='my-portfolio' element={<ActorPortfolio/>}/>
                   <Route path='my-gallery' element={<PortfolioGallery/>}/>
