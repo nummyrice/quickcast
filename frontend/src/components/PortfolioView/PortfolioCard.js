@@ -17,12 +17,12 @@ const PortfolioCard = ({portfolio}) => {
             <p>{portfolio.biography}</p>
             <p>{portfolio.location}</p>
             <div className={`gallery_scroll`}>
-                {portfolio.gallery.map(galleryImage => {
+                {portfolio.gallery.map((galleryImage, index) => {
                     return(
-                        <img className={`gallery_image`} alt={`${galleryImage.title}`} src={galleryImage.photoUrl} onError={({ currentTarget }) => {
+                        <img key={`${galleryImage.photoUrl}_${index}`} className={`gallery_image`} alt={`${galleryImage.title}`} src={galleryImage.photoUrl} onError={({ currentTarget }) => {
                             currentTarget.onerror = null; // prevents looping
                             currentTarget.src="https://quickcast-app.s3.amazonaws.com/1651176057051";
-                        }}>{}</img>
+                        }}/>
                     )
                 })}
             </div>

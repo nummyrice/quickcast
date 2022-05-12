@@ -639,6 +639,22 @@ export const getAndSetApplications = (applicantId) => async (dispatch) => {
   }
 }
 
+// THUNK to get all actor portfolios paginated
+export const getAndSetCompanyApplications = (companyId) => async (dispatch) => {
+  try {
+    const response = await csrfFetch(`/api/application/for_company/${companyId}`)
+    const data = await response.json()
+      dispatch(setApplications(data))
+
+  } catch (res) {
+    res.json()
+    .then((data) => {
+      if (data.errors) dispatch(setErrors(data.errors))
+    })
+    return res;
+  }
+}
+
 export const changeAndUpdateAppStatus = (appId, status) => async (dispatch) => {
     try {
         const response = await csrfFetch('/api/application', {
