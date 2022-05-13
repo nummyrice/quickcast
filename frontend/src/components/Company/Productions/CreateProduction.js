@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate} from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { createAndSetProduction} from "../../../store/session";
+import PlacesAutocomplete, { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import './Productions.css';
 
 
@@ -13,9 +14,14 @@ function CreateProduction() {
     const [description, setDescription] = useState('');
     const [rehearsalProductionDates, setrehearsalProductionDates] = useState('');
     const [compensationDetails, setCompensationDetails] = useState('');
-    const [location, setLocation] = useState('');
+    // const [location, setLocation] = useState('');
     const [gigType, setGigType] = useState('Film');
     const [tags, setTags] = useState('');
+    const [address, setAddress] = React.useState("");
+    const [coordinates, setCoordinates] = React.useState({
+      lat: null,
+      lng: null
+    });
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -29,7 +35,7 @@ function CreateProduction() {
             description,
             rehearsalProductionDates,
             compensationDetails,
-            location,
+            location: address,
             gigType,
             tags:tagsArray
         })).then(res => {
@@ -38,6 +44,12 @@ function CreateProduction() {
         })
     };
 
+    const handleSelect = async value => {
+        const results = await geocodeByAddress(value);
+        const latLng = await getLatLng(results[0]);
+        setAddress(value);
+        setCoordinates(latLng);
+      };
     // /home/my-company/productions
         // displays productions tab
     // /home/my-company/roles
@@ -73,13 +85,35 @@ function CreateProduction() {
                     value={compensationDetails}
                     onChange={(e) => setCompensationDetails(e.target.value)}
                     ></input>
-                <label> Location
-                    </label>
-                    <input
-                    type='text'
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                    ></input>
+                    <PlacesAutocomplete value={address} onChange={setAddress} onSelect={handleSelect}>
+                       {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => {
+                           return(
+                            <>
+                            <label> Location
+                                </label>
+                                <input {...getInputProps({placeholder: 'Type Address'})}
+                                //  type='text'
+                                //  value={location}
+                                //  onChange={(e) => setLocation(e.target.value)}
+                                />
+                                <div>
+                                    {loading ? <div>'...loading'</div> : null}
+                                    {suggestions.map((suggestion) => {
+                                           const style = {
+                                            backgroundColor: suggestion.active ? "#41b6e6" : "#fff"
+                                          };
+                                        return(
+                                            <div key={suggestion.placeId} {...getSuggestionItemProps(suggestion, {style})}>
+                                                {suggestion.description}
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                            </>
+
+                           )
+                       }}
+                    </PlacesAutocomplete>
                 <label> Production Category
                 </label>
                     <select
