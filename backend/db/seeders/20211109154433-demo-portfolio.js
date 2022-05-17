@@ -1,6 +1,17 @@
 'use strict';
 const faker = require('faker');
-
+const example_photos = [
+  'https://quickcast-app.s3.us-west-1.amazonaws.com/Screen+Shot+2022-05-10+at+1.42.17+PM.png',
+  'https://quickcast-app.s3.us-west-1.amazonaws.com/Screen+Shot+2022-05-10+at+1.40.43+PM.png',
+  'https://quickcast-app.s3.us-west-1.amazonaws.com/Screen+Shot+2022-05-10+at+1.41.00+PM.png',
+  'https://quickcast-app.s3.us-west-1.amazonaws.com/Screen+Shot+2022-05-10+at+1.41.10+PM.png',
+  'https://quickcast-app.s3.us-west-1.amazonaws.com/Screen+Shot+2022-05-10+at+1.41.29+PM.png',
+  'https://quickcast-app.s3.us-west-1.amazonaws.com/Screen+Shot+2022-05-10+at+1.41.38+PM.png',
+  'https://quickcast-app.s3.us-west-1.amazonaws.com/Screen+Shot+2022-05-10+at+1.41.52+PM.png',
+  'https://quickcast-app.s3.us-west-1.amazonaws.com/Screen+Shot+2022-05-10+at+1.42.02+PM.png',
+  'https://quickcast-app.s3.us-west-1.amazonaws.com/Screen+Shot+2022-05-10+at+1.42.10+PM.png',
+  'https://quickcast-app.s3.us-west-1.amazonaws.com/Screen+Shot+2022-05-10+at+1.42.17+PM.png'
+]
 module.exports = {
   up: (queryInterface, Sequelize) => {
     /*
@@ -9,47 +20,21 @@ module.exports = {
 
       Example:
       */
-   return queryInterface.bulkInsert('ActorPortfolios', [{
-     userId: 4,
-     firstName: faker.name.firstName(),
-     lastName: faker.name.lastName(),
-     phoneNumber: faker.phone.phoneNumber(),
-     dateOfBirth: faker.date.past(),
-     biography: faker.lorem.text(Math.ceil(Math.random(500))),
-     profilePhoto: 'https://res.cloudinary.com/quickcast/image/upload/v1636418399/sample.jpg',
-     website: 'https://cloudinary.com/documentation/node_integration',
-     location: faker.address.zipCode(),
-   },{
-    userId: 3,
-    firstName: faker.name.firstName(),
-    lastName: faker.name.lastName(),
-    phoneNumber: faker.phone.phoneNumber(),
-    dateOfBirth: faker.date.past(),
-    biography: faker.lorem.text(Math.ceil(Math.random(500))),
-    profilePhoto: 'https://res.cloudinary.com/quickcast/image/upload/v1636418399/sample.jpg',
-    website: 'https://cloudinary.com/documentation/node_integration',
-    location: faker.address.zipCode(),
-  },{
-    userId: 2,
-    firstName: faker.name.firstName(),
-    lastName: faker.name.lastName(),
-    phoneNumber: faker.phone.phoneNumber(),
-    dateOfBirth: faker.date.past(),
-    biography: faker.lorem.text(Math.ceil(Math.random(500))),
-    profilePhoto: 'https://res.cloudinary.com/quickcast/image/upload/v1636418399/sample.jpg',
-    website: 'https://cloudinary.com/documentation/node_integration',
-    location: faker.address.zipCode(),
-  },{
-    userId: 1,
-    firstName: faker.name.firstName(),
-    lastName: faker.name.lastName(),
-    phoneNumber: faker.phone.phoneNumber(),
-    dateOfBirth: faker.date.past(),
-    biography: faker.lorem.text(Math.ceil(Math.random(500))),
-    profilePhoto: 'https://res.cloudinary.com/quickcast/image/upload/v1636418399/sample.jpg',
-    website: 'https://cloudinary.com/documentation/node_integration',
-    location: faker.address.zipCode(),
-  },], {});
+
+      const userSeeds = Array(10).fill(0).map((_, i) => {
+        return {
+          userId: i+1,
+          firstName: faker.name.firstName(),
+          lastName: faker.name.lastName(),
+          phoneNumber: faker.phone.phoneNumber(),
+          dateOfBirth: faker.date.past(),
+          biography: faker.lorem.text(Math.ceil(Math.random(500))),
+          profilePhoto: example_photos[Math.floor(Math.random() * 10)],
+          website: faker.internet.url(),
+          location: faker.address.zipCode(),
+        }
+      })
+   return queryInterface.bulkInsert('ActorPortfolios', userSeeds, {});
   },
 
   down: (queryInterface, Sequelize) => {
@@ -59,6 +44,6 @@ module.exports = {
 
       Example:
       */
-   return queryInterface.bulkDelete('PeopActorPortfoliosle', null, {});
+   return queryInterface.bulkDelete('ActorPortfolios', null, {});
   }
 };
