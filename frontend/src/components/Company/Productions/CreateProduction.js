@@ -97,7 +97,7 @@ function CreateProduction() {
                                 //  onChange={(e) => setLocation(e.target.value)}
                                 />
                                 <div>
-                                    {loading ? <div>'...loading'</div> : null}
+                                    {loading ? <div>{'...loading'}</div> : null}
                                     {suggestions.map((suggestion) => {
                                            const style = {
                                             backgroundColor: suggestion.active ? "#41b6e6" : "#fff"

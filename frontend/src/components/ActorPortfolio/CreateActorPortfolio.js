@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, useNavigate } from 'react-router-dom';
 // import './CreateActorPortfolio.css';
 import { createAndSetPortfolio } from '../../store/session';
+import PlacesAutocomplete, { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 
 const CreateActorPortfolio = () => {
     const dispatch = useDispatch()
@@ -15,7 +16,12 @@ const CreateActorPortfolio = () => {
     const [biography, setBiography] = useState('')
     const [profilePhoto, setProfilePhoto] = useState('')
     const [website, setWebsite] = useState('')
-    const [location, setLocation] = useState('')
+    // const [location, setLocation] = useState('')
+    const [address, setAddress] = React.useState("");
+    const [coordinates, setCoordinates] = React.useState({
+      lat: null,
+      lng: null
+    });
 
     if (session.actorPortfolio) return <Navigate to='/home/my-portfolio'/>
 
@@ -32,7 +38,7 @@ const CreateActorPortfolio = () => {
             biography,
             image: profilePhoto,
             website,
-            location
+            location: address
         }
         dispatch(createAndSetPortfolio(newPortfolio))
         .then(result => {
@@ -41,6 +47,14 @@ const CreateActorPortfolio = () => {
         })
         // .finally(() => )
     }
+
+    // select address through google places API
+    const handleSelect = async value => {
+        const results = await geocodeByAddress(value);
+        const latLng = await getLatLng(results[0]);
+        setAddress(value);
+        setCoordinates(latLng);
+      };
 
     return(
         <form className={`quickcast_form`} onSubmit={e => handleSubmit(e)} id='create_portfolio_form'>
@@ -58,8 +72,37 @@ const CreateActorPortfolio = () => {
             <input type='file' onChange={e => setProfilePhoto(e.target.files[0])} name='profilePhoto'/>
             <label htmlFor='website'>{"Website"}</label>
             <input type='url' name='website'onChange={e => setWebsite(e.target.value)} value={website}/>
-            <label htmlFor='location' >{"Zip / Postal Code"}</label>
-            <input type='text' name='location' onChange={e => setLocation(e.target.value)} value={location}/>
+            {/* <label htmlFor='location' >{"Zip / Postal Code"}</label>
+            <input type='text' name='location' onChange={e => setLocation(e.target.value)} value={location}/> */}
+             <PlacesAutocomplete value={address} onChange={setAddress} onSelect={handleSelect}>
+                       {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => {
+                           return(
+                            <>
+                            <label> Location
+                                </label>
+                                <input {...getInputProps({placeholder: 'Type Address'})}
+                                //  type='text'
+                                //  value={location}
+                                //  onChange={(e) => setLocation(e.target.value)}
+                                />
+                                <div>
+                                    {loading ? <div>{'...loading'}</div> : null}
+                                    {suggestions.map((suggestion) => {
+                                           const style = {
+                                            backgroundColor: suggestion.active ? "#41b6e6" : "#fff"
+                                          };
+                                        return(
+                                            <div key={suggestion.placeId} {...getSuggestionItemProps(suggestion, {style})}>
+                                                {suggestion.description}
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                            </>
+
+                           )
+                       }}
+                    </PlacesAutocomplete>
             <button className={`quickcast_submit_btn`} type='submit'>{'Submit'}</button>
         </form>
     )

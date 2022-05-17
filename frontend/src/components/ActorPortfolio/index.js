@@ -42,6 +42,7 @@ const ActorPortfolio = () => {
         dispatch(deleteAndRemovePortfolio(session.actorPortfolio.id))
         .then(() => {
             console.log('successfully deleted portfolio')
+            navigate('/home')
         })
     }
     if (!session.actorPortfolio) return <Navigate to='/home/create-portfolio'/>
