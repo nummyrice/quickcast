@@ -1,6 +1,9 @@
 {
   "name": "react-solo-project",
   "version": "1.0.0",
+  "engines": {
+    "node": "12.22.10"
+  },
   "description": "This will be our first react project through App Academy. I will be assembling a full stack react-express-sequelize application mimicking popular websites.",
   "main": "index.js",
   "scripts": {
