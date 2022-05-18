@@ -26,5 +26,6 @@
   "bugs": {
     "url": "https://github.com/nummyrice/quickcast.git/issues"
   },
-  "homepage": "https://github.com/nummyrice/quickcast.git#readme"
+  "homepage": "https://github.com/nummyrice/quickcast.git#readme",
+  "dependencies": {}
 }

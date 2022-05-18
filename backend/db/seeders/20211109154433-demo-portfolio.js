@@ -29,7 +29,7 @@ module.exports = {
           phoneNumber: faker.phone.phoneNumber('###-###-###'),
           dateOfBirth: faker.date.between('1960-01-01T00:00:00.000Z', '2001-01-01T00:00:00.000Z'),
           biography: faker.lorem.text(Math.ceil(Math.random(500))),
-          profilePhoto: example_photos(Math.ceil(Math.random() * 9)),
+          profilePhoto: example_photos[(Math.ceil(Math.random() * 9))],
           website: faker.internet.url(),
           location: faker.address.zipCode(),
         }
