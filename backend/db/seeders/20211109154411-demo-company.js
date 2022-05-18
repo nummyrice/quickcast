@@ -1,5 +1,5 @@
 'use strict';
-const faker = require('faker')
+const { faker } = require('@faker-js/faker')
 const example_photos = [
   'https://quickcast-app.s3.us-west-1.amazonaws.com/Screen+Shot+2022-05-10+at+1.42.17+PM.png',
   'https://quickcast-app.s3.us-west-1.amazonaws.com/Screen+Shot+2022-05-10+at+1.40.43+PM.png',
@@ -26,8 +26,8 @@ module.exports = {
       return {
         name: faker.company.companyName(),
         userId: i+1,
-        phoneNumber: faker.phone.phoneNumber(),
-        details: faker.lorem.text(Math.ceil(Math.random * 500)),
+        phoneNumber: faker.phone.phoneNumber('###-###-###'),
+        details: faker.lorem.text(Math.ceil(Math.random * (500 - 100)) + 100),
         image: example_photos[Math.floor(Math.random() * 10)],
         website: faker.internet.url()
       }

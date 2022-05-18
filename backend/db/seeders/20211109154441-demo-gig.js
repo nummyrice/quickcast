@@ -1,5 +1,5 @@
 'use strict';
-const faker = require('faker');
+const { faker } = require('@faker-js/faker');
 const gigType = ['Film', 'Theatre', 'TV & Video', 'Commercials', 'Modeling', 'Performing Arts', 'Voiceover', 'Other'];
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -12,7 +12,7 @@ module.exports = {
    return queryInterface.bulkInsert('ActingGigs', [{
      userId: Math.ceil(Math.random() * 4),
      companyId: Math.ceil(Math.random() * 6),
-     title: faker.name.title(),
+     title: faker.name.jobTitle(),
      description: faker.lorem.text(Math.ceil(Math.random * 500)),
      rehearsalProductionDates: [faker.date.soon()],
      compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -22,7 +22,7 @@ module.exports = {
    },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
-    title: faker.name.title(),
+    title: faker.name.jobTitle(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -32,7 +32,7 @@ module.exports = {
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
-    title: faker.name.title(),
+    title: faker.name.jobTitle(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -42,7 +42,7 @@ module.exports = {
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
-    title: faker.name.title(),
+    title: faker.name.jobTitle(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -52,7 +52,7 @@ module.exports = {
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
-    title: faker.name.title(),
+    title: faker.name.jobTitle(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -62,7 +62,7 @@ module.exports = {
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
-    title: faker.name.title(),
+    title: faker.name.jobTitle(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -72,7 +72,7 @@ module.exports = {
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
-    title: faker.name.title(),
+    title: faker.name.jobTitle(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -82,7 +82,7 @@ module.exports = {
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
-    title: faker.name.title(),
+    title: faker.name.jobTitle(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -92,7 +92,7 @@ module.exports = {
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
-    title: faker.name.title(),
+    title: faker.name.jobTitle(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -102,7 +102,7 @@ module.exports = {
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
-    title: faker.name.title(),
+    title: faker.name.jobTitle(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -112,7 +112,7 @@ module.exports = {
   },{
      userId: Math.ceil(Math.random() * 4),
      companyId: Math.ceil(Math.random() * 6),
-     title: faker.name.title(),
+     title: faker.name.jobTitle(),
      description: faker.lorem.text(Math.ceil(Math.random * 500)),
      rehearsalProductionDates: [faker.date.soon()],
      compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -122,7 +122,7 @@ module.exports = {
    },{
      userId: Math.ceil(Math.random() * 4),
      companyId: Math.ceil(Math.random() * 6),
-     title: faker.name.title(),
+     title: faker.name.jobTitle(),
      description: faker.lorem.text(Math.ceil(Math.random * 500)),
      rehearsalProductionDates: [faker.date.soon()],
      compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -132,7 +132,7 @@ module.exports = {
    },{
      userId: Math.ceil(Math.random() * 4),
      companyId: Math.ceil(Math.random() * 6),
-     title: faker.name.title(),
+     title: faker.name.jobTitle(),
      description: faker.lorem.text(Math.ceil(Math.random * 500)),
      rehearsalProductionDates: [faker.date.soon()],
      compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -142,7 +142,7 @@ module.exports = {
    },{
      userId: Math.ceil(Math.random() * 4),
      companyId: Math.ceil(Math.random() * 6),
-     title: faker.name.title(),
+     title: faker.name.jobTitle(),
      description: faker.lorem.text(Math.ceil(Math.random * 500)),
      rehearsalProductionDates: [faker.date.soon()],
      compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -152,7 +152,7 @@ module.exports = {
    },{
      userId: Math.ceil(Math.random() * 4),
      companyId: Math.ceil(Math.random() * 6),
-     title: faker.name.title(),
+     title: faker.name.jobTitle(),
      description: faker.lorem.text(Math.ceil(Math.random * 500)),
      rehearsalProductionDates: [faker.date.soon()],
      compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -162,7 +162,7 @@ module.exports = {
    },{
      userId: Math.ceil(Math.random() * 4),
      companyId: Math.ceil(Math.random() * 6),
-     title: faker.name.title(),
+     title: faker.name.jobTitle(),
      description: faker.lorem.text(Math.ceil(Math.random * 500)),
      rehearsalProductionDates: [faker.date.soon()],
      compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -172,7 +172,7 @@ module.exports = {
    },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
-    title: faker.name.title(),
+    title: faker.name.jobTitle(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -182,7 +182,7 @@ module.exports = {
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
-    title: faker.name.title(),
+    title: faker.name.jobTitle(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -192,7 +192,7 @@ module.exports = {
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
-    title: faker.name.title(),
+    title: faker.name.jobTitle(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -202,7 +202,7 @@ module.exports = {
   },{
      userId: Math.ceil(Math.random() * 4),
      companyId: Math.ceil(Math.random() * 6),
-     title: faker.name.title(),
+     title: faker.name.jobTitle(),
      description: faker.lorem.text(Math.ceil(Math.random * 500)),
      rehearsalProductionDates: [faker.date.soon()],
      compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -212,7 +212,7 @@ module.exports = {
    },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
-    title: faker.name.title(),
+    title: faker.name.jobTitle(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -222,7 +222,7 @@ module.exports = {
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
-    title: faker.name.title(),
+    title: faker.name.jobTitle(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -232,7 +232,7 @@ module.exports = {
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
-    title: faker.name.title(),
+    title: faker.name.jobTitle(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -242,7 +242,7 @@ module.exports = {
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
-    title: faker.name.title(),
+    title: faker.name.jobTitle(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -252,7 +252,7 @@ module.exports = {
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
-    title: faker.name.title(),
+    title: faker.name.jobTitle(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -262,7 +262,7 @@ module.exports = {
   },{
      userId: Math.ceil(Math.random() * 4),
      companyId: Math.ceil(Math.random() * 6),
-     title: faker.name.title(),
+     title: faker.name.jobTitle(),
      description: faker.lorem.text(Math.ceil(Math.random * 500)),
      rehearsalProductionDates: [faker.date.soon()],
      compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -272,7 +272,7 @@ module.exports = {
    },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
-    title: faker.name.title(),
+    title: faker.name.jobTitle(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -282,7 +282,7 @@ module.exports = {
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
-    title: faker.name.title(),
+    title: faker.name.jobTitle(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -292,7 +292,7 @@ module.exports = {
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
-    title: faker.name.title(),
+    title: faker.name.jobTitle(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -302,7 +302,7 @@ module.exports = {
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
-    title: faker.name.title(),
+    title: faker.name.jobTitle(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -312,7 +312,7 @@ module.exports = {
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
-    title: faker.name.title(),
+    title: faker.name.jobTitle(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -322,7 +322,7 @@ module.exports = {
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
-    title: faker.name.title(),
+    title: faker.name.jobTitle(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -332,7 +332,7 @@ module.exports = {
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
-    title: faker.name.title(),
+    title: faker.name.jobTitle(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -342,7 +342,7 @@ module.exports = {
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
-    title: faker.name.title(),
+    title: faker.name.jobTitle(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -352,7 +352,7 @@ module.exports = {
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
-    title: faker.name.title(),
+    title: faker.name.jobTitle(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
@@ -362,7 +362,7 @@ module.exports = {
   },{
     userId: Math.ceil(Math.random() * 4),
     companyId: Math.ceil(Math.random() * 6),
-    title: faker.name.title(),
+    title: faker.name.jobTitle(),
     description: faker.lorem.text(Math.ceil(Math.random * 500)),
     rehearsalProductionDates: [faker.date.soon()],
     compensationDetails: faker.lorem.text(Math.ceil(Math.random * 500)),
