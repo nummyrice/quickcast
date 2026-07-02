@@ -10,7 +10,29 @@ const db = {};
 
 let sequelize;
 if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+  const connectionUrl = process.env[config.use_env_variable];
+
+  if (connectionUrl) {
+    sequelize = new Sequelize(connectionUrl, config);
+  } else {
+    const username = process.env.DB_USERNAME || process.env.PGUSER;
+    const password = process.env.DB_PASSWORD || process.env.PGPASSWORD;
+    const database = process.env.DB_DATABASE || process.env.PGDATABASE;
+    const host = process.env.DB_HOST || process.env.PGHOST;
+    const port = process.env.DB_PORT || process.env.PGPORT;
+
+    if (username && database && host) {
+      sequelize = new Sequelize(database, username, password, {
+        ...config,
+        host,
+        port,
+      });
+    } else {
+      throw new Error(
+        `Missing database connection settings. Expected ${config.use_env_variable} or split credentials (DB_USERNAME/DB_PASSWORD/DB_DATABASE/DB_HOST[/DB_PORT] or PGUSER/PGPASSWORD/PGDATABASE/PGHOST[/PGPORT]).`
+      );
+    }
+  }
 } else {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
@@ -32,8 +54,5 @@ Object.keys(db).forEach(modelName => {
 });
 
 db.sequelize = sequelize;
-// why was this here?
-db.Sequelize = Sequelize;
-// db.sequelize.sync().then(()=> console.log("Successfully synced database"))
 
 module.exports = db;
