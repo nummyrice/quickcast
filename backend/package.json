@@ -5,6 +5,9 @@
   "main": "index.js",
   "scripts": {
     "sequelize": "sequelize",
+    "db:initialize": "dotenv sequelize db:create && dotenv sequelize db:migrate",
+    "db:seed": "dotenv sequelize db:seed:all",
+    "db:destroy": "dotenv sequelize db:drop",
     "sequelize-cli": "sequelize-cli",
     "start": "per-env",
     "start:development": "nodemon -r dotenv/config ./bin/www",

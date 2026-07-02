@@ -1,6 +1,7 @@
 import React from 'react';
 import { restoreCSRF, csrfFetch } from './store/csrf';
 import * as sessionActions from './store/session';
+import { createRoot } from 'react-dom/client';
 
 // STYLING
 import'./index.css'
@@ -81,9 +82,9 @@ function Root() {
   );
 }
 
-ReactDOM.render(
+const root = createRoot(document.getElementById('root'));
+root.render(
   <React.StrictMode>
     <Root />
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 );

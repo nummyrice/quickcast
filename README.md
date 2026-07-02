@@ -17,3 +17,31 @@ See the app working live [HERE](https://solo-react-quickcast.herokuapp.com/)
 * create productions that belong to the company
 * edit the details of that production
 * view other companies and gigs
+
+
+### Run Locally
+
+1. Clone the repo
+   ```sh
+   git clone https://github.com/nummyrice/QuickCast-react-solo-project.git
+   ```
+2. Install NPM packages
+   ```sh
+   npm install
+   ```
+3. Enter your database credentials in `.env`
+   ```env
+   DB_USERNAME=your_username
+   DB_PASSWORD=your_password
+   DB_NAME=your_database
+   DB_HOST=your_host
+   ```
+4. Run database migrations and seeders
+   ```sh
+   npm run db:initialize
+   npm run db:seed
+   ```
+5. Start the development server
+   ```
+   npm run start:development
+   ```
