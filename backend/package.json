@@ -9,7 +9,6 @@
     "db:seed": "dotenv sequelize db:seed:all",
     "db:destroy": "dotenv sequelize db:drop",
     "sequelize-cli": "sequelize-cli",
-    "postinstall": "npm --prefix ../frontend install --no-fund --no-audit && npm --prefix ../frontend run build",
     "start": "per-env",
     "start:development": "nodemon -r dotenv/config ./bin/www",
     "start:production": "node ./bin/www"
