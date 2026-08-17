@@ -6,10 +6,10 @@ const path = require('path');
 
 const findFrontendBuildPath = () => {
   const candidatePaths = [
-    path.resolve(__dirname, '../../frontend', 'build'),
-    path.resolve(__dirname, '../frontend', 'build'),
-    path.resolve(process.cwd(), 'frontend', 'build'),
-    path.resolve(process.cwd(), '../frontend', 'build'),
+    path.resolve(__dirname, '../../frontend', 'dist'),
+    path.resolve(__dirname, '../frontend', 'dist'),
+    path.resolve(process.cwd(), 'frontend', 'dist'),
+    path.resolve(process.cwd(), '../frontend', 'dist'),
   ];
 
   for (const buildPath of candidatePaths) {
@@ -20,8 +20,8 @@ const findFrontendBuildPath = () => {
   }
 
   return {
-    buildPath: path.resolve(__dirname, '../../frontend', 'build'),
-    indexPath: path.join(path.resolve(__dirname, '../../frontend', 'build'), 'index.html'),
+    buildPath: path.resolve(__dirname, '../../frontend', 'dist'),
+    indexPath: path.join(path.resolve(__dirname, '../../frontend', 'dist'), 'index.html'),
   };
 };
 
