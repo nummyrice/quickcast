@@ -101,7 +101,7 @@ function Navigation({ session }){
               currentTarget.onerror = null; // prevents looping
               currentTarget.src="https://quickcast-app.s3.amazonaws.com/1651176057051";
             }}/>
-            <XClose onClick={e => setOpenMenu(false)}/>
+            <img src={XClose} alt='close menu' onClick={e => setOpenMenu(false)}/>
           </div>
           <NavLink to='/home/my-portfolio' style={{textDecoration: 'none'}}>
             <img src={MyPortfolio} className={`nav_icon`} alt='my portfolio'/>
@@ -163,7 +163,7 @@ function Navigation({ session }){
               currentTarget.onerror = null; // prevents looping
               currentTarget.src="https://quickcast-app.s3.amazonaws.com/1651176057051";
             }}/>
-            <XClose onClick={e => setOpenMenu(false)}/>
+            <img src={XClose} alt='close menu' onClick={e => setOpenMenu(false)}/>
           </div>
           <button className={`logout_btn`} onClick={() => {
             dispatch(sessionActions.logout()).then(
