@@ -16,10 +16,9 @@
     "redux-thunk": "^2.4.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "CI=false react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -33,12 +32,13 @@
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
-
       "last 1 safari version"
     ]
   },
   "devDependencies": {
-    "redux-logger": "^3.0.6"
+    "@vitejs/plugin-react": "^4.7.0",
+    "redux-logger": "^3.0.6",
+    "vite": "^6.4.3"
   },
   "proxy": "http://localhost:8080"
 }
