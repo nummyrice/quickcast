@@ -40,7 +40,7 @@ const store = configureStore();
 
 // this gives your browser access to the various functions we've created.
 // this is for testing purposes only so should not be set during production
-if (process.env.NODE_ENV !== 'production') {
+if (!import.meta.env.PROD) {
   restoreCSRF();
   window.csrfFetch = csrfFetch;
   window.store = store;
