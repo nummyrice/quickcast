@@ -6,14 +6,14 @@ import LoginFormModal from '../LoginFormModal';
 import './Navigation.css';
 import { login } from '../../store/session';
 import * as sessionActions from '../../store/session'
-import { ReactComponent as Home} from '../../assets/home.svg'
-import { ReactComponent as MyPortfolio} from '../../assets/my_portfolio.svg'
-import { ReactComponent as MyGallery} from '../../assets/camera.svg'
-import { ReactComponent as SearchIcon } from '../../assets/magnifying_glass.svg'
-import { ReactComponent as MyApplications} from '../../assets/clipboard.svg'
-import { ReactComponent as CompanyDetailsIcon } from '../../assets/details.svg'
-import { ReactComponent as SearchTalentIcon } from '../../assets/search_group2.svg'
-import { ReactComponent as XClose } from '../../assets/x_close.svg'
+import  Home from '../../assets/home.svg'
+import  MyPortfolio from '../../assets/my_portfolio.svg'
+import  MyGallery from '../../assets/camera.svg'
+import  SearchIcon  from '../../assets/magnifying_glass.svg'
+import  MyApplications from '../../assets/clipboard.svg'
+import  CompanyDetailsIcon  from '../../assets/details.svg'
+import  SearchTalentIcon  from '../../assets/search_group2.svg'
+import  XClose from '../../assets/x_close.svg'
 
 function Navigation({ session }){
   const navigate = useNavigate();
@@ -42,7 +42,7 @@ function Navigation({ session }){
     sessionLinks = (
       <>
         <NavLink  title='Home' style={{textDecoration: 'none'}} to='/welcome-to-quickcast'>
-          <Home className={`nav_icon nav_home`}/>
+          <img src={Home} className={`nav_icon nav_home`} alt='home'/>
           <h3>{"Home"}</h3>
         </NavLink>
         <NavLink style={{textDecoration: 'none'}} to='/welcome-to-quickcast/login'>
@@ -57,23 +57,23 @@ function Navigation({ session }){
     sessionLinks = (
       <>
         <NavLink title='Home' to='/home' style={{textDecoration: 'none'}}>
-          <Home className={`nav_icon nav_home`}/>
+          <img src={Home} className={`nav_icon nav_home`} alt='home'/>
           <h3>{"Home"}</h3>
         </NavLink>
         <NavLink className={`move_to_side_menu`} to='/home/my-portfolio' style={{textDecoration: 'none'}}>
-          <MyPortfolio className={`nav_icon`}/>
+          <img src={MyPortfolio} className={`nav_icon`} alt='my portfolio'/>
          <h3>{"My portfolio"}</h3>
         </NavLink>
         <NavLink className={`move_to_side_menu`} to='/home/my-gallery' style={{textDecoration: 'none'}}>
-        <MyGallery className={`nav_icon`}/>
+        <img src={MyGallery} className={`nav_icon`} alt='my gallery'/>
           <h3>{"My Gallery"}</h3>
         </NavLink>
         <NavLink to='/home/search-gigs' style={{textDecoration: 'none'}}>
-          <SearchIcon className={`nav_icon`}/>
+          <img src={SearchIcon} className={`nav_icon`} alt='search'/>
           <h3>{"Search Productions"}</h3>
         </NavLink>
         <NavLink to='/home/my-applications' style={{textDecoration: 'none'}}>
-          <MyApplications className={`nav_icon`}/>
+          <img src={MyApplications} className={`nav_icon`} alt='my applications'/>
           <h3>{"My Applications"}</h3>
         </NavLink>
         <button className={`move_to_side_menu logout_btn`} onClick={() => {
@@ -104,11 +104,11 @@ function Navigation({ session }){
             <XClose onClick={e => setOpenMenu(false)}/>
           </div>
           <NavLink to='/home/my-portfolio' style={{textDecoration: 'none'}}>
-            <MyPortfolio className={`nav_icon`}/>
+            <img src={MyPortfolio} className={`nav_icon`} alt='my portfolio'/>
           <h3>{"My portfolio"}</h3>
           </NavLink>
           <NavLink className={`move_to_side_menu`} to='/home/my-gallery' style={{textDecoration: 'none'}}>
-          <MyGallery className={`nav_icon`}/>
+          <img src={MyGallery} className={`nav_icon`} alt='my gallery'/>
             <h3>{"My Gallery"}</h3>
           </NavLink>
           <button  className={`logout_btn`} onClick={() => {
@@ -127,15 +127,15 @@ function Navigation({ session }){
     sessionLinks = (
       <>
         <NavLink to='/home' style={{textDecoration: 'none'}}>
-          <Home className={`nav_icon nav_home`}/>
+          <img src={Home} className={`nav_icon nav_home`} alt='home'/>
           <h3>{"Home"}</h3>
         </NavLink>
         <NavLink to='/home/my-company' style={{textDecoration: 'none'}}>
-          <CompanyDetailsIcon className={`nav_icon`}/>
+          <img src={CompanyDetailsIcon} className={`nav_icon`} alt='company details'/>
           <h3>{"My Company"}</h3>
         </NavLink>
         <NavLink to='/home/search-portfolios' style={{textDecoration: 'none'}}>
-          <SearchTalentIcon className={`nav_icon`}/>
+          <img src={SearchTalentIcon} className={`nav_icon`} alt='search talent'/>
           <h3>{"Search Talent"}</h3>
         </NavLink>
         <button className={`move_to_side_menu logout_btn`} onClick={() => {
@@ -180,7 +180,7 @@ function Navigation({ session }){
     sessionLinks = (
       <>
          <NavLink to='/home' style={{textDecoration: 'none'}}>
-         <Home className={`nav_icon nav_home`}/>
+         <img src={Home} className={`nav_icon nav_home`} alt='home'/>
          <h3>{"Home"}</h3>
         </NavLink>
         <NavLink to='/home/create-portfolio'>

@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import { NavLink, Navigate, useNavigate, Outlet} from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { ReactComponent as CompanyIcon } from '../../assets/company.svg';
-import { ReactComponent as ProductionIcon } from '../../assets/video_camera.svg'
-import { ReactComponent as RolesIcon } from '../../assets/recent_actors.svg'
+import CompanyIcon from '../../assets/company.svg';
+import ProductionIcon from '../../assets/video_camera.svg'
+import RolesIcon from '../../assets/recent_actors.svg'
 import './Company.css';
 
 const Company = () => {
@@ -18,15 +18,15 @@ const Company = () => {
         <>
             <div id='company_nav'>
                 <NavLink style={{textDecoration: 'none'}} to='/home/my-company' end>
-                    <CompanyIcon/>
+                    <img src={CompanyIcon} alt='company icon'/>
                     <h3>{"Company"}</h3>
                 </NavLink>
                 <NavLink style={{textDecoration: 'none'}} to='/home/my-company/productions'>
-                    <ProductionIcon/>
+                    <img src={ProductionIcon} alt='production icon'/>
                     <h3>{"Productions"}</h3>
                 </NavLink>
                 <NavLink style={{textDecoration: 'none'}} to='/home/my-company/roles'>
-                    <RolesIcon/>
+                    <img src={RolesIcon} alt='roles icon'/>
                     <h3>{"Roles"}</h3>
                 </NavLink>
             </div>
