@@ -1,5 +1,6 @@
 # App-Academy required additions
-build
+/frontend/build
+/frontend/dist
 .DS_Store
 
 # Logs
@@ -106,3 +107,6 @@ dist
 
 # TernJS port file
 .tern-port
+
+# vite build folder
+.
